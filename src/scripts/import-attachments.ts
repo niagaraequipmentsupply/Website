@@ -27,11 +27,11 @@ const LD: Record<string, string> = { rb06: "rb06-backhoe", rl06: "compact-wheel-
 const ORDER = ["r06-eco", "r10-eco", "r13-pro", "r15-eco", "r18-pro", "r22-pro", "r32-pro", "r57-pro", "r82-pro", "r230-pro", "rs03", "rs04", "rs06", "rs07", "rs10", "rs20", "rb06-backhoe", "compact-wheel-loader"];
 
 // ---- name normalisation → family key + size label
-const MODEL_PREFIX = /^(\[\s*[A-Z0-9]+\]\s*)?(R135|R\d{2,3}(?:-\d+)?(?:-\d+)?|R57-82|RS-?0?\d(?:-0?\d)?(?:\/0?\d)?(?:-\d)?|RS0\d\/0\d-\d|RS057|RB-?RL06\s*CHARGEUR\s*-?|RB06|RL06)\s*/i;
+const MODEL_PREFIX = /^(\[\s*[A-Z0-9]+\]\s*)?(R135|R\d{2,3}(?:-\d+)?(?:-\d+)?|R57-82|RS-?\d{2}(?:-\d{2})?(?:\/\d{2})?(?:-\d)?|RS0\d\/0\d-\d|RS057|RB-?RL06(?:\s*CHARGEUR)?\s*-?|RB06|RL06)\s*/i;
 const SIZE = /(\d{2,4}\s?(?:MM|CM)(?:\s?X\s?\d{2,4}\s?(?:MM|CM))?(?:\s*-\s*[\d.]+\s?(?:''|"|”)(?:\s?X\s?[\d.]+\s?(?:''|"|”))?)?|\(\d+\s?INCH\)|-\s?\d+(?:\.\d+)?\s?(?:''|"|”)(?:\s?X\s?\d+(?:\.\d+)?\s?(?:''|"|”))?|\b\d{2,3}\s?X\s?\d{2,3}\b|\d+(?:\.\d+)?\s?(?:''|"|”))/gi;
-const SYN: [RegExp, string][] = [[/MECANICAL/g, "MECHANICAL"], [/REAPER/g, "RIPPER"], [/SKELTON/g, "SKELETON"], [/CYLINDRE/g, "CYLINDER"], [/SIMPLE CYLINDER/g, "SIMPLE CYLINDER"], [/TARIÈRE|TARIERE/g, "AUGER"], [/FOURCHES/g, "FORKS"], [/LAME BULLDOZER/g, "BULLDOZER BLADE"], [/4 IN 1 BUCKET|FOUR IN ONE BUCKET/g, "FOUR-IN-ONE BUCKET"], [/EAGLE BECK/g, "EAGLE BECK"], [/QUICK CONNECT/g, "QUICK ATTACH"], [/ROTARY BRILL/g, "ROTARY DRILL"], [/LAND CLEARING RAKE/g, "LAND CLEARING RAKE"], [/\(REDUCER\)|- REDUCER|WITH REDUCER/g, "WITH REDUCER"], [/\s+/g, " "]];
+const SYN: [RegExp, string][] = [[/MECANICAL/g, "MECHANICAL"], [/REAPER/g, "RIPPER"], [/SKELTON/g, "SKELETON"], [/CYLINDRE/g, "CYLINDER"], [/SIMPLE CYLINDER/g, "SIMPLE CYLINDER"], [/TARIÈRE|TARIERE/g, "AUGER"], [/FOURCHES/g, "FORKS"], [/LAME BULLDOZER/g, "BULLDOZER BLADE"], [/4 IN 1 BUCKET|FOUR IN ONE BUCKET/g, "FOUR-IN-ONE BUCKET"], [/EAGLE BECK/g, "EAGLE BECK"], [/QUICK CONNECT/g, "QUICK ATTACH"], [/ROTARY BRILL/g, "ROTARY DRILL"], [/LAND CLEARING RAKE/g, "LAND CLEARING RAKE"], [/\(REDUCER\)|- REDUCER|WITH REDUCER/g, "WITH REDUCER"], [/TRANCHER/g, "TRENCHER"], [/WOOD SPLITTER/g, "LOG SPLITTER"], [/BUSH CUTTER/g, "BRUSH CUTTER"], [/STUMP BREAKER/g, "STUMP GRINDER"], [/SNOWPLOW|SNOW PLOW BLADE|SNOW PLOW/g, "SNOW PLOW"], [/\s+/g, " "]];
 function normalize(raw: string) {
-  let n = raw.toUpperCase().replace(/[’']'|''/g, "''");
+  let n = raw.toUpperCase().replace(/["“”]([A-Z ]+)["“”]/g, "$1").replace(/[’']'|''/g, "''");
   n = n.replace(MODEL_PREFIX, "");
   const sizes = Array.from(n.matchAll(SIZE)).map((m) => m[0].trim()).filter((s) => !/^-?\s?\d(?:\.\d+)?"?$/.test(s) || /MM|CM/.test(s));
   let key = n.replace(SIZE, " ");
@@ -39,11 +39,14 @@ function normalize(raw: string) {
   key = key.replace(/\bX\b/g, " ").replace(/[-–]\s*$/g, "").replace(/\s*-\s*/g, " ").replace(/\s{2,}/g, " ").trim();
   return { key, size: sizes.join(" ").replace(/\s{2,}/g, " ").trim() };
 }
+const flat = (k: string) => k.replace(/[-–]/g, " ").replace(/\s{2,}/g, " ").trim();
+const famKeys = Object.keys(families).map((k) => [flat(k), k] as const);
 const familyFor = (key: string, cat: string): keyof typeof families | undefined => {
-  if (families[key]) return key;
-  if (cat === "skid-steer-attachments" && families[key + " SS"]) return key + " SS";
-  const hit = Object.keys(families).filter((k) => key.includes(k) || k.includes(key)).sort((a, b) => b.length - a.length)[0];
-  return hit;
+  const fk = flat(key);
+  const exact = (k: string) => famKeys.find(([f]) => f === k)?.[1];
+  if (cat === "skid-steer-attachments" && exact(fk + " SS")) return exact(fk + " SS");
+  if (exact(fk)) return exact(fk);
+  return famKeys.filter(([f]) => fk.includes(f) || f.includes(fk)).sort((a, b) => b[0].length - a[0].length)[0]?.[1];
 };
 const prettySize = (s: string) => s.replace(/MM/g, " mm").replace(/CM/g, " cm").replace(/\s?X\s?/g, " × ").replace(/''/g, '"').replace(/\s{2,}/g, " ").replace(/\(/g, "(").trim();
 
@@ -73,8 +76,9 @@ for (const row of rows) {
   const { key, size } = normalize(row.name);
   const fam = familyFor(key, cat);
   if (!fam) { unmatched.push(`${row.name} → ${key}`); continue; }
-  const gk = `${cat}|${fam}`;
+  const gk = `${cat}|${families[fam].name}`;
   const g = groups.get(gk) ?? { fam, cat, skus: [] };
+  if (!families[g.fam].specs && families[fam].specs) g.fam = fam;
   g.skus.push({ row, size, models: [...models].sort((a, b) => ORDER.indexOf(a) - ORDER.indexOf(b)), gen1, gen2, cat });
   groups.set(gk, g);
 }

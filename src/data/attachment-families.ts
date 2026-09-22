@@ -81,6 +81,8 @@ export const families: Record<string, FamilyInfo> = {
   "LAME BULLDOZER": F("Dozer Blade", "Blades & Graders", "Hydraulic-angle dozer blade."),
   "DOZER BLADE": F("Dozer Blade", "Blades & Graders", "Hydraulic-angle dozer blade."),
   "SNOW SHOVEL": F("Snow Pusher", "Snow", "Box-style snow pusher for lots, lanes and yards."),
+  "SNOW PLOW": F("Snow Plow Blade", "Snow", "Angling snow plow blade for clearing drives, lots and laneways with the loader. Trip-edge protection and replaceable cutting edge."),
+  "LOADER BUCKET": F("Loader Bucket", "Buckets", "General-purpose loader bucket for the RB06 backhoe and RL06 compact wheel loader: stockpiling, loading and grading with a bolt-on cutting edge."),
   "SNOW BLOWER": F("Snow Blower", "Snow", "Hydraulic two-stage snow blower with adjustable chute.", { compact: ["Throwing distance 6 m", "Adjustable throwing direction", "Collection width 1,100 mm"], full: ["Adjustable throwing direction", "Collection width 1,500 mm", "Auger diameter 650 mm", "Length 1.8 m, width 1.3 m, height 1.95 m", "Weight 300 kg"] }),
   "GRADER": F("Land Leveler", "Blades & Graders", "Grading bar for levelling topsoil, gravel and lots.", { mini: ["Length 1.38 m, width 1.3 m, height 0.45 m", "Weight 42 kg"], full: ["Length 1.48 m, width 1.4 m, height 0.65 m", "Weight 65 kg"] }),
   "LEVELER": F("Land Leveler", "Blades & Graders", "Grading bar for levelling topsoil, gravel and lots."),

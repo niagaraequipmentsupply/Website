@@ -114,3 +114,15 @@ All forms (quote list, builder "Request This Build", contact, financing) POST a 
 - Sticky "Your Build" panel on desktop; persistent bottom bar + bottom-sheet drawer on mobile.
 - Items without a public price are listed as "Quote"/"Request pricing" and excluded from the estimate, with a note in the summary.
 - "Save Build" persists to localStorage; "Request This Build" adds the configuration to the quote list and opens `/quote`.
+
+## Deployment (Railway)
+
+Live preview: https://web-production-9fdd9.up.railway.app — project `nes-website`, service `web`, GitHub repo
+`niagaraequipmentsupply/Website`. Every push to `main` redeploys.
+
+- Persistent volume mounted at `/data` (500 MB on the trial plan): `payload.db` plus `uploads/media` and `uploads/documents`.
+- Variables: `PAYLOAD_SECRET`, `DATABASE_URI=file:/data/payload.db`, `UPLOAD_DIR=/data/uploads`, `NEXT_PUBLIC_SITE_URL`,
+  `NIXPACKS_NODE_VERSION=22`. Add `LEAD_WEBHOOK_URL` to forward quote/contact leads.
+- Copy local content up: `railway volume files -v web-volume upload --overwrite ./payload.db /payload.db`, then
+  `tar czf - media documents | railway ssh -- tar xzf - -C /data/uploads`, then `railway redeploy -y`.
+- Custom domain: `railway domain niagaraequipment.ca` and add the CNAME it prints.

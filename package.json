@@ -1,17 +1,35 @@
 {
-  "name": "nes-scaffold",
+  "name": "niagara-equipment-supply",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "payload": "payload",
+    "generate:types": "payload generate:types",
+    "generate:importmap": "payload generate:importmap",
+    "seed": "payload run src/seed.ts",
+    "seed:r32": "payload run src/scripts/seed-r32.ts",
+    "seed:lineup": "payload run src/scripts/seed-lineup.ts",
+    "seed:comparison": "payload run src/scripts/seed-comparison.ts",
+    "seed:content": "payload run src/scripts/seed-content.ts",
+    "import:attachments": "payload run src/scripts/import-attachments.ts"
   },
   "dependencies": {
+    "@payloadcms/db-sqlite": "^3.88.0",
+    "@payloadcms/next": "^3.88.0",
+    "@payloadcms/richtext-lexical": "^3.88.0",
+    "graphql": "^16.14.2",
+    "lucide-react": "^1.41.0",
     "next": "16.3.4",
+    "payload": "^3.88.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "sharp": "^0.35.4",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

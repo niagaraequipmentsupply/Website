@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+/* ---------- Niagara Equipment Supply design tokens ---------- */
+@theme {
+  --color-navy: #083d91;
+  --color-navy-dark: #062f70;
+  --color-electric: #0f6bff;
+  --color-charcoal: #1e1e1e;
+  --color-grey: #606060;
+  --color-light: #f0f0f0;
+  --color-line: #d9e0ea;
+  --color-tint: #eef4ff;
+  --color-white: #ffffff;
+  --color-success: #15803d;
+  --color-warning: #b45309;
+
+  --font-display: var(--font-anton), "Arial Narrow", Impact, sans-serif;
+  --font-sans: var(--font-raleway), Inter, Arial, sans-serif;
+
+  --radius-card: 12px;
+  --radius-btn: 8px;
+
+  --shadow-card: 0 1px 2px rgba(8, 61, 145, 0.04), 0 4px 14px rgba(8, 61, 145, 0.06);
+  --shadow-lift: 0 6px 22px rgba(8, 61, 145, 0.12);
+
+  --container-site: 1320px;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+body {
+  overflow-x: clip;
+  background: var(--color-white);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display headings: Anton, uppercase, tight tracking */
+.display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+h1.display { font-size: clamp(2.375rem, 4.5vw + 0.5rem, 4.25rem); }
+h2.display { font-size: clamp(1.75rem, 2.2vw + 0.6rem, 2.5rem); }
+h3.display { font-size: clamp(1.25rem, 1vw + 0.8rem, 1.625rem); }
+
+/* Utility: hide scrollbars for carousels */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Focus ring */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-electric);
+  outline-offset: 2px;
+}
+
+/* Section spacing */
+.section { padding-block: clamp(2.25rem, 5vw, 5.5rem); }
+.section-tight { padding-block: clamp(1.75rem, 3.5vw, 3.5rem); }
+
+@keyframes flash {
+  0% { background-color: var(--color-tint); }
+  100% { background-color: transparent; }
+}
+.flash { animation: flash 600ms ease-out; }
+
+@keyframes slide-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.slide-in { animation: slide-in 220ms ease-out; }
+@keyframes slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.slide-up { animation: slide-up 220ms ease-out; }
+
+/* Blog post body */
+.prose-nes { color: var(--color-charcoal); font-size: 1.0625rem; line-height: 1.7; }
+.prose-nes > * + * { margin-top: 1rem; }
+.prose-nes h2 { font-family: var(--font-display); text-transform: uppercase; font-size: 1.75rem; line-height: 1.1; margin-top: 2.25rem; }
+.prose-nes h3 { font-weight: 700; font-size: 1.2rem; margin-top: 1.75rem; }
+.prose-nes ul, .prose-nes ol { padding-left: 1.4rem; }
+.prose-nes ul { list-style: disc; } .prose-nes ol { list-style: decimal; }
+.prose-nes li + li { margin-top: 0.35rem; }
+.prose-nes a { color: var(--color-navy); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.prose-nes blockquote { border-left: 4px solid var(--color-navy); padding-left: 1rem; color: var(--color-grey); font-style: italic; }
+.prose-nes code { background: var(--color-light); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.9em; }
+.prose-nes hr { border: 0; border-top: 1px solid var(--color-line); margin: 2rem 0; }

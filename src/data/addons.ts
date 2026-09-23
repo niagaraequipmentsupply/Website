@@ -8,6 +8,6 @@ export const addons: Addon[] = [
 ];
 
 export const deliveryOptions: DeliveryOption[] = [
-  { id: "del-pickup", name: "Dealer Pickup", regionRule: "any", flatPrice: 0, quoteRequired: false, description: "Pick up at our St. Catharines location." },
+  { id: "del-pickup", name: "Dealer Pickup", regionRule: "any", flatPrice: 0, quoteRequired: false, description: "Pick up at our Thorold location." },
   { id: "del-ontario", name: "Ontario Delivery", regionRule: "ON", quoteRequired: true, description: "Flatbed delivery anywhere in Ontario. Quoted by distance." },
 ];

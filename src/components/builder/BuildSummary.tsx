@@ -61,6 +61,9 @@ export function BuildSummary({ machine, configurationLabel, totals, financing, o
       <LineGroup title="Selected Attachments" editHref="#add-attachments" lines={attachmentLines} onRemove={onRemoveLine} empty="No attachments added." />
       <LineGroup title="Protection Packages" editHref="#protection" lines={protectionLines} onRemove={onRemoveLine} empty="No packages added." />
 
+      {totals.unpricedCount === totals.lines.length ? (
+        <div className="border-t border-line px-5 py-4 text-sm text-grey">Pricing is quoted per build. Send the request and we reply with a full price on every line, including delivery.</div>
+      ) : (
       <div className="border-t border-line px-5 py-4 text-sm">
         <div className="flex justify-between text-grey"><span>Estimated Subtotal</span><span className="font-semibold text-charcoal">{formatPrice(totals.subtotal)}</span></div>
         {totals.taxEstimate !== undefined && <div className="mt-1 flex justify-between text-grey"><span>{taxLabel}</span><span className="font-semibold text-charcoal">{formatPrice(totals.taxEstimate)}</span></div>}
@@ -72,6 +75,7 @@ export function BuildSummary({ machine, configurationLabel, totals, financing, o
           <p className="mt-2 text-[12px] text-grey">{totals.unpricedCount} item{totals.unpricedCount > 1 ? "s" : ""} priced on request and not included in the estimate{machine && !machine.showPrice ? " (including the base machine)" : ""}.</p>
         )}
       </div>
+      )}
 
       <div className="mx-5 mb-4 flex items-center gap-3 rounded-card bg-tint p-4">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-navy"><Settings2 className="size-5" aria-hidden /></span>

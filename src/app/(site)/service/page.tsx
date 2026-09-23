@@ -15,7 +15,7 @@ import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "RIPPA Service, Repairs & Parts in Niagara | Certified Technicians",
-  description: "Certified RIPPA technicians in St. Catharines. Maintenance, repairs and field service for RIPPA mini excavators and skid steers, any owner welcome. Genuine RIPPA parts shipped across Canada, sourcing help for US customers.",
+  description: "Certified RIPPA technicians in Thorold. Maintenance, repairs and field service for RIPPA mini excavators and skid steers, any owner welcome. Genuine RIPPA parts shipped across Canada, sourcing help for US customers.",
   alternates: { canonical: "/service" },
 };
 
@@ -44,7 +44,7 @@ export default async function ServicePage() {
     <>
       <PageHero
         title={<>Certified RIPPA <span className="text-navy">Service &amp; Parts</span></>}
-        text="We're a service-first dealership. Our technicians are RIPPA-certified and work on RIPPA machines every day, in our St. Catharines shop and on site across Niagara. You don't need to have bought your machine from us: if it's a RIPPA, we'll look after it. Genuine parts ship anywhere in Canada, and we help US owners source what they need."
+        text="We're a service-first dealership. Our technicians are RIPPA-certified and work on RIPPA machines every day, in our Thorold shop and on site across Niagara. You don't need to have bought your machine from us: if it's a RIPPA, we'll look after it. Genuine parts ship anywhere in Canada, and we help US owners source what they need."
         crumbs={[{ label: "Parts & Service" }]}
         aside={
           <ul className="grid gap-3">

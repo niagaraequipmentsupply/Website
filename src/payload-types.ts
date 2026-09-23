@@ -509,6 +509,10 @@ export interface Attachment {
         sku?: string | null;
         price?: number | null;
         compatibleModels?: (number | Machine)[] | null;
+        /**
+         * Mounting plate this version ships with, when it differs by version (RS -1 vs -2/-3).
+         */
+        plateType?: ('toro-dingo' | 'rippa-mini' | 'universal-ssl' | 'excavator-qc' | 'pin-on') | null;
         id?: string | null;
       }[]
     | null;
@@ -1102,6 +1106,7 @@ export interface AttachmentsSelect<T extends boolean = true> {
         sku?: T;
         price?: T;
         compatibleModels?: T;
+        plateType?: T;
         id?: T;
       };
   slug?: T;

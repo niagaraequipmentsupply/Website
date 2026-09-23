@@ -6,6 +6,7 @@ import { formatPrice } from "@/lib/format";
 import { AddToQuoteButton } from "./AddToQuoteButton";
 import { Button } from "@/components/ui/Button";
 
+const shortPlate: Record<string, string> = { "toro-dingo": "Toro Dingo plate", "rippa-mini": "RIPPA plate", "universal-ssl": "Universal plate" };
 const field = "h-11 w-full rounded-btn border border-line bg-white px-3 text-[15px] text-charcoal focus:border-electric";
 
 /**
@@ -19,6 +20,7 @@ export function AttachmentDetailActions({ attachment, machines }: { attachment: 
     return map;
   }, [attachment]);
   const fits = machines.filter((m) => byModel.has(m.id));
+  const plates = new Set(attachment.variants.map((v) => v.plateType).filter(Boolean));
   const [modelId, setModelId] = useState<string>(fits[0]?.id ?? "");
   const options = byModel.get(modelId) ?? attachment.variants;
   const [variantId, setVariantId] = useState<string | undefined>(options[0]?.id);
@@ -45,7 +47,7 @@ export function AttachmentDetailActions({ attachment, machines }: { attachment: 
         </label>
         <label className="text-sm font-semibold text-charcoal">2. Size / version
           <select value={current?.id} onChange={(e) => setVariantId(e.target.value)} className={`${field} mt-1`}>
-            {options.map((v) => <option key={v.id} value={v.id}>{v.widthOrSize ?? v.label}{v.sku ? ` · ${v.sku}` : ""}</option>)}
+            {options.map((v) => <option key={v.id} value={v.id}>{v.widthOrSize ?? v.label}{v.plateType && plates.size > 1 ? ` · ${shortPlate[v.plateType] ?? v.plateType}` : ""}{v.sku ? ` · ${v.sku}` : ""}</option>)}
           </select>
         </label>
       </div>

@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { site } = await getSiteContent();
   const kind = cat?.shortName.replace(/s$/, "") ?? "";
   return {
-    title: `${m.brand} ${m.modelName} ${kind} for Sale in Ontario | Specs, Price & Attachments`.replace(/\s+/g, " "),
+    title: `${m.brand} ${m.modelName} ${kind} for Sale in Ontario | Specs, Attachments & Dealer Support`.replace(/\s+/g, " "),
     description: `${m.shortDescription} Sold, set up and serviced by ${site.name} in ${site.address.city}, Ontario. Dealer PDI, financing and delivery across Ontario.`.slice(0, 300),
     alternates: { canonical: `/inventory/${m.category}/${m.slug}` },
     keywords: [`RIPPA ${m.modelName}`, `${m.modelName} ${kind.toLowerCase()}`, `RIPPA ${kind.toLowerCase()} Ontario`, `RIPPA dealer Niagara`, `${kind.toLowerCase()} for sale Ontario`],

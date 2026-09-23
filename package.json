@@ -16,7 +16,8 @@
     "seed:lineup": "payload run src/scripts/seed-lineup.ts",
     "seed:comparison": "payload run src/scripts/seed-comparison.ts",
     "seed:content": "payload run src/scripts/seed-content.ts",
-    "import:attachments": "payload run src/scripts/import-attachments.ts"
+    "import:attachments": "payload run src/scripts/import-attachments.ts",
+    "purge:media": "payload run src/scripts/purge-orphan-media.ts"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.88.0",

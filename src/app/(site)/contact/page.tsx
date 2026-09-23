@@ -24,7 +24,7 @@ export default async function ContactPage() {
               <ul className="space-y-4 text-sm">
                 <li className="flex gap-3"><Phone className="mt-0.5 size-5 shrink-0 text-navy" aria-hidden /><div><p className="font-bold text-charcoal">Phone</p><a href={site.phoneHref} className="text-navy hover:text-electric">{site.phone}</a></div></li>
                 <li className="flex gap-3"><Mail className="mt-0.5 size-5 shrink-0 text-navy" aria-hidden /><div><p className="font-bold text-charcoal">Email</p><a href={`mailto:${site.email}`} className="text-navy hover:text-electric">{site.email}</a></div></li>
-                <li className="flex gap-3"><MapPin className="mt-0.5 size-5 shrink-0 text-navy" aria-hidden /><div><p className="font-bold text-charcoal">Location</p><p className="text-grey">{site.address.street ? `${site.address.street}, ` : ""}{site.address.city}, {site.address.region}</p><p className="text-grey">{site.serviceArea}</p></div></li>
+                <li className="flex gap-3"><MapPin className="mt-0.5 size-5 shrink-0 text-navy" aria-hidden /><div><p className="font-bold text-charcoal">Location</p><p className="text-grey">{site.address.street && <>{site.address.street}<br /></>}{site.address.city}, {site.address.region}{site.address.postal ? ` ${site.address.postal}` : ""}</p><p className="text-grey">{site.serviceArea}</p></div></li>
                 <li id="hours" className="flex scroll-mt-28 gap-3"><Clock className="mt-0.5 size-5 shrink-0 text-navy" aria-hidden /><div><p className="font-bold text-charcoal">Hours</p><ul className="text-grey">{site.hoursList.map((h) => <li key={h.day}>{h.day}: {h.time}</li>)}</ul></div></li>
               </ul>
             </div>

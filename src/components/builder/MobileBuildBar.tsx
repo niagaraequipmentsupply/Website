@@ -27,8 +27,8 @@ export function MobileBuildBar({ total, itemCount, open, onOpen, onClose, onRequ
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white px-4 py-3 shadow-[0_-4px_16px_rgba(8,61,145,0.08)] lg:hidden">
         <div className="flex items-center justify-between gap-3">
           <button type="button" onClick={onOpen} className="min-w-0 shrink text-left">
-            <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-grey">Est. total · {itemCount} item{itemCount === 1 ? "" : "s"}</p>
-            <p className="display text-2xl text-navy">{formatPrice(total)}</p>
+            <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-grey">{total > 0 ? "Est. total · " : "Your build · "}{itemCount} item{itemCount === 1 ? "" : "s"}</p>
+            <p className="display text-2xl text-navy">{total > 0 ? formatPrice(total) : "Quoted"}</p>
           </button>
           <div className="flex shrink-0 gap-2">
             <Button onClick={onOpen} variant="secondary" size="sm">View Build</Button>

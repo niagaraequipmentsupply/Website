@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Machine } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
-import { machinePrice, machineHasMultiplePrices } from "@/lib/pricing";
+import { machinePrice, machineHasMultiplePrices, PRICES_ENABLED } from "@/lib/pricing";
 
 /** Side-by-side spec summary for a category. Columns come from the highlighted specs present in the data. */
 export function CompareTable({ machines, title = "Compare models" }: { machines: Machine[]; title?: string }) {
@@ -17,7 +17,7 @@ export function CompareTable({ machines, title = "Compare models" }: { machines:
             <tr>
               <th scope="col" className="px-4 py-3">Model</th>
               {labels.map((l) => <th key={l} scope="col" className="px-4 py-3">{l}</th>)}
-              <th scope="col" className="px-4 py-3 text-right">Price</th>
+              {PRICES_ENABLED && <th scope="col" className="px-4 py-3 text-right">Price</th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
@@ -27,7 +27,7 @@ export function CompareTable({ machines, title = "Compare models" }: { machines:
                 <tr key={m.id}>
                   <th scope="row" className="px-4 py-3 text-left font-bold text-charcoal"><Link href={`/inventory/${m.category}/${m.slug}`} className="hover:text-navy">{m.modelName}</Link>{m.series ? <span className="block text-[11px] font-medium uppercase tracking-wide text-grey">{m.series}</span> : null}</th>
                   {labels.map((l) => <td key={l} className="px-4 py-3 text-grey">{m.specs.find((s) => s.label === l)?.value || "—"}</td>)}
-                  <td className="px-4 py-3 text-right font-bold text-navy">{m.showPrice && price !== undefined ? `${machineHasMultiplePrices(m) ? "From " : ""}${formatPrice(price)}` : "Request"}</td>
+                  {PRICES_ENABLED && <td className="px-4 py-3 text-right font-bold text-navy">{m.showPrice && price !== undefined ? `${machineHasMultiplePrices(m) ? "From " : ""}${formatPrice(price)}` : "Request"}</td>}
                 </tr>
               );
             })}

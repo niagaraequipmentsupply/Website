@@ -1,4 +1,5 @@
 import type { Machine } from "@/lib/types";
+import { PRICES_ENABLED } from "@/lib/pricing";
 import { formatPrice } from "@/lib/format";
 import { AddToQuoteButton } from "./AddToQuoteButton";
 import { Badge } from "@/components/ui/Badge";
@@ -23,7 +24,7 @@ export function ConfigurationTable({ machine }: { machine: Machine }) {
               <div><dt className="text-[11px] uppercase tracking-wide text-grey">Weight</dt><dd className="text-charcoal">{c.operatingWeight ?? "—"}</dd></div>
             </dl>
             <div className="mt-3 flex items-center justify-between gap-3 border-t border-line pt-3">
-              <p className="display text-2xl text-navy">{price(c.price)}</p>
+              {PRICES_ENABLED ? <p className="display text-2xl text-navy">{price(c.price)}</p> : <p className="text-sm font-semibold text-grey">Request pricing</p>}
               <AddToQuoteButton kind="machine" id={machine.id} configurationId={c.id} size="sm" label="Add to Quote" />
             </div>
           </li>
@@ -38,7 +39,7 @@ export function ConfigurationTable({ machine }: { machine: Machine }) {
               <th scope="col" className="px-4 py-3">Engine</th>
               <th scope="col" className="px-4 py-3">Power</th>
               <th scope="col" className="px-4 py-3">Weight</th>
-              <th scope="col" className="px-4 py-3 text-right">Price</th>
+              {PRICES_ENABLED && <th scope="col" className="px-4 py-3 text-right">Price</th>}
               <th scope="col" className="px-4 py-3"><span className="sr-only">Add to quote</span></th>
             </tr>
           </thead>
@@ -49,7 +50,7 @@ export function ConfigurationTable({ machine }: { machine: Machine }) {
                 <td className="px-4 py-3 text-grey">{c.engine ?? "—"}</td>
                 <td className="px-4 py-3 text-grey">{c.horsepower ?? "—"}</td>
                 <td className="px-4 py-3 text-grey">{c.operatingWeight ?? "—"}</td>
-                <td className="px-4 py-3 text-right font-bold text-navy">{price(c.price)}</td>
+                {PRICES_ENABLED && <td className="px-4 py-3 text-right font-bold text-navy">{price(c.price)}</td>}
                 <td className="px-4 py-3 text-right"><AddToQuoteButton kind="machine" id={machine.id} configurationId={c.id} size="sm" label="Add" /></td>
               </tr>
             ))}

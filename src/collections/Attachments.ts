@@ -50,6 +50,7 @@ export const Attachments: CollectionConfig = {
                 { name: "price", type: "number", admin: { width: "20%" } },
               ] },
               { name: "compatibleModels", type: "relationship", relationTo: "machines", hasMany: true },
+              { name: "plateType", type: "select", options: plateOptions, admin: { description: "Mounting plate this version ships with, when it differs by version (RS -1 vs -2/-3)." } },
             ] },
           ],
         },

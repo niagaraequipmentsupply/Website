@@ -31,9 +31,10 @@ export default async function AttachmentCategoryPage({ params, searchParams }: {
   const modelsHere = catalogue.machines.filter((m) => cat.machineCategories.includes(m.category)).sort((a, b) => a.sortOrder - b.sortOrder);
   const machine = model ? modelsHere.find((m) => m.slug === model) : undefined;
   const all = await getAttachments(cat.slug);
-  const platesHere = Array.from(new Set(all.map((a) => a.plateType).filter((x): x is string => !!x)));
+  const platesOf = (a: (typeof all)[number]) => Array.from(new Set([a.plateType, ...a.variants.map((v) => v.plateType)].filter((x): x is string => !!x)));
+  const platesHere = Array.from(new Set(all.flatMap(platesOf)));
   let items = machine ? all.filter((a) => a.compatibleModelIds.includes(machine.id) || (a.compatibleModelIds.length === 0 && a.compatibleCategories.includes(machine.category))) : all;
-  if (plate) items = items.filter((a) => a.plateType === plate);
+  if (plate) items = items.filter((a) => platesOf(a).includes(plate));
   const qs = (m?: string, p?: string) => { const u = new URLSearchParams(); if (m) u.set("model", m); if (p) u.set("plate", p); const s = u.toString(); return s ? `?${s}` : ""; };
   const types = Array.from(new Set(items.map((i) => i.attachmentType)));
   return (

@@ -35,7 +35,7 @@ export function Footer({ site }: { site: SiteContent["site"] }) {
             <ul className="space-y-2.5 text-sm text-grey">
               <li><a href={site.phoneHref} className="flex items-center gap-2 hover:text-navy"><Phone className="size-4 text-navy" aria-hidden />{site.phone}</a></li>
               <li><a href={`mailto:${site.email}`} className="flex items-center gap-2 hover:text-navy"><Mail className="size-4 text-navy" aria-hidden />{site.email}</a></li>
-              <li className="flex items-start gap-2"><MapPin className="mt-0.5 size-4 shrink-0 text-navy" aria-hidden /><span>{site.address.city}, {site.address.region}<br /><span className="text-xs">{site.serviceArea}</span></span></li>
+              <li className="flex items-start gap-2"><MapPin className="mt-0.5 size-4 shrink-0 text-navy" aria-hidden /><span>{site.address.street && <>{site.address.street}<br /></>}{site.address.city}, {site.address.region}{site.address.postal ? ` ${site.address.postal}` : ""}<br /><span className="text-xs">{site.serviceArea}</span></span></li>
             </ul>
           </div>
           <div>

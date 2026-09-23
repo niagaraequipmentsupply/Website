@@ -9,7 +9,7 @@ export function OrganizationSchema({ site }: { site: SiteContent["site"] }) {
     url: site.url,
     telephone: site.phone,
     email: site.email,
-    address: { "@type": "PostalAddress", addressLocality: site.address.city, addressRegion: site.address.region, addressCountry: site.address.country },
+    address: { "@type": "PostalAddress", streetAddress: site.address.street || undefined, addressLocality: site.address.city, addressRegion: site.address.region, postalCode: site.address.postal || undefined, addressCountry: site.address.country },
     areaServed: "Ontario, Canada",
     brand: { "@type": "Brand", name: "RIPPA" },
   };

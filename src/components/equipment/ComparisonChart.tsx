@@ -6,7 +6,7 @@ import { Star, Check, Minus, X, Circle } from "lucide-react";
 import type { Machine } from "@/lib/types";
 import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
 import { formatPrice } from "@/lib/format";
-import { machinePrice, machineHasMultiplePrices } from "@/lib/pricing";
+import { machinePrice, machineHasMultiplePrices, PRICES_ENABLED } from "@/lib/pricing";
 
 /**
  * RIPPA-style buying-guide chart: photo row, key specs, target users, application fit (star ratings + required
@@ -33,7 +33,7 @@ export function ComparisonChart({ machines, categoryName }: { machines: Machine[
     { label: "Warranty", get: (m) => m.warranty ?? spec(m, "warranty") },
     { label: "Noise level", get: (m) => m.noiseLevel ?? "—" },
     { label: "Indoor use", get: (m) => (m.indoorUse ? "Yes" : "—") },
-    { label: "Starting price", get: (m) => (m.showPrice && machinePrice(m) !== undefined ? `${machineHasMultiplePrices(m) ? "From " : ""}${formatPrice(machinePrice(m))}` : "Request") },
+    ...(PRICES_ENABLED ? [{ label: "Starting price", get: (m: Machine) => (m.showPrice && machinePrice(m) !== undefined ? `${machineHasMultiplePrices(m) ? "From " : ""}${formatPrice(machinePrice(m))}` : "Request") }] : []),
   ];
   const specRows = allSpecRows.filter((r) => machines.some((m) => r.get(m) !== "—"));
 

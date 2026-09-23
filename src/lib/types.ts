@@ -168,6 +168,8 @@ export interface AttachmentVariant {
   price?: number;
   /** Restrict this variant further than the parent attachment. */
   compatibleModelIds?: string[];
+  /** Mounting plate for this version when it differs across versions (skid steer -1 vs -2/-3). */
+  plateType?: string;
   images?: ImageAsset[];
 }
 

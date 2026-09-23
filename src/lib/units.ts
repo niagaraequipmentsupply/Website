@@ -49,7 +49,7 @@ export function humanizeUnits(text: string): string {
   // imperial "in" values ≥ 24 → ft in (ranges too), but not inside "ft ... in"
   t = t.replace(new RegExp(G + String.raw`\s*in\b(?![a-z])`, "g"), (m, grp) => (/\bft\b/.test(m) ? m : group(grp, (n) => inchesToFtIn(n))));
   // Space out ranges between converted values: "2 ft 11 in–3 ft 11 in" → "2 ft 11 in – 3 ft 11 in"
-  t = t.replace(/(\bin|\bft|lb|mph|gal\/min|psi|lbf|ft³)\s*[–-]\s*(\d)/g, "$1 – $2");
+  t = t.replace(/(?<![-\w])(in|ft|lb|mph|gal\/min|psi|lbf|ft³)\s*[–-]\s*(\d)/g, "$1 – $2"); // (?<!-) keeps "4-in-1" intact
   return t;
 }
 

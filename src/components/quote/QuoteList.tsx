@@ -77,7 +77,7 @@ function QuoteRow({ item, catalogue, taxRate, onRemove, onQty }: { item: QuoteIt
         </ul>
         <div className="mt-2 flex items-center justify-between text-sm">
           <Link href="/builder/excavator" className="font-semibold text-navy hover:text-electric">Edit in builder</Link>
-          <p className="font-bold text-charcoal">Est. {formatPrice(totals.total)}{totals.unpricedCount > 0 ? " + items on request" : ""}</p>
+          <p className="font-bold text-charcoal">{totals.total > 0 ? `Est. ${formatPrice(totals.total)}${totals.unpricedCount > 0 ? " + items on request" : ""}` : "Priced on request"}</p>
         </div>
       </div>
     </div>

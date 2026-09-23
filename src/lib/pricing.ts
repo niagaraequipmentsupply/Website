@@ -7,8 +7,14 @@ export interface Catalogue {
   warranties: WarrantyOption[];
 }
 
+/**
+ * Site-wide pricing switch. Prices stay stored in the CMS (machines, configurations, attachment variants, add-ons)
+ * but nothing is displayed while this is false: every surface shows "Request pricing" instead.
+ */
+export const PRICES_ENABLED = false;
+
 export function attachmentUnitPrice(att: Attachment, variantId?: string): number | undefined {
-  if (!att.showPrice) return undefined;
+  if (!PRICES_ENABLED || !att.showPrice) return undefined;
   if (att.variants.length > 0) {
     const v = att.variants.find((x) => x.id === variantId) ?? att.variants[0];
     return v?.price;
@@ -18,7 +24,7 @@ export function attachmentUnitPrice(att: Attachment, variantId?: string): number
 
 /** Lowest published price across configurations ("Starting from"), else base/promo price. */
 export function machinePrice(m: Machine): number | undefined {
-  if (!m.showPrice) return undefined;
+  if (!PRICES_ENABLED || !m.showPrice) return undefined;
   const cfgPrices = (m.configurations ?? []).map((c) => c.price).filter((p): p is number => typeof p === "number");
   if (cfgPrices.length) return Math.min(...cfgPrices);
   return m.promoPrice ?? m.basePrice;
@@ -26,12 +32,12 @@ export function machinePrice(m: Machine): number | undefined {
 
 /** Price for a specific configuration, falling back to the machine's starting price. */
 export function machineConfigPrice(m: Machine, configurationId?: string): number | undefined {
-  if (!m.showPrice) return undefined;
+  if (!PRICES_ENABLED || !m.showPrice) return undefined;
   const c = m.configurations?.find((x) => x.id === configurationId);
   return c?.price ?? machinePrice(m);
 }
 
-export const machineHasMultiplePrices = (m: Machine) => new Set((m.configurations ?? []).map((c) => c.price).filter((p) => p !== undefined)).size > 1;
+export const machineHasMultiplePrices = (m: Machine) => PRICES_ENABLED && new Set((m.configurations ?? []).map((c) => c.price).filter((p) => p !== undefined)).size > 1;
 
 export function buildLines(config: BuilderConfiguration, cat: Catalogue): PricedLine[] {
   const lines: PricedLine[] = [];
@@ -55,11 +61,12 @@ export function buildLines(config: BuilderConfiguration, cat: Catalogue): Priced
     const addon = cat.addons.find((a) => a.id === id);
     if (!addon) continue;
     const group = addon.type === "delivery" || addon.type === "pdi" ? "delivery" : "protection";
-    lines.push({ id: `addon:${addon.id}`, group, label: addon.name, quantity: 1, unitPrice: addon.price, lineTotal: addon.price, quoteRequired: addon.price === undefined || !!addon.quoteRequired });
+    const ap = PRICES_ENABLED ? addon.price : undefined;
+    lines.push({ id: `addon:${addon.id}`, group, label: addon.name, quantity: 1, unitPrice: ap, lineTotal: ap, quoteRequired: ap === undefined || !!addon.quoteRequired });
   }
   if (config.warrantySelectionId) {
     const w = cat.warranties.find((x) => x.id === config.warrantySelectionId);
-    if (w) lines.push({ id: `warranty:${w.id}`, group: "warranty", label: w.name, detail: `${w.termMonths} months`, quantity: 1, unitPrice: w.price, lineTotal: w.price, quoteRequired: w.price === undefined });
+    if (w) { const wp = PRICES_ENABLED ? w.price : undefined; lines.push({ id: `warranty:${w.id}`, group: "warranty", label: w.name, detail: `${w.termMonths} months`, quantity: 1, unitPrice: wp, lineTotal: wp, quoteRequired: wp === undefined }); }
   }
   return lines;
 }

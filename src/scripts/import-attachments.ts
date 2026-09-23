@@ -15,6 +15,10 @@ import { families, classOf } from "../data/attachment-families";
 interface Row { id: string; slug: string; url: string; imageUrl: string; categories: string[]; sku: string | null; name: string }
 const rows: Row[] = JSON.parse(fs.readFileSync(path.resolve("seed-assets/attachments/rippagroup.json"), "utf8"));
 const IMG = path.resolve("seed-assets/attachments/images");
+if (process.env.DATABASE_URI?.startsWith("file:") || !process.env.DATABASE_URI) {
+  const busy = (await import("node:child_process")).spawnSync("lsof", ["-iTCP:3000", "-sTCP:LISTEN", "-t"], { encoding: "utf8" }).stdout.trim();
+  if (busy) { console.error("Stop the dev server first: SQLite is single-writer and the import will hit 'database is locked'."); process.exit(1); }
+}
 const payload = await getPayload({ config });
 const log = (m: string) => payload.logger.info(m);
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -51,25 +55,25 @@ const familyFor = (key: string, cat: string): keyof typeof families | undefined 
 const prettySize = (s: string) => s.replace(/MM/g, " mm").replace(/CM/g, " cm").replace(/\s?X\s?/g, " × ").replace(/''/g, '"').replace(/\s{2,}/g, " ").replace(/\(/g, "(").trim();
 
 async function media(id: string, alt: string): Promise<number | undefined> {
-  const filename = `rippa-att-${id}.jpg`;
-  const ex = await payload.find({ collection: "media", where: { filename: { equals: filename } }, limit: 1 });
+  // Source files are WebP despite the .jpg extension; sharp stores them as .webp, so look both ways before uploading.
+  const ex = await payload.find({ collection: "media", where: { filename: { in: [`rippa-att-${id}.webp`, `rippa-att-${id}.jpg`] } }, limit: 1, sort: "createdAt" });
   if (ex.docs[0]) return ex.docs[0].id;
   const src = path.join(IMG, `${id}.jpg`); if (!fs.existsSync(src)) return undefined;
-  const tmp = path.join(IMG, filename); fs.copyFileSync(src, tmp);
+  const tmp = path.join(IMG, `rippa-att-${id}.webp`); fs.copyFileSync(src, tmp);
   try { return (await payload.create({ collection: "media", data: { alt }, filePath: tmp })).id; } finally { fs.rmSync(tmp, { force: true }); }
 }
 
 // ---- group SKUs into families
-interface Sku { row: Row; size: string; models: string[]; gen1: boolean; gen2: boolean; cat: "excavator-attachments" | "skid-steer-attachments" | "loader-attachments" }
+interface Sku { row: Row; fam: string; size: string; models: string[]; gen1: boolean; gen2: boolean; full: boolean; cat: "excavator-attachments" | "skid-steer-attachments" | "loader-attachments" }
 const groups = new Map<string, { fam: string; cat: Sku["cat"]; skus: Sku[] }>();
-let unmatched: string[] = [];
+const unmatched: string[] = [];
 for (const row of rows) {
   const leaves = row.categories.map((c) => c.split("/").pop()!.replace(/-\d+$/, ""));
-  const models = new Set<string>(); let gen1 = false, gen2 = false; let cat: Sku["cat"] = "excavator-attachments";
+  const models = new Set<string>(); let gen1 = false, gen2 = false, full = false; let cat: Sku["cat"] = "excavator-attachments";
   for (const l of leaves) {
     let m: RegExpMatchArray | null;
     if ((m = l.match(/^attachment-excavator-(r\d+)/))) { cat = "excavator-attachments"; if (EXC[m[1]]) models.add(EXC[m[1]]); }
-    else if ((m = l.match(/^attachment-skid-steer-loader-(rs\d+)(?:-(\d))?$/))) { cat = "skid-steer-attachments"; if (SS[m[1]]) models.add(SS[m[1]]); if (m[2]) gen2 = true; else gen1 = true; }
+    else if ((m = l.match(/^attachment-skid-steer-loader-(rs\d+)(?:-(\d))?$/))) { cat = "skid-steer-attachments"; if (SS[m[1]]) models.add(SS[m[1]]); if (m[2]) gen2 = true; else if (m[1] === "rs10" || m[1] === "rs20") full = true; else gen1 = true; }
     else if ((m = l.match(/^attachment-loader-(r[bl]\d+)$/))) { cat = "loader-attachments"; if (LD[m[1]]) models.add(LD[m[1]]); }
     else if (l === "attachment-skid-steer-loader") cat = "skid-steer-attachments"; else if (l === "attachment-loader") cat = "loader-attachments";
   }
@@ -78,8 +82,9 @@ for (const row of rows) {
   if (!fam) { unmatched.push(`${row.name} → ${key}`); continue; }
   const gk = `${cat}|${families[fam].name}`;
   const g = groups.get(gk) ?? { fam, cat, skus: [] };
-  if (!families[g.fam].specs && families[fam].specs) g.fam = fam;
-  g.skus.push({ row, size, models: [...models].sort((a, b) => ORDER.indexOf(a) - ORDER.indexOf(b)), gen1, gen2, cat });
+  const better = (a: string, b: string) => (families[a].primary ? 2 : families[a].specs ? 1 : 0) > (families[b].primary ? 2 : families[b].specs ? 1 : 0);
+  if (better(fam, g.fam)) g.fam = fam;
+  g.skus.push({ row, fam, size, models: [...models].sort((a, b) => ORDER.indexOf(a) - ORDER.indexOf(b)), gen1, gen2, full, cat });
   groups.set(gk, g);
 }
 if (unmatched.length) log(`Unmatched (${unmatched.length}): ${unmatched.slice(0, 20).join(" | ")}`);
@@ -95,14 +100,18 @@ for (const [, g] of groups) {
   const allModels = Array.from(new Set(g.skus.flatMap((s) => s.models))).sort((a, b) => ORDER.indexOf(a) - ORDER.indexOf(b));
   const modelIds = allModels.map(idOf).filter((x): x is number => typeof x === "number");
   const gen1 = g.skus.some((s) => s.gen1), gen2 = g.skus.some((s) => s.gen2);
-  const plateType = g.cat === "excavator-attachments" ? "excavator-qc" : g.cat === "loader-attachments" ? "pin-on" : allModels.every((m) => m === "rs10" || m === "rs20") ? "universal-ssl" : gen2 && !gen1 ? "rippa-mini" : gen1 && !gen2 ? "toro-dingo" : undefined;
+  // Family-level plate only when every version shares it; mixed families carry the plate per variant instead.
+  const skuPlates = new Set(g.skus.map((s) => (s.full && !s.gen1 && !s.gen2 ? "universal-ssl" : s.gen2 && !s.gen1 ? "rippa-mini" : s.gen1 && !s.gen2 ? "toro-dingo" : "mixed")));
+  const plateType = g.cat === "excavator-attachments" ? "excavator-qc" : g.cat === "loader-attachments" ? "pin-on" : skuPlates.size === 1 && !skuPlates.has("mixed") ? [...skuPlates][0] : undefined;
   const variants = [];
-  for (const s of g.skus.sort((a, b) => ORDER.indexOf(a.models[0]) - ORDER.indexOf(b.models[0]) || a.size.localeCompare(b.size, undefined, { numeric: true }))) {
-    const plate = g.cat === "skid-steer-attachments" ? (s.gen2 && !s.gen1 ? "RIPPA plate" : s.gen1 && !s.gen2 ? "Toro Dingo plate" : "either plate") : "";
+  for (const s of g.skus.sort((a, b) => ORDER.indexOf(a.models[0]) - ORDER.indexOf(b.models[0]) || (families[a.fam].variant ?? "").localeCompare(families[b.fam].variant ?? "") || a.size.localeCompare(b.size, undefined, { numeric: true }))) {
+    const vPlate = g.cat !== "skid-steer-attachments" ? undefined : s.full && !s.gen1 && !s.gen2 ? "universal-ssl" : s.gen2 && !s.gen1 ? "rippa-mini" : s.gen1 && !s.gen2 ? "toro-dingo" : undefined;
+    const plate = g.cat !== "skid-steer-attachments" ? "" : vPlate === "universal-ssl" ? "universal plate" : vPlate === "rippa-mini" ? "RIPPA plate" : vPlate === "toro-dingo" ? "Toro Dingo plate" : "either plate";
     const modelLabel = s.models.map(nameOf).join(" / ") || "RIPPA";
-    const label = [modelLabel, prettySize(s.size) || info.name, plate].filter(Boolean).join(" · ");
+    const version = [prettySize(s.size), families[s.fam].variant].filter(Boolean).join(" · ");
+    const label = [modelLabel, version || info.name, plate].filter(Boolean).join(" · ");
     const imgId = await media(s.row.id, `RIPPA ${info.name} for ${modelLabel}`);
-    variants.push({ label, widthOrSize: prettySize(s.size) || undefined, sku: s.row.sku ?? undefined, compatibleModels: s.models.map(idOf).filter((x): x is number => typeof x === "number"), images: imgId ? [{ image: imgId }] : [] });
+    variants.push({ label, widthOrSize: version || undefined, sku: s.row.sku ?? undefined, compatibleModels: s.models.map(idOf).filter((x): x is number => typeof x === "number"), plateType: vPlate, images: imgId ? [{ image: imgId }] : [] });
   }
   const images = variants.flatMap((v) => v.images).slice(0, 1);
   const cls = g.cat === "skid-steer-attachments" ? classOf(allModels) : undefined;
@@ -113,12 +122,17 @@ for (const [, g] of groups) {
     `${info.description} Genuine RIPPA attachment, sold and supported by Niagara Equipment Supply with fitment confirmed against your machine's serial number before it ships.`,
     `Fits: ${fitsText}.${sizes.length > 1 ? ` Available in ${sizes.length} sizes / versions; see the compatibility guide for the exact part number for your model.` : ""}`,
     specLines ? `Brochure specifications${cls ? ` (${{ mini: "RS03 / RS04 class", compact: "RS06 / RS07 class", full: "RS10 / RS20 class" }[cls]})` : ""}: ${specLines.join("; ")}.` : "",
-    g.cat === "skid-steer-attachments" ? (gen1 && gen2 ? "Listed by RIPPA for both first-generation loaders (Toro Dingo-style mini plate) and -2 / -3 loaders (RIPPA proprietary plate). Each version below states its plate." : gen2 ? "For -2 / -3 generation loaders with the RIPPA proprietary plate." : gen1 ? "For first-generation (-1) loaders with the Toro Dingo-style mini plate." : "") + " We convert plates and fit adapters if you run a different standard." : "",
+    g.cat === "skid-steer-attachments" ? [
+      skuPlates.size > 1 ? "Each version below states its mounting plate:" : "",
+      skuPlates.has("toro-dingo") || skuPlates.has("mixed") ? "first-generation RS03 / RS04 / RS06 / RS07 loaders use the Toro Dingo-style mini plate" : "",
+      skuPlates.has("rippa-mini") || skuPlates.has("mixed") ? "-2 / -3 generation loaders use the RIPPA proprietary plate" : "",
+      skuPlates.has("universal-ssl") ? "RS10 and RS20 use the universal skid steer quick-attach (SSQA, ISO 24410), the same plate as Deere, Cat and Kubota loaders" : "",
+    ].filter(Boolean).join(skuPlates.size > 1 ? "; " : "").replace(/^(\w)/, (c) => c.toUpperCase()) + ". We convert plates and fit adapters if you run a different standard, so attachments you already own keep working." : "",
     "Pricing is quoted on request; add it to your quote list with your machine selected and we reply with price and availability.",
   ].filter(Boolean);
   const rich = { root: { type: "root", format: "" as const, indent: 0, version: 1, direction: "ltr" as const, children: paras.map((t) => ({ type: "paragraph", format: "" as const, indent: 0, version: 1, direction: "ltr" as const, textFormat: 0, children: [{ type: "text", text: t, format: 0, detail: 0, mode: "normal", style: "", version: 1 }] })) } };
   const short = `${sizes.length > 1 ? `${sizes.length} sizes · ` : ""}Fits ${allModels.length > 4 ? `${nameOf(allModels[0])} – ${nameOf(allModels[allModels.length - 1])}` : fitsText}`;
-  const featured = ["4-in-1 Bucket", "Digging Bucket", "Hydraulic Thumb", "Auger", "Auger (Rotary Drill)", "Rake", "Hydraulic Breaker", "Log Grapple", "Pallet Forks", "Tilt Bucket (double cylinder)", "Angle Sweeper", "Brush Cutter", "Snow Blower", "Dozer Blade", "Grapple Bucket", "Trencher"].includes(info.name);
+  const featured = ["4-in-1 Bucket", "Digging Bucket", "Thumb", "Auger", "Rake", "Hydraulic Breaker", "Log Grapple", "Pallet Forks", "Tilt Bucket", "Quick Coupler", "Sweeper", "Brush Cutter", "Snow Plow & Pusher", "Dozer Blade", "Grapple Bucket", "Trencher"].includes(info.name);
   await payload.create({ collection: "attachments", data: {
     name: info.name, attachmentType: info.type, attachmentCategory: g.cat, description: short.slice(0, 180), slug: slugify(`${info.name}-${g.cat.replace("-attachments", "")}`), longDescription: rich,
     images, documents: [], compatibleCategories: [], compatibleModels: modelIds, plateType, sourceUrl: g.skus[0].row.url, showPrice: false, supportsQuantity: false, variants,

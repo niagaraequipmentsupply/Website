@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const faqs = [
   { q: "How do I find my model and serial number?", a: "The data plate is on the frame near the operator station on excavators and inside the cab door or on the rear frame on skid steers. Send a photo of the plate and we'll identify the machine." },
-  { q: "How fast do parts ship?", a: "Stocked filters, service kits, teeth, hoses and couplers usually ship same or next business day from St. Catharines. Parts ordered from RIPPA typically take longer; we quote lead time before you commit." },
+  { q: "How fast do parts ship?", a: "Stocked filters, service kits, teeth, hoses and couplers usually ship same or next business day from Thorold. Parts ordered from RIPPA typically take longer; we quote lead time before you commit." },
   { q: "Do you ship outside Ontario?", a: "Yes, anywhere in Canada with tracking. For US owners we quote parts plus cross-border shipping, or tell you if a US source will be faster." },
   { q: "I didn't buy from you. Can I still order?", a: "Yes. Any RIPPA owner can order parts and book service with us." },
   { q: "Can you source parts for other brands in my fleet?", a: "For shops, farms and fleet accounts we source common wear parts and filters across brands alongside your lubricant program. Ask us." },
@@ -27,7 +27,7 @@ export default async function PartsPage({ searchParams }: { searchParams: Promis
   return (
     <>
       <PageHero title={<>RIPPA <span className="text-navy">Parts</span></>} text="Genuine RIPPA parts and Kubota engine parts, identified by serial number and shipped across Canada. Send us what you need and we reply with price, availability and lead time." crumbs={[{ href: "/service", label: "Parts & Service" }, { label: "Parts" }]}
-        aside={<ul className="grid gap-3">{[{ icon: Package, t: "Stocked in St. Catharines", s: "Filters, tracks, teeth, hoses, couplers" }, { icon: Truck, t: "Canada-wide shipping", s: "Tracked, same or next day on stock" }, { icon: Globe, t: "US & international", s: "Sourcing help and cross-border quotes" }].map((i) => <li key={i.t} className="flex items-center gap-3 rounded-card border border-line bg-white px-4 py-3"><span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-tint text-navy"><i.icon className="size-5" aria-hidden /></span><span><span className="block font-bold text-charcoal">{i.t}</span><span className="block text-sm text-grey">{i.s}</span></span></li>)}</ul>}>
+        aside={<ul className="grid gap-3">{[{ icon: Package, t: "Stocked in Thorold", s: "Filters, tracks, teeth, hoses, couplers" }, { icon: Truck, t: "Canada-wide shipping", s: "Tracked, same or next day on stock" }, { icon: Globe, t: "US & international", s: "Sourcing help and cross-border quotes" }].map((i) => <li key={i.t} className="flex items-center gap-3 rounded-card border border-line bg-white px-4 py-3"><span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-tint text-navy"><i.icon className="size-5" aria-hidden /></span><span><span className="block font-bold text-charcoal">{i.t}</span><span className="block text-sm text-grey">{i.s}</span></span></li>)}</ul>}>
         <div className="flex flex-wrap gap-3"><Button href="#request" size="lg" arrow>Request a Part</Button><Button href={site.phoneHref} size="lg" variant="secondary" icon={<Phone className="size-4" aria-hidden />}>{site.phone}</Button></div>
       </PageHero>
       <section id="request" className="section scroll-mt-28">

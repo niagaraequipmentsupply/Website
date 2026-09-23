@@ -23,8 +23,8 @@ export const site: SiteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://niagaraequipment.ca",
   phone: "(905) 555-0123", // TODO: replace with real dealer phone
   phoneHref: "tel:+19055550123",
-  email: "info@niagaraequipment.ca", // TODO: replace
-  address: { street: "", city: "St. Catharines", region: "ON", postal: "", country: "CA" },
+  email: "info@niagaraequip.com",
+  address: { street: "16-2275 Hwy 20", city: "Thorold", region: "ON", postal: "L3B 5N5", country: "CA" },
   serviceArea: "Serving all of Ontario",
   hours: [
     { day: "Mon – Fri", time: "8:00 AM – 5:00 PM" },

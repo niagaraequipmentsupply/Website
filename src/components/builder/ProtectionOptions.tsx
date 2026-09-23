@@ -3,6 +3,7 @@ import { Check, ShieldCheck, Wrench, Truck, FileText } from "lucide-react";
 import type { Addon, WarrantyOption } from "@/lib/types";
 import { Toggle } from "@/components/ui/Toggle";
 import { formatPrice } from "@/lib/format";
+import { PRICES_ENABLED } from "@/lib/pricing";
 import { BuilderSection } from "./BuilderSection";
 
 const icons = { shield: ShieldCheck, wrench: Wrench, truck: Truck, file: FileText };
@@ -40,7 +41,7 @@ export function ProtectionOptions({ addons, warranties, selectedAddons, warranty
                 </div>
               </div>
               <div className="mt-4 flex items-center justify-between border-t border-line pt-3">
-                <p className="font-bold text-navy">{price !== undefined ? `+ ${formatPrice(price)}` : "Quote required"}</p>
+                <p className="font-bold text-navy">{PRICES_ENABLED && price !== undefined ? `+ ${formatPrice(price)}` : "Quoted with your build"}</p>
                 <Toggle checked={on} onChange={toggle} label={`${on ? "Remove" : "Add"} ${name}`} />
               </div>
             </div>

@@ -12,7 +12,7 @@ import { lubricantCategories } from "@/collections/Lubricants";
 
 export const metadata: Metadata = {
   title: "Oil & Lubricants in Niagara | Chevron Delo, Hydraulic Oil, Grease & Bulk Programs",
-  description: "Chevron and Catalys engine oils, hydraulic fluids, gear oils, greases, coolant and DEF from Niagara Equipment Supply. Over-the-counter in St. Catharines, plus bulk and B2B programs for farms, shops and fleets across Ontario.",
+  description: "Chevron and Catalys engine oils, hydraulic fluids, gear oils, greases, coolant and DEF from Niagara Equipment Supply. Over-the-counter in Thorold, plus bulk and B2B programs for farms, shops and fleets across Ontario.",
   alternates: { canonical: "/lubricants" },
 };
 
@@ -28,7 +28,7 @@ const segments = [
 const programSteps = [
   { title: "Site walk & oil audit", text: "We list what you run, what you're using now and what each OEM actually calls for. Most sites are carrying two or three products they don't need." },
   { title: "Consolidated product list", text: "A short list of Chevron and Catalys products that covers the whole fleet, with grades, approvals and pack sizes." },
-  { title: "Pricing & delivery schedule", text: "Volume pricing on pails, drums and totes, standing orders, and delivery from St. Catharines on a cadence that suits you." },
+  { title: "Pricing & delivery schedule", text: "Volume pricing on pails, drums and totes, standing orders, and delivery from Thorold on a cadence that suits you." },
   { title: "Analysis & support", text: "Optional oil analysis so you change fluids on condition, not guesswork. Parts sourcing for the same fleet on request." },
 ];
 

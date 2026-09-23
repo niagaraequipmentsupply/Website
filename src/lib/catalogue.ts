@@ -67,7 +67,7 @@ export function mapAttachment(d: PAttachment): Attachment {
     id: String(d.id), slug: d.slug, attachmentCategory: d.attachmentCategory, attachmentType: d.attachmentType, name: d.name, description: d.description,
     longDescription: richTextToPlain(d.longDescription), images: mapImages(d.images, d.name), documents: mapDocs(d.documents),
     compatibleModelIds: relIds(d.compatibleModels), compatibleCategories: d.compatibleCategories ?? [], plateType: d.plateType ?? undefined, sourceUrl: d.sourceUrl ?? undefined,
-    variants: (d.variants ?? []).map((v, i) => ({ id: v.id ?? `${d.id}-v-${i}`, label: v.label, widthOrSize: v.widthOrSize ?? undefined, sku: v.sku ?? undefined, price: v.price ?? undefined, compatibleModelIds: relIds(v.compatibleModels) })),
+    variants: (d.variants ?? []).map((v, i) => ({ id: v.id ?? `${d.id}-v-${i}`, label: v.label, widthOrSize: v.widthOrSize ?? undefined, sku: v.sku ?? undefined, price: v.price ?? undefined, compatibleModelIds: relIds(v.compatibleModels), plateType: v.plateType ?? undefined })),
     basePrice: d.basePrice ?? undefined, showPrice: d.showPrice ?? true, supportsQuantity: !!d.supportsQuantity, featured: !!d.featured, inStock: stock(d.inStock), sortOrder: d.sortOrder ?? 100,
   };
 }

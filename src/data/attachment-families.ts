@@ -10,6 +10,10 @@ export interface FamilyInfo {
   description: string;
   /** Per size class or model group → spec lines */
   specs?: Record<string, string[]>;
+  /** Version wording shown on each variant when several manufacturer families sell as one product ("double cylinder", "with reducer") */
+  variant?: string;
+  /** Prefer this key's description/specs when the family is merged from several keys */
+  primary?: boolean;
 }
 
 const F = (name: string, type: string, description: string, specs?: Record<string, string[]>): FamilyInfo => ({ name, type, description, specs });
@@ -115,6 +119,32 @@ export const families: Record<string, FamilyInfo> = {
   "UNIVERSAL QUICK-CHANGE SWITCH": F("Universal Quick-Change Adapter", "Couplers & Quick Attach", "Adapter plate that lets RIPPA loaders run attachments built for other plate standards. Ask us about plate conversions."),
   "HYDRAULIC HAMMER SS": F("Hydraulic Breaker", "Breakers & Hammers", "Hydraulic breaker for concrete and rock."),
 };
+
+/**
+ * Consolidation: RIPPA lists close variants as separate products (single vs double cylinder tilt bucket, mechanical vs
+ * hydraulic thumb…). Buyers shop one product and pick the version, so these keys share a name and carry a variant label.
+ */
+const merge = (name: string, description: string, versions: Record<string, string>, type?: string) => {
+  let first = true;
+  for (const [key, variant] of Object.entries(versions)) {
+    const cur = families[key]; if (!cur) throw new Error(`merge: unknown family ${key}`);
+    families[key] = { ...cur, name, type: type ?? cur.type, variant: variant || undefined, primary: first, description: first ? description : cur.description };
+    first = false;
+  }
+};
+merge("Thumb", "Excavator thumb that closes against the bucket to grab rocks, logs, stumps and demolition debris. Hydraulic thumbs run from the auxiliary circuit for full control; the mechanical version pins in place for occasional use.", { "HYDRAULIC THUMB": "hydraulic", "MECHANICAL THUMB": "mechanical, pin-adjust" });
+merge("Quick Coupler", "Quick coupler so one operator swaps buckets and attachments in under a minute. Choose a pin-grabber mechanical coupler, a hydraulic coupler operated from the seat, or hydraulic tilt and rotating couplers that add angle and 360° rotation to every attachment.", { "HYDRAULIC QUICK ATTACH": "hydraulic", "MECHANICAL QUICK ATTACH": "mechanical pin-grabber", "HYDRAULIC TILT QUICK COUPLER": "hydraulic tilt", "HYDRAULIC ROTATING QUICK COUPLER": "hydraulic rotating" });
+merge("Tilt Bucket", "Hydraulic tilt bucket that angles up to 45° each way for grading slopes, ditches and swales without repositioning the machine. Single-cylinder units suit the mini models; double-cylinder units give faster, stronger tilt on the larger PRO excavators.", { "TILT BUCKET SIMPLE CYLINDER": "single cylinder", "TILT BUCKET DOUBLE CYLINDER": "double cylinder", "TILT BUCKET": "" });
+merge("Auger", "Hydraulic earth auger drive with bit for post holes, footings, tree planting and fence lines. Bits from 6 in to 32 in diameter; a planetary-reducer drive adds torque for hard or rocky ground.", { "AUGER": "", "AUGER WITH REDUCER": "with planetary reducer", "ROTARY DRILL": "", "TARIÈRE": "" });
+merge("Extension Arm", "Bolt-on arm extension that adds reach and dig depth for ditching and clean-up work; the mounting kit covers the pins and bushings needed to fit it.", { "EXTENSION ARM": "", "EXTENSION ARM MOUNTING PARTS": "mounting kit" });
+merge("Mulcher", "Hydraulic mulcher for brush, saplings and roadside vegetation. Flail heads suit the compact models; the fixed-tooth forestry head handles land clearing on the larger PRO excavators.", { "MULCHER": "flail", "FORESTRY MULCHER": "forestry, fixed-tooth", "FOREST MULCHER": "forestry, fixed-tooth" });
+merge("Log Grapple", "Hydraulic grapple for logs, brush, stumps and irregular loads. Fixed grapples clamp and carry; rotating grapples add 360° hydraulic rotation for placing logs and sorting material.", { "LOG GRAPPLE": "fixed", "LOG GRAPPLE HOOK": "fixed", "ROTATING LOG GRAPPLE": "360° rotating", "HYDRAULIC ROTATING LOG GRAPPLE": "360° rotating" });
+merge("Boom Mower", "Boom-mounted mower for ditches, banks and roadside grass. The drum mower cuts fine grass; the chain flail mower takes heavy brush on the full-size excavators.", { "DRUM MOWER": "drum", "CHAIN MOWER": "chain flail" });
+merge("Snow Plow & Pusher", "Snow-clearing blades for the loaders: an angling plow blade with trip edge for drives and laneways, or a box-style pusher that moves large volumes across lots and yards.", { "SNOW SHOVEL": "box pusher", "SNOW PLOW": "angle plow blade" });
+merge("Concrete Mixer", "Hydraulic concrete and mortar mixing for pours on site, run from the loader's auxiliary circuit. Drum mixers batch and pour; the mixing bucket doubles as a carry bucket.", { "MIXER": "drum mixer", "MIXING BARREL": "drum mixer", "MIXING BUCKET": "mixing bucket" });
+merge("Sweeper", "Hydraulic rotary broom for lots, sidewalks, barns and shop floors. The open angle sweeper windrows debris; the enclosed pick-up broom collects it in a hopper for parking lots and yards.", { "SWEEPER": "open angle broom", "ROTARY BRUSH": "open angle broom", "ENCLOSED SWEEPER": "enclosed pick-up broom" });
+merge("Quick-Attach Plates & Adapters", "Mounting plates and adapters for RIPPA loaders: replacement or conversion quick-attach plates for each generation, plus the universal adapter that lets a RIPPA loader run attachments built for other plate standards. We also modify plates so you keep compatibility with attachments you already own.", { "QUICK ATTACH": "quick-attach plate", "QUICK CHANGE": "quick-attach plate", "UNIVERSAL QUICK-CHANGE SWITCH": "universal adapter" });
+merge("Pallet Forks", "Pallet forks for moving pallets, bundles and building material. Manually adjustable forks with an anti-spill backrest, or hydraulic side-shift forks that line up with the load from the seat.", { "FORK": "manual adjust", "FOURCHES": "manual adjust", "FORKS": "manual adjust", "PALLET FORKS": "manual adjust", "HYDRAULIC FORKS": "hydraulic side-shift", "SIDE-SHIFT PALLET FORK": "hydraulic side-shift" });
 
 /** Size class for skid-steer brochure specs. */
 export const classOf = (modelSlugs: string[]): "mini" | "compact" | "full" | undefined => {

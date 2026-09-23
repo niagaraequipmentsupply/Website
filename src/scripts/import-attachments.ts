@@ -122,8 +122,7 @@ for (const [, g] of groups) {
     `${info.description} Genuine RIPPA attachment, sold and supported by Niagara Equipment Supply with fitment confirmed against your machine's serial number before it ships.`,
     `Fits: ${fitsText}.${sizes.length > 1 ? ` Available in ${sizes.length} sizes / versions; see the compatibility guide for the exact part number for your model.` : ""}`,
     specLines ? `Brochure specifications${cls ? ` (${{ mini: "RS03 / RS04 class", compact: "RS06 / RS07 class", full: "RS10 / RS20 class" }[cls]})` : ""}: ${specLines.join("; ")}.` : "",
-    g.cat === "skid-steer-attachments" ? [
-      skuPlates.size > 1 ? "Each version below states its mounting plate:" : "",
+    g.cat === "skid-steer-attachments" ? (skuPlates.size > 1 ? "Each version below states its mounting plate. " : "") + [
       skuPlates.has("toro-dingo") || skuPlates.has("mixed") ? "first-generation RS03 / RS04 / RS06 / RS07 loaders use the Toro Dingo-style mini plate" : "",
       skuPlates.has("rippa-mini") || skuPlates.has("mixed") ? "-2 / -3 generation loaders use the RIPPA proprietary plate" : "",
       skuPlates.has("universal-ssl") ? "RS10 and RS20 use the universal skid steer quick-attach (SSQA, ISO 24410), the same plate as Deere, Cat and Kubota loaders" : "",

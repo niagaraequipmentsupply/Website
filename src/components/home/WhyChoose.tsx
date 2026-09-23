@@ -9,7 +9,7 @@ interface Benefit { icon?: LucideIcon; mark?: boolean; title: string; text: stri
 
 const benefits: Benefit[] = [
   { icon: DollarSign, title: "Financing Available", text: "Flexible solutions to get you working.", href: "/financing" },
-  { icon: Settings, title: "Service & Support", text: "Keep your equipment running at its best.", href: "/service" },
+  { icon: Settings, title: "RIPPA Service Centre", text: "Warranty, repairs and training. You run it, we back it.", href: "/service" },
   { icon: Cog, title: "Parts", text: "Genuine parts, ready when you need them.", href: "/service/parts" },
   { mark: true, title: "Official RIPPA Dealer", text: "Trusted. Proven. Authorized.", href: "/about" },
   { icon: Truck, title: "Ontario Delivery", text: "Equipment where you need it.", href: "/contact" },

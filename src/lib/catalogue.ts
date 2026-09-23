@@ -249,9 +249,10 @@ export const getSiteContent = cache(async (): Promise<SiteContent> => {
       }),
     },
     {
-      label: "Parts & Service", href: "/service",
+      label: "Service Centre", href: "/service",
       children: [
-        { label: "Service & Repairs", href: "/service", description: "Certified RIPPA technicians, in-shop and field service", artKind: "generic" },
+        { label: "RIPPA Service Centre", href: "/service", description: "Warranty handled, certified repairs, owner training. Every RIPPA owner welcome", artKind: "generic" },
+        { label: "Warranty & Claims", href: "/service#warranty", description: "We diagnose, file with RIPPA and fit the parts", artKind: "generic" },
         { label: "RIPPA Parts", href: "/service/parts", description: "Genuine parts shipped across Canada", artKind: "attachment" },
         { label: "Oil & Lubricants", href: "/lubricants", description: "Chevron and Catalys oils, greases and fluids", artKind: "generic" },
       ],

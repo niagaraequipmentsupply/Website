@@ -16,6 +16,7 @@ import { ProductSubnav } from "@/components/equipment/ProductSubnav";
 import { AttachmentList } from "@/components/equipment/AttachmentList";
 import { ProductCard } from "@/components/equipment/ProductCard";
 import { LeadForm } from "@/components/quote/LeadForm";
+import { ServiceCentreStrip } from "@/components/service/ServiceCentre";
 import { getCategory, getMachine, getSiteContent, getAttachments } from "@/lib/catalogue";
 import { compatibleAttachments } from "@/lib/compatibility";
 import { machinePrice, machineHasMultiplePrices } from "@/lib/pricing";
@@ -169,7 +170,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
               <p className="text-[12px] font-semibold uppercase tracking-[0.2em] text-navy">Buy the {m.modelName} in Niagara</p>
               <h3 className="mt-1 text-lg font-bold text-charcoal">Your local RIPPA dealer</h3>
               <ul className="mt-3 space-y-2 text-sm text-charcoal">
-                {[`Dealer pre-delivery inspection on every ${m.modelName}`, "Genuine RIPPA and Kubota parts in stock", "Financing and lease-to-own on approved credit", `Flatbed delivery from ${site.address.city} to anywhere in Ontario`, "Attachment fitment confirmed before you buy"].map((t) => <li key={t} className="flex gap-2"><Check className="mt-0.5 size-4 shrink-0 text-navy" aria-hidden />{t}</li>)}
+                {[`Dealer pre-delivery inspection on every ${m.modelName}`, "Warranty claims filed and repaired by the RIPPA Service Centre", "Genuine RIPPA and Kubota parts in stock", "Financing and lease-to-own on approved credit", `Flatbed delivery from ${site.address.city} to anywhere in Ontario`, "Attachment fitment confirmed before you buy"].map((t) => <li key={t} className="flex gap-2"><Check className="mt-0.5 size-4 shrink-0 text-navy" aria-hidden />{t}</li>)}
               </ul>
               <div className="mt-4 grid gap-2">
                 <Button href="#quote" size="sm" arrow>Get a written quote</Button>
@@ -179,6 +180,8 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
           </Container>
         </section>
       )}
+
+      <section className="section-tight border-b border-line"><Container><ServiceCentreStrip phone={site.phone} phoneHref={site.phoneHref} /></Container></section>
 
       {/* ---------- Features ---------- */}
       {m.features.length > 0 && (

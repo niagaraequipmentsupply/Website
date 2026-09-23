@@ -4,20 +4,21 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { PostCard } from "@/components/content/PostCard";
 import { getSiteContent } from "@/lib/catalogue";
+import { SERVICE_CENTRE } from "@/components/service/ServiceCentre";
 
 /** Homepage: service-first positioning with the three support entry points and the latest guides. */
 export async function ServiceFirst() {
   const { posts, site } = await getSiteContent();
   const latest = posts.slice(0, 3);
   const tiles = [
-    { icon: Wrench, title: "Certified RIPPA service", text: `In our ${site.address.city} shop or on site across Niagara. Any RIPPA owner welcome.`, href: "/service", cta: "Find help for my machine" },
+    { icon: Wrench, title: "Warranty & certified repairs", text: `Claims filed for you, repairs by factory-trained technicians in ${site.address.city} or at your site. Any RIPPA owner welcome.`, href: "/service", cta: "Find help for my machine" },
     { icon: Package, title: "Parts shipped Canada-wide", text: "Filters, tracks, hoses, couplers and wear parts by serial number. US sourcing help too.", href: "/service/parts", cta: "Order parts" },
     { icon: Droplets, title: "Oil & lubricant programs", text: "Chevron and Catalys oils over the counter, or a supply program for your farm, shop or fleet.", href: "/lubricants", cta: "Set up a program" },
   ];
   return (
     <section className="section bg-light/60">
       <Container>
-        <SectionHeading eyebrow="A service-first dealership" title="We keep RIPPA machines working" subtitle="Buy from us or not, our certified technicians, parts desk and free guides are here for every RIPPA owner in Ontario." rule={false} />
+        <SectionHeading eyebrow={SERVICE_CENTRE.name} title={SERVICE_CENTRE.tagline} subtitle={SERVICE_CENTRE.promise} rule={false} link={{ href: "/service", label: "Visit the Service Centre" }} />
         <ul className="grid gap-4 md:grid-cols-3">
           {tiles.map((t) => (
             <li key={t.title}>

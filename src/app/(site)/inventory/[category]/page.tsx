@@ -23,7 +23,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const cat = await getCategory((await params).category);
   if (!cat) return {};
-  return { title: `RIPPA ${cat.name} for Sale in Ontario | Compare Models & Prices`, description: cat.description, alternates: { canonical: `/inventory/${cat.slug}` } };
+  return { title: `RIPPA ${cat.name} for Sale in Ontario | Compare Models & Specs`, description: cat.description, alternates: { canonical: `/inventory/${cat.slug}` } };
 }
 
 export default async function CategoryPage({ params }: { params: Promise<Params> }) {

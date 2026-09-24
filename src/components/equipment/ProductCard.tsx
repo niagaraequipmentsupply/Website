@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/format";
 import { machinePrice, machineHasMultiplePrices } from "@/lib/pricing";
 import { AddToQuoteButton } from "./AddToQuoteButton";
 import { Button } from "@/components/ui/Button";
+import { isThin } from "@/lib/machines";
 
 export function ProductCard({ machine }: { machine: Machine }) {
   const href = `/inventory/${machine.category}/${machine.slug}`;
@@ -21,7 +22,7 @@ export function ProductCard({ machine }: { machine: Machine }) {
         {machine.badge && <Badge>{machine.badge}</Badge>}
       </div>
       <p className="mt-1 line-clamp-2 text-sm text-grey">{machine.shortDescription}</p>
-      <SpecList specs={machine.specs.filter((s) => s.highlight)} compact className="mt-3" />
+      {isThin(machine) ? <p className="mt-3 rounded-md bg-light px-3 py-2 text-[12px] text-grey">Full specs and photos coming soon. Ask us for the spec sheet and availability.</p> : <SpecList specs={machine.specs.filter((s) => s.highlight)} compact className="mt-3" />}
       <div className="mt-4 flex items-center justify-between border-t border-line pt-3">
         <p className="text-sm font-semibold text-navy">{machine.showPrice && price !== undefined ? <>{machineHasMultiplePrices(machine) && <span className="font-medium text-grey">From </span>}{formatPrice(price)}</> : "Request pricing"}</p>
         {machine.inStock !== undefined && <Badge tone={machine.inStock ? "success" : "grey"}>{machine.inStock ? "In stock" : "Order"}</Badge>}

@@ -9,7 +9,7 @@ import { CtaBand } from "@/components/home/CtaBand";
 import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
-  title: "Excavator & Skid Steer Attachments",
+  title: "RIPPA Attachments for Sale in Ontario | Excavator, Skid Steer & Loader",
   description: "Buckets, thumbs, augers, rakes, forks, cutters and more for RIPPA excavators and skid steers. Add attachments to your quote.",
   alternates: { canonical: "/attachments" },
 };

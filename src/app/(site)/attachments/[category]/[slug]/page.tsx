@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug, category } = await params;
   const a = await getAttachment(slug);
   if (!a || a.attachmentCategory !== category) return {};
-  return { title: `${a.name} | ${(await getAttachmentCategory(category))?.name}`, description: `${a.name}: ${a.description}. Available from Niagara Equipment Supply.`, alternates: { canonical: `/attachments/${category}/${a.slug}` } };
+  return { title: `RIPPA ${a.name} for Sale in Ontario | ${(await getAttachmentCategory(category))?.name}`, description: `${a.name}: ${a.description}. Available from Niagara Equipment Supply.`, alternates: { canonical: `/attachments/${category}/${a.slug}` } };
 }
 
 export default async function AttachmentPage({ params }: { params: Promise<Params> }) {

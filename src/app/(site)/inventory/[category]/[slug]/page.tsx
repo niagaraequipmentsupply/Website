@@ -17,13 +17,16 @@ import { AttachmentList } from "@/components/equipment/AttachmentList";
 import { ProductCard } from "@/components/equipment/ProductCard";
 import { LeadForm } from "@/components/quote/LeadForm";
 import { ServiceCentreStrip } from "@/components/service/ServiceCentre";
+import { MobileQuoteBar } from "@/components/equipment/MobileQuoteBar";
 import { getCategory, getMachine, getSiteContent, getAttachments } from "@/lib/catalogue";
 import { compatibleAttachments } from "@/lib/compatibility";
 import { machinePrice, machineHasMultiplePrices } from "@/lib/pricing";
 import { formatPrice } from "@/lib/format";
 import { plateLabels } from "@/lib/plates";
+import { isThin } from "@/lib/machines";
 
 type Params = { category: string; slug: string };
+
 
 export async function generateStaticParams() {
   const { catalogue } = await getSiteContent();
@@ -37,7 +40,9 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const cat = await getCategory(m.category);
   const { site } = await getSiteContent();
   const kind = cat?.shortName.replace(/s$/, "") ?? "";
+  const thin = isThin(m);
   return {
+    ...(thin ? { robots: { index: false, follow: true } } : {}),
     title: `${m.brand} ${m.modelName} ${kind} for Sale in Ontario | Specs, Attachments & Dealer Support`.replace(/\s+/g, " "),
     description: `${m.shortDescription} Sold, set up and serviced by ${site.name} in ${site.address.city}, Ontario. Dealer PDI, financing and delivery across Ontario.`.slice(0, 300),
     alternates: { canonical: `/inventory/${m.category}/${m.slug}` },
@@ -63,7 +68,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
     { id: "overview", label: "Overview", show: true },
     { id: "features", label: "Features", show: m.features.length > 0 },
     { id: "specs", label: "Specifications", show: m.specs.length > 0 },
-    { id: "configurations", label: "Pricing", show: m.configurations.length > 0 },
+    { id: "configurations", label: "Configurations", show: m.configurations.length > 0 },
     { id: "attachments", label: "Attachments", show: compat.length > 0 },
     { id: "applications", label: "Applications", show: m.applications.length > 0 },
     { id: "downloads", label: "Downloads", show: m.documents.length > 0 },
@@ -111,7 +116,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
                 {m.isPlaceholder && <Badge tone="warning">Sample data</Badge>}
               </div>
               <h1 className="display mt-2 text-charcoal">{m.brand} {m.modelName} <span className="text-navy">{cat.shortName.replace(/s$/, "")}</span></h1>
-              <p className="mt-3 text-[16px] leading-relaxed text-charcoal/85">{m.shortDescription}</p>
+              <p className="mt-3 text-[16px] leading-relaxed text-charcoal/85">{m.shortDescription || `The RIPPA ${m.modelName} is joining our lineup. Full specifications and photos are being prepared; ask us for the spec sheet, availability and a written quote.`}</p>
               <p className="mt-2 text-[13px] font-semibold text-navy">Sold, set up and serviced in {site.address.city}, Ontario · Delivery across Ontario</p>
               {m.certifications.length > 0 && (
                 <ul className="mt-3 flex flex-wrap gap-2" aria-label="Certifications">
@@ -130,12 +135,13 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
                 </dl>
               )}
 
-              <div className="mt-5 flex flex-wrap items-end justify-between gap-3">
-                <div>
-                  <p className="text-[12px] font-semibold uppercase tracking-wide text-grey">{machineHasMultiplePrices(m) ? "Starting from" : "Price"}</p>
-                  <p className="display text-3xl text-navy">{m.showPrice && price !== undefined ? formatPrice(price) : "Request pricing"}</p>
-                  {m.configurations.length > 1 && <a href="#configurations" className="text-[13px] font-semibold text-navy hover:text-electric">{m.configurations.length} configurations · see pricing</a>}
-                </div>
+              <div className="mt-5 rounded-card border border-line bg-light/60 p-4">
+                {price !== undefined ? (
+                  <><p className="text-[12px] font-semibold uppercase tracking-wide text-grey">{machineHasMultiplePrices(m) ? "Starting from" : "Price"}</p><p className="display text-3xl text-navy">{formatPrice(price)}</p></>
+                ) : (
+                  <><p className="text-[12px] font-semibold uppercase tracking-wide text-grey">Pricing</p><p className="text-[15px] font-bold text-charcoal">Written quote within one business day</p><p className="mt-0.5 text-[13px] text-grey">Configuration, attachments, warranty, delivery and financing on one page. No obligation.</p></>
+                )}
+                {m.configurations.length > 1 && <a href="#configurations" className="mt-1 inline-block text-[13px] font-semibold text-navy hover:text-electric">{m.configurations.length} configurations available</a>}
               </div>
               <div className="mt-5 grid gap-2 sm:grid-cols-2">
                 <AddToQuoteButton kind="machine" id={m.id} configurationId={m.configurations.length === 1 ? m.configurations[0].id : undefined} size="lg" />
@@ -232,9 +238,9 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
       {m.configurations.length > 0 && (
         <section id="configurations" className="section-tight scroll-mt-32 bg-light/60">
           <Container>
-            <SectionHeading title="Configurations & Pricing" subtitle="Choose the engine, cab and undercarriage option that fits your work. Prices in CAD before tax; delivery and setup quoted separately." rule={false} />
+            <SectionHeading title={`${m.modelName} Configurations`} subtitle="Choose the engine, cab and undercarriage option that fits your work. Add the one you want to your quote and we price it with delivery and setup." rule={false} />
             <ConfigurationTable machine={m} />
-            <p className="mt-3 text-sm text-grey">Want a payment instead of a price? <Link href="/financing#estimator" className="font-semibold text-navy hover:text-electric">Estimate a monthly payment →</Link></p>
+            <p className="mt-3 text-sm text-grey">Prefer a monthly payment? <Link href="/financing" className="font-semibold text-navy hover:text-electric">See financing and lease options</Link>.</p>
           </Container>
         </section>
       )}
@@ -334,6 +340,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
         </section>
       )}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <MobileQuoteBar label={`Quote the ${m.modelName}`} phone={site.phone} phoneHref={site.phoneHref} />
     </>
   );
 }

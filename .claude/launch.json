@@ -1,7 +1,28 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "nes-dev", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 3000, "autoPort": true },
-    { "name": "nes-attach", "url": "http://localhost:3000" }
+    {
+      "name": "nes-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "nes-attach",
+      "url": "http://localhost:3000"
+    },
+    {
+      "name": "nes-prod",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "preview"
+      ],
+      "port": 3001
+    }
   ]
 }

@@ -5,6 +5,7 @@ import type { Attachment as PAttachment, Machine as PMachine, Media, Document as
 import type { Attachment, AttachmentCategory, Category, DocumentAsset, FinancingConfig, ImageAsset, Machine, Addon, WarrantyOption, NavGroup, FinancePromo, ApplicationFit, Post, Lubricant } from "@/lib/types";
 import type { Catalogue } from "@/lib/pricing";
 import { slugify } from "@/lib/format";
+import { contentVersion } from "@/lib/content-version";
 import { presentMachine, presentAttachment, humanizeUnits } from "@/lib/units";
 import { site as siteDefaults } from "@/data/site";
 import * as seed from "@/data";
@@ -22,8 +23,11 @@ export const getPayloadClient = cache(async () => getPayload({ config }));
 const relId = (v: number | { id: number } | null | undefined) => (v == null ? undefined : String(typeof v === "number" ? v : v.id));
 const relIds = (v: (number | { id: number })[] | null | undefined) => (v ?? []).map(relId).filter((x): x is string => !!x);
 
+/** Media docs by id for relations fetched at depth 0 (set per getSiteContent run). */
+let mediaIndex = new Map<number, Media>();
 function mapImage(m: number | Media | null | undefined, alt: string): ImageAsset | undefined {
-  if (!m || typeof m === "number" || !m.url) return undefined;
+  if (typeof m === "number") m = mediaIndex.get(m);
+  if (!m || !m.url) return undefined;
   const best = m.sizes?.card?.url ?? m.url;
   return { src: best, alt: m.alt || alt, width: m.sizes?.card?.width ?? m.width ?? undefined, height: m.sizes?.card?.height ?? m.height ?? undefined };
 }
@@ -150,8 +154,19 @@ export interface SiteContent {
   usingSeed: boolean;
 }
 
-/** Load everything the site needs, once per request. */
-export const getSiteContent = cache(async (): Promise<SiteContent> => {
+/** Load everything the site needs: once per request (React cache) and memoized in-process until the CMS changes or 60 s pass. */
+const MEMO_TTL_MS = 60_000;
+let memo: { at: number; version: number; value: Promise<SiteContent> } | null = null;
+export const getSiteContent = cache((): Promise<SiteContent> => {
+  const now = Date.now();
+  if (memo && memo.version === contentVersion() && now - memo.at < MEMO_TTL_MS) return memo.value;
+  const value = loadSiteContent();
+  memo = { at: now, version: contentVersion(), value };
+  value.catch(() => { memo = null; });
+  return value;
+});
+
+async function loadSiteContent(): Promise<SiteContent> {
   let catalogue: Catalogue = seed.catalogue;
   let categories = seedCategories;
   let attachmentCategories = seedAttachmentCategories;
@@ -164,9 +179,10 @@ export const getSiteContent = cache(async (): Promise<SiteContent> => {
 
   try {
     const payload = await getPayloadClient();
-    const [machines, attachments, addons, warranties, cats, settings, fin, promos, postDocs, lubeDocs] = await Promise.all([
+    const [machines, attachments, addons, warranties, cats, settings, fin, promos, postDocs, lubeDocs, media] = await Promise.all([
       payload.find({ collection: "machines", limit: 500, depth: 1, sort: "sortOrder" }),
-      payload.find({ collection: "attachments", limit: 500, depth: 1, sort: "sortOrder" }),
+      // depth 0: variants relate to machines, and populating them embedded ~9 MB of machine docs per request.
+      payload.find({ collection: "attachments", limit: 500, depth: 0, sort: "sortOrder" }),
       payload.find({ collection: "addons", limit: 100, depth: 0, sort: "sortOrder" }),
       payload.find({ collection: "warranties", limit: 100, depth: 0, sort: "sortOrder" }),
       payload.find({ collection: "categories", limit: 50, depth: 1, sort: "sortOrder" }),
@@ -175,7 +191,9 @@ export const getSiteContent = cache(async (): Promise<SiteContent> => {
       payload.find({ collection: "finance-promos", limit: 100, depth: 0, sort: "sortOrder", where: { active: { equals: true } } }),
       payload.find({ collection: "posts", limit: 200, depth: 1, sort: "-publishedAt" }),
       payload.find({ collection: "lubricants", limit: 300, depth: 1, sort: "sortOrder" }),
+      payload.find({ collection: "media", limit: 5000, depth: 0, pagination: false }),
     ]);
+    mediaIndex = new Map(media.docs.map((d) => [d.id, d]));
     posts = postDocs.docs.map(mapPost);
     lubricants = lubeDocs.docs.map(mapLubricant).sort(bySort);
     if (machines.totalDocs > 0) {
@@ -264,7 +282,7 @@ export const getSiteContent = cache(async (): Promise<SiteContent> => {
   ];
 
   return { catalogue, categories, attachmentCategories, financing, financePromos, posts, lubricants, site, nav, usingSeed };
-});
+}
 
 // ---------- Convenience selectors (server components) ----------
 export async function getMachines(category?: string) {

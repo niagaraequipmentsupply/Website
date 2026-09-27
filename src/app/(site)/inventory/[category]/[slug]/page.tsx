@@ -28,6 +28,9 @@ import { isThin } from "@/lib/machines";
 
 type Params = { category: string; slug: string };
 
+/** "Backhoe Loader", "Track Dumper" when the series names the machine type; otherwise the category singular ("Excavator"). */
+const kindOf = (series: string | undefined, shortName: string | undefined) => series && !/series$/i.test(series) ? series : (shortName ?? "").replace(/s$/, "");
+
 
 export async function generateStaticParams() {
   const { catalogue } = await getSiteContent();
@@ -40,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   if (!m || m.category !== category) return {};
   const cat = await getCategory(m.category);
   const { site } = await getSiteContent();
-  const kind = cat?.shortName.replace(/s$/, "") ?? "";
+  const kind = kindOf(m.series, cat?.shortName);
   const thin = isThin(m);
   return {
     ...(thin ? { robots: { index: false, follow: true } } : {}),
@@ -116,7 +119,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
                 {m.inStock !== undefined && <Badge tone={m.inStock ? "success" : "grey"}>{m.inStock ? "In stock" : "Order"}</Badge>}
                 {m.isPlaceholder && <Badge tone="warning">Sample data</Badge>}
               </div>
-              <h1 className="display mt-2 text-charcoal">{m.brand} {m.modelName} <span className="text-navy">{cat.shortName.replace(/s$/, "")}</span></h1>
+              <h1 className="display mt-2 text-charcoal">{m.brand} {m.modelName} <span className="text-navy">{kindOf(m.series, cat.shortName)}</span></h1>
               <p className="mt-3 text-[16px] leading-relaxed text-charcoal/85">{m.shortDescription || `The RIPPA ${m.modelName} is joining our lineup. Full specifications and photos are being prepared; ask us for the spec sheet, availability and a written quote.`}</p>
               <p className="mt-2 text-[13px] font-semibold text-navy">Sold, set up and serviced in {site.address.city}, Ontario · Delivery across Ontario</p>
               {m.certifications.length > 0 && (

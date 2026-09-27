@@ -135,7 +135,7 @@ export default async function ServicePage() {
 
       <section className="section-tight bg-light/60">
         <Container>
-          <SectionHeading title="What the Service Centre does" subtitle="In-shop and mobile service for RIPPA excavators, skid steers, loaders, dumpers and backhoes. Other compact brands by arrangement." rule={false} />
+          <SectionHeading title="What the Service Centre does" subtitle="In-shop and mobile service for RIPPA excavators, skid steers, loaders, backhoe loaders and track dumpers. Other compact brands by arrangement." rule={false} />
           <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {services.map((s) => <li key={s.title} className="rounded-card border border-line bg-white p-5"><span className="flex size-11 items-center justify-center rounded-md bg-tint text-navy"><s.icon className="size-6" strokeWidth={1.75} aria-hidden /></span><h3 className="mt-3 text-base font-bold text-charcoal">{s.title}</h3><p className="mt-1 text-sm text-grey">{s.text}</p></li>)}
           </ul>

@@ -153,7 +153,7 @@ export interface Machine {
    * e.g. PRO Series
    */
   series?: string | null;
-  category: 'excavators' | 'skid-steers' | 'loaders' | 'track-dumpers' | 'backhoes';
+  category: 'excavators' | 'skid-steers' | 'loaders' | 'track-dumpers';
   /**
    * Short label like 'Most Popular' or 'New'.
    */
@@ -477,7 +477,7 @@ export interface Attachment {
   /**
    * Fits every machine in these categories (used when no specific models are listed).
    */
-  compatibleCategories?: ('excavators' | 'skid-steers' | 'loaders' | 'track-dumpers' | 'backhoes')[] | null;
+  compatibleCategories?: ('excavators' | 'skid-steers' | 'loaders' | 'track-dumpers')[] | null;
   /**
    * Fits only these models. Leave empty to use categories.
    */
@@ -771,7 +771,6 @@ export interface Category {
     | 'skid-steers'
     | 'loaders'
     | 'track-dumpers'
-    | 'backhoes'
     | 'excavator-attachments'
     | 'skid-steer-attachments'
     | 'loader-attachments';

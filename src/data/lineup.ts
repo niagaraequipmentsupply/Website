@@ -12,7 +12,7 @@ const s = (label: string, value: string, imperial: string, group: SG, icon?: Spe
 
 interface Feat { eyebrow?: string; title: string; text: string; image?: string }
 export interface LineupModel {
-  slug: string; modelName: string; category: "excavators" | "skid-steers"; series: string; badge?: string;
+  slug: string; modelName: string; category: "excavators" | "skid-steers" | "loaders" | "track-dumpers"; series: string; badge?: string;
   shortDescription: string; longDescription: string; certifications: string[]; warranty: string;
   configurations: MachineConfiguration[]; specs: SpecValue[]; features: Feat[]; standardEquipment: string[]; applications: string[]; faqs: Faq[];
   images: { key: string; alt: string }[]; brochure: string; builderEnabled: boolean; featured: boolean; sortOrder: number; targetUsers?: string; noiseLevel?: string; indoorUse?: boolean;

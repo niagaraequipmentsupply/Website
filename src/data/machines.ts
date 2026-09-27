@@ -104,21 +104,6 @@ export const machines: Machine[] = [
   ], { sortOrder: 6 }),
 
   // ---------------- Other categories (placeholders until models are confirmed) ----------------
-  {
-    id: "ld-placeholder", slug: "compact-wheel-loader", category: "loaders", modelName: "Compact Wheel Loader", brand: "RIPPA",
-    shortDescription: "Articulated compact loader. Official specifications to be confirmed.",
-    images: [], documents: [], features: [], standardEquipment: [], applications: [], faqs: [], certifications: [], applicationFit: [], checklist: [], configurations: [], showPrice: false, featured: true, builderEnabled: false, sortOrder: 1, isPlaceholder: true, specs: [],
-  },
-  {
-    id: "td-placeholder", slug: "track-dumper", category: "track-dumpers", modelName: "Track Dumper", brand: "RIPPA",
-    shortDescription: "Tracked dump carrier. Official specifications to be confirmed.",
-    images: [], documents: [], features: [], standardEquipment: [], applications: [], faqs: [], certifications: [], applicationFit: [], checklist: [], configurations: [], showPrice: false, featured: true, builderEnabled: false, sortOrder: 1, isPlaceholder: true, specs: [],
-  },
-  {
-    id: "bh-rb06", slug: "rb06-backhoe", category: "backhoes", modelName: "RB06 Backhoe", brand: "RIPPA",
-    shortDescription: "Compact backhoe loader. Official specifications to be confirmed from the RB06 brochure.",
-    images: [], documents: [], features: [], standardEquipment: [], applications: [], faqs: [], certifications: [], applicationFit: [], checklist: [], configurations: [], showPrice: false, featured: true, builderEnabled: false, sortOrder: 1, isPlaceholder: true, specs: [],
-  },
 ];
 
 export const getMachine = (idOrSlug: string) => machines.find((m) => m.id === idOrSlug || m.slug === idOrSlug);

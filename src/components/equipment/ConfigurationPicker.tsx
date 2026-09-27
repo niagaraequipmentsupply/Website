@@ -9,9 +9,9 @@ import { AddToQuoteButton } from "./AddToQuoteButton";
  * Engine, Cab, Undercarriage. Options that no configuration offers with the current picks are disabled,
  * so the R10 shows gas/diesel × canopy/cab while the R13 shows nothing to pick.
  */
-type Axis = "Engine" | "Cab" | "Undercarriage" | "Option";
-const axisOf = (part: string): Axis => /canopy|cab\b|stand-on|stand on/i.test(part) ? "Cab" : /gas|diesel|kubota|briggs|yanmar|honda|engine|kohler/i.test(part) ? "Engine" : /track|wheel/i.test(part) ? "Undercarriage" : "Option";
-const ORDER: Axis[] = ["Engine", "Cab", "Undercarriage", "Option"];
+type Axis = "Engine" | "Cab" | "Undercarriage" | "Boom" | "Body" | "Option";
+const axisOf = (part: string): Axis => /canopy|cab\b|stand-on|stand on/i.test(part) ? "Cab" : /gas|diesel|kubota|briggs|yanmar|honda|engine|kohler/i.test(part) ? "Engine" : /track|wheel/i.test(part) ? "Undercarriage" : /boom/i.test(part) ? "Boom" : /body/i.test(part) ? "Body" : "Option";
+const ORDER: Axis[] = ["Engine", "Cab", "Undercarriage", "Boom", "Body", "Option"];
 const short = (part: string) => part.replace(/\s*\((.*?)\)/g, "").replace(/^Briggs & Stratton( \w+)? gasoline$/i, "Gas (Briggs & Stratton)").replace(/^Kubota (\S+) diesel$/i, "Diesel (Kubota $1)").replace(/^Kubota (\S+)$/i, "Kubota $1");
 
 function parse(c: MachineConfiguration): Partial<Record<Axis, string>> {

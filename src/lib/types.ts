@@ -4,7 +4,7 @@
  * with a CMS / Supabase adapter that returns the same types and no component needs to change.
  */
 
-export type CategorySlug = "excavators" | "skid-steers" | "loaders" | "track-dumpers" | "backhoes";
+export type CategorySlug = "excavators" | "skid-steers" | "loaders" | "track-dumpers";
 export type AttachmentCategorySlug = "excavator-attachments" | "skid-steer-attachments" | "loader-attachments";
 
 export interface ImageAsset {
@@ -36,7 +36,7 @@ export interface NavItem {
   description?: string;
   image?: ImageAsset;
   /** Placeholder art kind used until a photo is uploaded. */
-  artKind?: "excavators" | "skid-steers" | "loaders" | "track-dumpers" | "backhoes" | "attachment" | "generic";
+  artKind?: "excavators" | "skid-steers" | "loaders" | "track-dumpers" | "attachment" | "generic";
   /** Second level (e.g. attachment types under a category). */
   children?: NavLeaf[];
 }

@@ -27,8 +27,8 @@ const idOf = (slug: string) => machines.find((m) => m.slug === slug)?.id;
 const nameOf = (slug: string) => machines.find((m) => m.slug === slug)?.modelName ?? slug;
 const EXC: Record<string, string> = { r06: "r06-eco", r10: "r10-eco", r13: "r13-pro", r15: "r15-eco", r18: "r18-pro", r22: "r22-pro", r32: "r32-pro", r57: "r57-pro", r82: "r82-pro", r230: "r230-pro" };
 const SS: Record<string, string> = { rs03: "rs03", rs04: "rs04", rs06: "rs06", rs07: "rs07", rs10: "rs10", rs20: "rs20" };
-const LD: Record<string, string> = { rb06: "rb06-backhoe", rl06: "compact-wheel-loader" };
-const ORDER = ["r06-eco", "r10-eco", "r13-pro", "r15-eco", "r18-pro", "r22-pro", "r32-pro", "r57-pro", "r82-pro", "r230-pro", "rs03", "rs04", "rs06", "rs07", "rs10", "rs20", "rb06-backhoe", "compact-wheel-loader"];
+const LD: Record<string, string> = { rb06: "rb06", rl06: "rl06" };
+const ORDER = ["r06-eco", "r10-eco", "r13-pro", "r15-eco", "r18-pro", "r22-pro", "r32-pro", "r57-pro", "r82-pro", "r230-pro", "rs03", "rs04", "rs06", "rs07", "rs10", "rs20", "rl06", "rb06", "rd06"];
 
 // ---- name normalisation → family key + size label
 const MODEL_PREFIX = /^(\[\s*[A-Z0-9]+\]\s*)?(R135|R\d{2,3}(?:-\d+)?(?:-\d+)?|R57-82|RS-?\d{2}(?:-\d{2})?(?:\/\d{2})?(?:-\d)?|RS0\d\/0\d-\d|RS057|RB-?RL06(?:\s*CHARGEUR)?\s*-?|RB06|RL06)\s*/i;

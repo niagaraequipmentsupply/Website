@@ -19,7 +19,7 @@ export const site: SiteConfig = {
   legalName: "Niagara Equipment Supply",
   tagline: "Official RIPPA Dealer",
   description:
-    "Niagara Equipment Supply is your trusted RIPPA dealer for mini excavators, skid steers, loaders, track dumpers, backhoes and attachments across Ontario.",
+    "Niagara Equipment Supply is your trusted RIPPA dealer for mini excavators, skid steers, loaders, backhoe loaders, track dumpers and attachments across Ontario.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://niagaraequipment.ca",
   phone: "(905) 555-0123", // TODO: replace with real dealer phone
   phoneHref: "tel:+19055550123",

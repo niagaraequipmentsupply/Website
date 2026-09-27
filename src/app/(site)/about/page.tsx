@@ -18,7 +18,7 @@ export default async function AboutPage() {
       <section className="section">
         <Container className="grid gap-10 lg:grid-cols-[3fr_2fr]">
           <div className="space-y-4 text-[16px] leading-relaxed text-charcoal/85">
-            <p>{site.name} is an official RIPPA dealer based in {site.address.city}, Ontario. We supply compact excavators, skid steers, loaders, track dumpers, backhoes and attachments to contractors, landscapers, farms and municipalities across the province.</p>
+            <p>{site.name} is an official RIPPA dealer based in {site.address.city}, Ontario. We supply compact excavators, skid steers, loaders, backhoe loaders, track dumpers and attachments to contractors, landscapers, farms and municipalities across the province.</p>
             <p>We keep things simple: honest pricing, machines that are set up properly before delivery, and support from people who know the equipment. Whether you are buying your first mini excavator or adding to a fleet, we help you spec the right machine for the work.</p>
           </div>
           <div className="rounded-card border border-line bg-light/60 p-6">

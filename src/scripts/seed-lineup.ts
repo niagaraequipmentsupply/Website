@@ -8,6 +8,7 @@ import fs from "fs";
 import { getPayload } from "payload";
 import config from "@payload-config";
 import { lineup, skidSteers } from "../data/lineup";
+import { loaders } from "../data/loaders";
 
 const ASSETS = path.resolve("seed-assets/lineup");
 const SLUG_MAP: Record<string, string> = { "r10-6-eco": "r10-eco", "r13-4-pro": "r13-pro", "r15-5-eco": "r15-eco", "r18-5-pro": "r18-pro", "r22-3-pro": "r22-pro", "r32-5-pro": "r32-pro", "rs03-2": "rs03", "rs04-2": "rs04", "rs06-3": "rs06", "rs07-2": "rs07", "rs20-2": "rs20" };
@@ -41,7 +42,7 @@ for (const d of all.docs) {
 
 // 2. Upsert each lineup model
 const ids = new Map<string, number>();
-for (const m of [...lineup, ...skidSteers]) {
+for (const m of [...lineup, ...skidSteers, ...loaders]) {
   const ex = await payload.find({ collection: "machines", where: { slug: { equals: m.slug } }, limit: 1, draft: true });
   const images = (await Promise.all(m.images.map(async (i) => ({ image: await media(i.key, i.alt) })))).filter((x): x is { image: number } => typeof x.image === "number");
   const features = await Promise.all(m.features.map(async (f) => ({ eyebrow: f.eyebrow, title: f.title, text: f.text, image: f.image ? await media(f.image, `${m.modelName}: ${f.title}`) : undefined })));

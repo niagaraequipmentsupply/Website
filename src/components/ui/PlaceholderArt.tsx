@@ -1,4 +1,4 @@
-export type PlaceholderKind = "excavators" | "skid-steers" | "loaders" | "track-dumpers" | "backhoes" | "attachment" | "generic";
+export type PlaceholderKind = "excavators" | "skid-steers" | "loaders" | "track-dumpers" | "attachment" | "generic";
 
 /** Simple, brand-neutral line art used until real product photography is supplied. */
 export function PlaceholderArt({ kind, label, compact }: { kind: PlaceholderKind; label: string; compact?: boolean }) {
@@ -7,9 +7,6 @@ export function PlaceholderArt({ kind, label, compact }: { kind: PlaceholderKind
       <svg viewBox="0 0 120 80" className={compact ? "h-[80%] w-auto" : "h-[55%] w-auto"} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
         {kind === "excavators" && (<>
           <rect x="18" y="58" width="52" height="12" rx="6" /><rect x="30" y="34" width="30" height="22" rx="3" /><path d="M60 40 L84 20 L100 44" /><path d="M100 44 l-8 12 h14 z" />
-        </>)}
-        {kind === "backhoes" && (<>
-          <circle cx="30" cy="62" r="8" /><circle cx="78" cy="62" r="10" /><rect x="36" y="34" width="34" height="22" rx="3" /><path d="M8 50 L20 40 L36 46" /><path d="M70 40 L92 22 L108 44 l-6 10" />
         </>)}
         {kind === "skid-steers" && (<>
           <circle cx="32" cy="62" r="9" /><circle cx="66" cy="62" r="9" /><rect x="24" y="32" width="50" height="22" rx="3" /><path d="M74 40 L96 40 L104 58 L84 58" />

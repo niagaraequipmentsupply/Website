@@ -18,7 +18,7 @@ export function Hero() {
             <span className="text-navy">Built for Real Work</span>
           </h1>
           <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-charcoal/85">
-            Niagara Equipment Supply is your trusted RIPPA dealer for Excavators, Skid Steers, Track Dumpers, Backhoes, and Loaders across Ontario.
+            Niagara Equipment Supply is your trusted RIPPA dealer for Excavators, Skid Steers, Loaders, Backhoe Loaders and Track Dumpers across Ontario.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Button href="/inventory" size="lg" arrow>Shop Inventory</Button>

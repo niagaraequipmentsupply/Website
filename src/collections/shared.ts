@@ -5,7 +5,6 @@ export const machineCategoryOptions = [
   { label: "Skid Steers", value: "skid-steers" },
   { label: "Loaders", value: "loaders" },
   { label: "Track Dumpers", value: "track-dumpers" },
-  { label: "Backhoes", value: "backhoes" },
 ];
 
 export const attachmentCategoryOptions = [

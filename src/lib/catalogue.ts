@@ -1,8 +1,8 @@
 import { cache } from "react";
 import { getPayload } from "payload";
 import config from "@payload-config";
-import type { Attachment as PAttachment, Machine as PMachine, Media, Document as PDocument, Addon as PAddon, Warranty as PWarranty, Category as PCategory, FinancePromo as PPromo, Post as PPost, Lubricant as PLubricant } from "@/payload-types";
-import type { Attachment, AttachmentCategory, Category, DocumentAsset, FinancingConfig, ImageAsset, Machine, Addon, WarrantyOption, NavGroup, FinancePromo, ApplicationFit, Post, Lubricant } from "@/lib/types";
+import type { Part as PPart, Attachment as PAttachment, Machine as PMachine, Media, Document as PDocument, Addon as PAddon, Warranty as PWarranty, Category as PCategory, FinancePromo as PPromo, Post as PPost, Lubricant as PLubricant } from "@/payload-types";
+import type { Attachment, AttachmentCategory, Category, DocumentAsset, FinancingConfig, ImageAsset, Machine, Addon, WarrantyOption, NavGroup, FinancePromo, Part, ApplicationFit, Post, Lubricant } from "@/lib/types";
 import type { Catalogue } from "@/lib/pricing";
 import { slugify } from "@/lib/format";
 import { contentVersion } from "@/lib/content-version";
@@ -79,6 +79,13 @@ export function mapAttachment(d: PAttachment): Attachment {
   };
 }
 
+export function mapPart(d: PPart): Part {
+  return {
+    id: String(d.id), slug: d.slug, name: d.name, sku: d.sku, system: d.system, engineBrand: d.engineBrand ?? undefined, description: d.description ?? undefined,
+    image: mapImage(d.image, d.name), sourceUrl: d.sourceUrl ?? undefined, compatibleModelIds: relIds(d.compatibleModels), featured: !!d.featured, sortOrder: d.sortOrder ?? 100,
+  };
+}
+
 export function mapAddon(d: PAddon): Addon {
   return {
     id: String(d.id), name: d.name, type: d.type, shortDescription: d.shortDescription, fullDescription: d.fullDescription ?? undefined, price: d.price ?? undefined, quoteRequired: !!d.quoteRequired,
@@ -151,6 +158,7 @@ export interface SiteContent {
   financePromos: FinancePromo[];
   posts: Post[];
   lubricants: Lubricant[];
+  parts: Part[];
   site: typeof siteDefaults & { hoursList: { day: string; time: string }[] };
   nav: NavGroup[];
   /** True while rendering from seed data (database empty). */
@@ -177,12 +185,13 @@ async function loadSiteContent(): Promise<SiteContent> {
   let financePromos: FinancePromo[] = seedPromos;
   let posts: Post[] = [];
   let lubricants: Lubricant[] = [];
+  let parts: Part[] = [];
   let site: SiteContent["site"] = { ...siteDefaults, hoursList: [...siteDefaults.hours] };
   let usingSeed = true;
 
   try {
     const payload = await getPayloadClient();
-    const [machines, attachments, addons, warranties, cats, settings, fin, promos, postDocs, lubeDocs, media] = await Promise.all([
+    const [machines, attachments, addons, warranties, cats, settings, fin, promos, postDocs, lubeDocs, media, partDocs] = await Promise.all([
       payload.find({ collection: "machines", limit: 500, depth: 1, sort: "sortOrder" }),
       // depth 0: variants relate to machines, and populating them embedded ~9 MB of machine docs per request.
       payload.find({ collection: "attachments", limit: 500, depth: 0, sort: "sortOrder" }),
@@ -195,9 +204,11 @@ async function loadSiteContent(): Promise<SiteContent> {
       payload.find({ collection: "posts", limit: 200, depth: 1, sort: "-publishedAt" }),
       payload.find({ collection: "lubricants", limit: 300, depth: 1, sort: "sortOrder" }),
       payload.find({ collection: "media", limit: 5000, depth: 0, pagination: false }),
+      payload.find({ collection: "parts", limit: 5000, depth: 0, pagination: false, sort: "sortOrder" }),
     ]);
     mediaIndex = new Map(media.docs.map((d) => [d.id, d]));
     posts = postDocs.docs.map(mapPost);
+    parts = partDocs.docs.map(mapPart).sort((a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name));
     lubricants = lubeDocs.docs.map(mapLubricant).sort(bySort);
     if (machines.totalDocs > 0) {
       usingSeed = false;
@@ -274,7 +285,7 @@ async function loadSiteContent(): Promise<SiteContent> {
       children: [
         { label: "RIPPA Service Centre", href: "/service", description: "Warranty handled, certified repairs, owner training. Every RIPPA owner welcome", artKind: "generic", image: menuImage("service-centre", "Technician servicing a RIPPA excavator") },
         { label: "Warranty & Claims", href: "/service#warranty", description: "We diagnose, file with RIPPA and fit the parts", artKind: "generic", image: menuImage("warranty", "Warranty shield and service form") },
-        { label: "RIPPA Parts", href: "/service/parts", description: "Genuine parts shipped across Canada", artKind: "attachment", image: menuImage("parts", "Genuine RIPPA filters, hoses and bucket teeth") },
+        { label: "RIPPA Parts Catalogue", href: "/parts", description: "Genuine parts by model and system, shipped across Canada", artKind: "attachment", image: menuImage("parts", "Genuine RIPPA filters, hoses and bucket teeth") },
         { label: "Oil & Lubricants", href: "/lubricants", description: "Chevron and Catalys oils, greases and fluids", artKind: "generic", image: menuImage("lubricants", "Oil pail, hydraulic oil and grease gun") },
       ],
     },
@@ -284,7 +295,7 @@ async function loadSiteContent(): Promise<SiteContent> {
     { label: "Contact", href: "/contact" },
   ];
 
-  return { catalogue, categories, attachmentCategories, financing, financePromos, posts, lubricants, site, nav, usingSeed };
+  return { catalogue, categories, attachmentCategories, financing, financePromos, posts, lubricants, parts, site, nav, usingSeed };
 }
 
 // ---------- Convenience selectors (server components) ----------

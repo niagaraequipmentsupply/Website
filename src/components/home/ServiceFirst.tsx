@@ -12,7 +12,7 @@ export async function ServiceFirst() {
   const latest = posts.slice(0, 3);
   const tiles = [
     { icon: Wrench, title: "Warranty & certified repairs", text: `Claims filed for you, repairs by factory-trained technicians in ${site.address.city} or at your site. Any RIPPA owner welcome.`, href: "/service", cta: "Find help for my machine" },
-    { icon: Package, title: "Parts shipped Canada-wide", text: "Filters, tracks, hoses, couplers and wear parts by serial number. US sourcing help too.", href: "/service/parts", cta: "Order parts" },
+    { icon: Package, title: "Parts shipped Canada-wide", text: "Filters, tracks, hoses, couplers and wear parts by serial number. US sourcing help too.", href: "/parts", cta: "Browse the parts catalogue" },
     { icon: Droplets, title: "Oil & lubricant programs", text: "Chevron and Catalys oils over the counter, or a supply program for your farm, shop or fleet.", href: "/lubricants", cta: "Set up a program" },
   ];
   return (

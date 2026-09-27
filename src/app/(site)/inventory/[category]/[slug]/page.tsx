@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Phone, Check, Download, Wrench, ShieldCheck, Truck, ArrowRight } from "lucide-react";
+import { Phone, Check, Download, Wrench, ShieldCheck, Truck, ArrowRight, Package } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Badge } from "@/components/ui/Badge";
@@ -61,13 +61,14 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
   const m = await getMachine(slug);
   if (!m || m.category !== category) notFound();
   const cat = (await getCategory(m.category))!;
-  const { site, catalogue } = await getSiteContent();
+  const { site, catalogue, parts } = await getSiteContent();
   const compat = compatibleAttachments(await getAttachments(), m);
   const price = machinePrice(m);
   const heroStats = m.specs.filter((s) => s.highlight).slice(0, 5);
   const brochure = m.documents.find((d) => d.kind === "brochure") ?? m.documents[0];
   const gallery = m.images.slice(1, 7);
   const related = catalogue.machines.filter((x) => x.category === m.category && x.id !== m.id).slice(0, 4);
+  const partCount = parts.filter((p) => p.compatibleModelIds.includes(m.id)).length;
 
   const sections = [
     { id: "overview", label: "Overview", show: true },
@@ -158,7 +159,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
               <ul className="mt-5 grid gap-2 text-[13px] text-grey sm:grid-cols-3">
                 {m.warranty && <li className="flex items-center gap-2"><ShieldCheck className="size-4 text-navy" aria-hidden />{m.warranty}</li>}
                 <li className="flex items-center gap-2"><Wrench className="size-4 text-navy" aria-hidden /><Link href={`/service?model=${m.slug}#hub`} className="hover:text-navy">Guides, videos &amp; service for this model</Link></li>
-                <li className="flex items-center gap-2"><Truck className="size-4 text-navy" aria-hidden />Delivery across Ontario</li>
+                {partCount > 0 ? <li className="flex items-center gap-2"><Package className="size-4 text-navy" aria-hidden /><Link href={`/parts/${m.slug}`} className="hover:text-navy">{partCount} genuine parts for this model</Link></li> : <li className="flex items-center gap-2"><Truck className="size-4 text-navy" aria-hidden />Delivery across Ontario</li>}
               </ul>
             </div>
           </div>

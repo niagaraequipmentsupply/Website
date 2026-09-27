@@ -320,6 +320,11 @@ export interface Post {
   contentText: string; contentHtml?: string; relatedMachineIds: string[]; tags: string[]; readMinutes?: number; featured: boolean; author?: string;
 }
 
+export interface Part {
+  id: string; slug: string; name: string; sku: string; system: string; engineBrand?: string; description?: string;
+  image?: ImageAsset; sourceUrl?: string; compatibleModelIds: string[]; featured: boolean; sortOrder: number;
+}
+
 export interface Lubricant {
   id: string; slug: string; name: string; brand: string; category: string; tagline?: string; description: string; grades?: string; applications: string[];
   packaging: string[]; approvals?: string; rippaUse?: string; images: ImageAsset[]; documents: DocumentAsset[]; featured: boolean; sortOrder: number;

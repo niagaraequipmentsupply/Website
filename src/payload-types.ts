@@ -70,6 +70,7 @@ export interface Config {
     machines: Machine;
     attachments: Attachment;
     lubricants: Lubricant;
+    parts: Part;
     posts: Post;
     addons: Addon;
     warranties: Warranty;
@@ -88,6 +89,7 @@ export interface Config {
     machines: MachinesSelect<false> | MachinesSelect<true>;
     attachments: AttachmentsSelect<false> | AttachmentsSelect<true>;
     lubricants: LubricantsSelect<false> | LubricantsSelect<true>;
+    parts: PartsSelect<false> | PartsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     addons: AddonsSelect<false> | AddonsSelect<true>;
     warranties: WarrantiesSelect<false> | WarrantiesSelect<true>;
@@ -598,6 +600,57 @@ export interface Lubricant {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "parts".
+ */
+export interface Part {
+  id: number;
+  name: string;
+  /**
+   * RIPPA part number, e.g. LP0101010001
+   */
+  sku: string;
+  system:
+    | 'filters'
+    | 'engine'
+    | 'fuel-system'
+    | 'hydraulic-system'
+    | 'hydraulic-cylinders'
+    | 'hydraulic-components'
+    | 'electrical'
+    | 'undercarriage'
+    | 'traction'
+    | 'body'
+    | 'work-equipment'
+    | 'canopy'
+    | 'controls'
+    | 'decals'
+    | 'accessories'
+    | 'other';
+  /**
+   * For engine parts only.
+   */
+  engineBrand?: ('kubota' | 'briggs-stratton') | null;
+  /**
+   * Machines this part is listed for.
+   */
+  compatibleModels?: (number | Machine)[] | null;
+  description?: string | null;
+  image?: (number | null) | Media;
+  /**
+   * rippagroup.ca product page
+   */
+  sourceUrl?: string | null;
+  featured?: boolean | null;
+  sortOrder?: number | null;
+  /**
+   * URL path segment, e.g. r15-5-eco. Auto-filled from the name when empty.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
@@ -875,6 +928,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'lubricants';
         value: number | Lubricant;
+      } | null)
+    | ({
+        relationTo: 'parts';
+        value: number | Part;
       } | null)
     | ({
         relationTo: 'posts';
@@ -1155,6 +1212,25 @@ export interface LubricantsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "parts_select".
+ */
+export interface PartsSelect<T extends boolean = true> {
+  name?: T;
+  sku?: T;
+  system?: T;
+  engineBrand?: T;
+  compatibleModels?: T;
+  description?: T;
+  image?: T;
+  sourceUrl?: T;
+  featured?: T;
+  sortOrder?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

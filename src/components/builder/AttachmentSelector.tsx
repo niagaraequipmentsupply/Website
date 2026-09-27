@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Check, Plus, Minus } from "lucide-react";
 import type { Attachment, AttachmentSelection, Machine } from "@/lib/types";
 import { EquipmentImage } from "@/components/ui/EquipmentImage";
@@ -8,6 +8,7 @@ import { compatibleVariants } from "@/lib/compatibility";
 import { attachmentUnitPrice } from "@/lib/pricing";
 import { formatPrice } from "@/lib/format";
 import { BuilderSection } from "./BuilderSection";
+import { groupAttachments } from "@/lib/attachment-groups";
 
 interface Props {
   machine?: Machine;
@@ -19,18 +20,35 @@ interface Props {
 }
 
 export function AttachmentSelector({ machine, attachments, selections, onAdd, onRemove, onQuantity }: Props) {
+  const groups = useMemo(() => groupAttachments(attachments), [attachments]);
+  const [type, setType] = useState<string>("all");
+  const visible = type === "all" ? groups : groups.filter(([t]) => t === type);
+  const selectedCount = selections.length;
   return (
-    <BuilderSection id="add-attachments" step={2} title="Add Attachments" text={machine ? `Showing attachments compatible with the ${machine.modelName}.` : "Select a model to see compatible attachments."} link={{ href: "/attachments/excavator-attachments", label: "View All Attachments" }}>
+    <BuilderSection id="add-attachments" step={2} title="Add Attachments" text={machine ? `Attachments RIPPA lists for the ${machine.modelName}, grouped by type. Pick a size, then add.${selectedCount ? ` ${selectedCount} added.` : ""}` : "Select a model to see compatible attachments."} link={{ href: "/attachments/excavator-attachments", label: "Browse all attachments" }}>
       {!machine ? (
         <p className="rounded-card bg-light p-6 text-center text-sm text-grey">Choose a model above to unlock compatible attachments.</p>
       ) : attachments.length === 0 ? (
         <p className="rounded-card bg-light p-6 text-center text-sm text-grey">No attachments have been configured for this model yet.</p>
       ) : (
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {attachments.map((a) => (
-            <li key={a.id}><AttachmentOption attachment={a} machine={machine} selections={selections.filter((s) => s.attachmentId === a.id)} onAdd={onAdd} onRemove={onRemove} onQuantity={onQuantity} /></li>
-          ))}
-        </ul>
+        <>
+          <div className="no-scrollbar -mx-1 mb-4 flex gap-1.5 overflow-x-auto px-1 pb-1" role="tablist" aria-label="Attachment types">
+            <button type="button" role="tab" aria-selected={type === "all"} onClick={() => setType("all")} className={`shrink-0 rounded-full border px-3 py-1.5 text-[13px] font-semibold ${type === "all" ? "border-navy bg-navy text-white" : "border-line bg-white text-charcoal hover:border-electric"}`}>All <span className={type === "all" ? "text-white/70" : "text-grey"}>{attachments.length}</span></button>
+            {groups.map(([t, items]) => <button key={t} type="button" role="tab" aria-selected={type === t} onClick={() => setType(t)} className={`shrink-0 rounded-full border px-3 py-1.5 text-[13px] font-semibold ${type === t ? "border-navy bg-navy text-white" : "border-line bg-white text-charcoal hover:border-electric"}`}>{t} <span className={type === t ? "text-white/70" : "text-grey"}>{items.length}</span></button>)}
+          </div>
+          <div className="space-y-6">
+            {visible.map(([t, items]) => (
+              <div key={t}>
+                {type === "all" && <h3 className="mb-2 text-[12px] font-bold uppercase tracking-[0.15em] text-grey">{t}</h3>}
+                <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {items.map((a) => (
+                    <li key={a.id}><AttachmentOption attachment={a} machine={machine} selections={selections.filter((s) => s.attachmentId === a.id)} onAdd={onAdd} onRemove={onRemove} onQuantity={onQuantity} /></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </BuilderSection>
   );
@@ -45,20 +63,21 @@ function AttachmentOption({ attachment: a, machine, selections, onAdd, onRemove,
   const price = attachmentUnitPrice(a, activeVariant?.id);
 
   return (
-    <div className={`relative flex h-full flex-col rounded-card border-2 bg-white p-4 transition-all duration-200 ${added ? "border-navy bg-tint/30" : "border-line hover:border-electric"}`}>
+    <div className={`relative flex h-full min-w-0 flex-col rounded-card border-2 bg-white p-3 transition-all duration-200 ${added ? "border-navy bg-tint/30" : "border-line hover:border-electric"}`}>
       {added && <span className="absolute right-3 top-3 z-[1] flex size-7 items-center justify-center rounded-full bg-navy text-white"><Check className="size-4" aria-hidden /></span>}
       <EquipmentImage image={a.images[0]} kind="attachment" alt={a.name} />
-      <h3 className="mt-3 text-base font-bold text-charcoal">{a.name}</h3>
-      <p className="text-[13px] text-grey">{a.description}</p>
+      <h3 className="mt-3 truncate text-base font-bold text-charcoal" title={a.name}>{a.name}</h3>
+      <p className="line-clamp-2 text-[12px] leading-snug text-grey">{a.description}</p>
+      {variants.length === 1 && variants[0].widthOrSize && <p className="mt-2 truncate text-[12px] text-grey">{variants[0].widthOrSize}</p>}
       {variants.length > 1 && (
         <label className="mt-2 block text-[12px] font-semibold text-grey">
           <span className="sr-only">{a.name} size</span>
-          <select value={activeVariant?.id} onChange={(e) => setVariantId(e.target.value)} disabled={added} className="mt-1 h-10 w-full rounded-btn border border-line bg-white px-2 text-sm text-charcoal">
-            {variants.map((v) => <option key={v.id} value={v.id}>{v.widthOrSize ?? v.label}</option>)}
+          <select value={activeVariant?.id} onChange={(e) => setVariantId(e.target.value)} disabled={added} className="mt-1 h-10 w-full min-w-0 truncate rounded-btn border border-line bg-white px-2 pr-7 text-[13px] text-charcoal focus:border-electric disabled:bg-light">
+            {variants.map((v) => <option key={v.id} value={v.id}>{v.widthOrSize ?? "Standard"}</option>)}
           </select>
         </label>
       )}
-      <p className="mt-3 text-base font-bold text-navy">{price !== undefined ? `+ ${formatPrice(price)}` : "Price on request"}</p>
+      <p className="mt-auto pt-3 text-[13px] font-semibold text-navy">{price !== undefined ? `+ ${formatPrice(price)}` : "Priced in your quote"}</p>
       <div className="mt-2 flex items-center gap-2">
         {added ? (
           <Button onClick={() => onRemove(a.id, current?.variantId)} size="sm" className="flex-1" icon={<Check className="size-4" aria-hidden />} aria-pressed>Added</Button>

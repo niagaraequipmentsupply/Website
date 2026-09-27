@@ -9,6 +9,7 @@ import { getSiteContent, getAttachmentCategory, getAttachments } from "@/lib/cat
 import { slugify } from "@/lib/format";
 import Link from "next/link";
 import { plateLabels } from "@/lib/plates";
+import { groupAttachments } from "@/lib/attachment-groups";
 
 type Params = { category: string };
 
@@ -36,7 +37,8 @@ export default async function AttachmentCategoryPage({ params, searchParams }: {
   let items = machine ? all.filter((a) => a.compatibleModelIds.includes(machine.id) || (a.compatibleModelIds.length === 0 && a.compatibleCategories.includes(machine.category))) : all;
   if (plate) items = items.filter((a) => platesOf(a).includes(plate));
   const qs = (m?: string, p?: string) => { const u = new URLSearchParams(); if (m) u.set("model", m); if (p) u.set("plate", p); const s = u.toString(); return s ? `?${s}` : ""; };
-  const types = Array.from(new Set(items.map((i) => i.attachmentType)));
+  const groups = groupAttachments(items);
+  const types = groups.map(([g]) => g);
   return (
     <>
       <PageHero title={cat.name} text={cat.description} crumbs={[{ href: "/attachments", label: "Attachments" }, { label: cat.name }]}>
@@ -63,11 +65,11 @@ export default async function AttachmentCategoryPage({ params, searchParams }: {
               {types.map((t) => <li key={t}><a href={`#${slugify(t)}`} className="inline-flex h-10 items-center rounded-full border border-line px-4 text-sm font-semibold text-navy hover:border-electric hover:text-electric">{t}</a></li>)}
             </ul>
           )}
-          {types.map((t) => (
+          {groups.map(([t, group]) => (
             <div key={t} id={slugify(t)} className="mb-10 scroll-mt-28">
-              <h2 className="display mb-4 text-2xl text-charcoal">{t}</h2>
+              <h2 className="display mb-4 text-2xl text-charcoal">{t} <span className="text-lg text-grey">{group.length}</span></h2>
               <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-                {items.filter((i) => i.attachmentType === t).map((a) => <li key={a.id}><AttachmentCard attachment={a} showQuote /></li>)}
+                {group.map((a) => <li key={a.id}><AttachmentCard attachment={a} showQuote /></li>)}
               </ul>
             </div>
           ))}

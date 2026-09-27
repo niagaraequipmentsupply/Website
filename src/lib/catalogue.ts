@@ -6,6 +6,7 @@ import type { Attachment, AttachmentCategory, Category, DocumentAsset, Financing
 import type { Catalogue } from "@/lib/pricing";
 import { slugify } from "@/lib/format";
 import { contentVersion } from "@/lib/content-version";
+import { groupAttachments } from "@/lib/attachment-groups";
 import { presentMachine, presentAttachment, humanizeUnits } from "@/lib/units";
 import { site as siteDefaults } from "@/data/site";
 import * as seed from "@/data";
@@ -259,7 +260,7 @@ async function loadSiteContent(): Promise<SiteContent> {
     {
       label: "Attachments", href: "/attachments",
       children: attachmentCategories.map((c) => {
-        const types = Array.from(new Set(catalogue.attachments.filter((a) => a.attachmentCategory === c.slug).map((a) => a.attachmentType))).sort();
+        const types = groupAttachments(catalogue.attachments.filter((a) => a.attachmentCategory === c.slug)).map(([g]) => g);
         return {
           label: c.name, href: `/attachments/${c.slug}`, description: c.description.split(".")[0], image: c.image, artKind: "attachment" as const,
           children: types.map((t) => ({ label: t, href: `/attachments/${c.slug}#${slugify(t)}` })),

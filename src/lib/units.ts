@@ -7,12 +7,17 @@ import type { Machine, SpecValue, Attachment } from "@/lib/types";
 const num = (v: number, d = 0) => v.toLocaleString("en-CA", { maximumFractionDigits: d, minimumFractionDigits: 0 });
 const parse = (x: string) => Number(x.replace(/,/g, ""));
 
+/**
+ * Lengths print as feet and inches with symbols: 18", 5' 11". Under 10 ft the total in inches follows in brackets,
+ * because that is how buckets, track widths and dig depths are compared: 5' 11" (71"). Ten feet and up, no brackets.
+ */
 export function inchesToFtIn(inches: number): string {
-  if (inches < 24) return `${num(inches, inches < 10 ? 1 : 0)} in`;
+  if (inches < 24) return `${num(inches, inches < 10 ? 1 : 0)}"`;
   let ft = Math.floor(inches / 12);
   let rem = Math.round(inches - ft * 12);
   if (rem === 12) { ft += 1; rem = 0; }
-  return rem === 0 ? `${ft} ft` : `${ft} ft ${rem} in`;
+  const ftIn = rem === 0 ? `${ft}'` : `${ft}' ${rem}"`;
+  return inches < 120 ? `${ftIn} (${num(inches)}")` : ftIn;
 }
 export const mmToFtIn = (mm: number) => inchesToFtIn(mm / 25.4);
 export const kgToLb = (kg: number) => num(kg * 2.20462);
@@ -49,7 +54,7 @@ export function humanizeUnits(text: string): string {
   // imperial "in" values ≥ 24 → ft in (ranges too), but not inside "ft ... in"
   t = t.replace(new RegExp(G + String.raw`\s*in\b(?![a-z])`, "g"), (m, grp) => (/\bft\b/.test(m) ? m : group(grp, (n) => inchesToFtIn(n))));
   // Space out ranges between converted values: "2 ft 11 in–3 ft 11 in" → "2 ft 11 in – 3 ft 11 in"
-  t = t.replace(/(?<![-\w])(in|ft|lb|mph|gal\/min|psi|lbf|ft³)\s*[–-]\s*(\d)/g, "$1 – $2"); // (?<!-) keeps "4-in-1" intact
+  t = t.replace(/(?<![-\w])(in|ft|lb|mph|gal\/min|psi|lbf|ft³|"|'|\))\s*[–-]\s*(\d)/g, "$1 – $2"); // (?<!-) keeps "4-in-1" intact
   return t;
 }
 

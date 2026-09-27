@@ -13,7 +13,8 @@ import { AddToQuoteButton } from "@/components/equipment/AddToQuoteButton";
 import { ConfigurationTable } from "@/components/equipment/ConfigurationTable";
 import { SpecTable } from "@/components/equipment/SpecTable";
 import { ProductSubnav } from "@/components/equipment/ProductSubnav";
-import { AttachmentList } from "@/components/equipment/AttachmentList";
+import { AttachmentPicker } from "@/components/equipment/AttachmentPicker";
+import { ConfigurationPicker } from "@/components/equipment/ConfigurationPicker";
 import { ProductCard } from "@/components/equipment/ProductCard";
 import { LeadForm } from "@/components/quote/LeadForm";
 import { ServiceCentreStrip } from "@/components/service/ServiceCentre";
@@ -143,13 +144,12 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
                 )}
                 {m.configurations.length > 1 && <a href="#configurations" className="mt-1 inline-block text-[13px] font-semibold text-navy hover:text-electric">{m.configurations.length} configurations available</a>}
               </div>
-              <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                <AddToQuoteButton kind="machine" id={m.id} configurationId={m.configurations.length === 1 ? m.configurations[0].id : undefined} size="lg" />
-                {m.builderEnabled ? (
-                  <Button href={`/builder/excavator?model=${m.slug}`} variant="secondary" size="lg" arrow>Build This Machine</Button>
-                ) : (
-                  <Button href={site.phoneHref} variant="secondary" size="lg" icon={<Phone className="size-4" aria-hidden />}>Call {site.phone}</Button>
-                )}
+              <div className="mt-5">
+                <ConfigurationPicker machine={m} />
+                <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                  {m.builderEnabled && <Button href={`/builder/excavator?model=${m.slug}`} variant="secondary" size="md" arrow>Build a full package</Button>}
+                  <Button href={site.phoneHref} variant="secondary" size="md" icon={<Phone className="size-4" aria-hidden />}>Call {site.phone}</Button>
+                </div>
               </div>
               <ul className="mt-5 grid gap-2 text-[13px] text-grey sm:grid-cols-3">
                 {m.warranty && <li className="flex items-center gap-2"><ShieldCheck className="size-4 text-navy" aria-hidden />{m.warranty}</li>}
@@ -249,8 +249,8 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
       {compat.length > 0 && (
         <section id="attachments" className="section scroll-mt-32">
           <Container>
-            <SectionHeading title={`Attachments for the ${m.modelName}`} subtitle="Everything below is confirmed to fit this model. Add attachments to your quote alongside the machine, or configure the whole package in the builder." rule={false} link={{ href: "/attachments/excavator-attachments", label: "All attachments" }} />
-            <AttachmentList attachments={compat} machine={m} />
+            <SectionHeading title={`Attachments for the ${m.modelName}`} subtitle={`Every attachment below is listed by RIPPA for the ${m.modelName}. Pick the size or version, add it to your quote beside the machine, and we confirm fitment against your serial number.`} rule={false} link={{ href: "/attachments/excavator-attachments", label: "All attachments" }} />
+            <AttachmentPicker attachments={compat} machine={m} />
             {m.plateType && (
               <div className="mt-5 rounded-card border border-line bg-light/60 p-4 text-sm text-charcoal">
                 <p className="font-bold">Attachment plate: {plateLabels[m.plateType] ?? m.plateType}</p>

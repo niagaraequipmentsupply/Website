@@ -5,6 +5,7 @@ import { EquipmentImage } from "@/components/ui/EquipmentImage";
 import { SpecList } from "@/components/equipment/SpecList";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { ConfigurationAxes } from "@/components/equipment/ConfigurationPicker";
 import { BuilderSection } from "./BuilderSection";
 import { formatPrice } from "@/lib/format";
 import { machinePrice, machineHasMultiplePrices } from "@/lib/pricing";
@@ -32,15 +33,12 @@ export function ModelSelector({ machines, selectedId, configurationId, onSelect,
                 <h3 className="display mt-3 text-2xl text-charcoal">{m.modelName}</h3>
                 <SpecList specs={m.specs.filter((s) => s.highlight)} compact className="mt-2 flex-1" />
                 {selected && m.configurations.length > 1 ? (
-                  <label className="mt-3 block text-[12px] font-semibold text-grey">
-                    Configuration
-                    <select value={configurationId ?? ""} onChange={(e) => onConfiguration(e.target.value || undefined)} className="mt-1 h-10 w-full rounded-btn border border-navy bg-white px-2 text-sm font-medium text-charcoal">
-                      <option value="">Choose configuration…</option>
-                      {m.configurations.map((c) => <option key={c.id} value={c.id}>{c.label}{c.price !== undefined ? ` — ${formatPrice(c.price)}` : ""}</option>)}
-                    </select>
-                  </label>
+                  <div className="mt-3 rounded-md border border-line bg-white p-2.5">
+                    <ConfigurationAxes machine={m} value={configurationId ?? m.configurations[0]?.id} onChange={onConfiguration} compact />
+                    <p className="mt-2 truncate text-[11px] text-grey" title={(m.configurations.find((c) => c.id === configurationId) ?? m.configurations[0])?.label}>{(m.configurations.find((c) => c.id === configurationId) ?? m.configurations[0])?.label}</p>
+                  </div>
                 ) : (
-                  <p className="mt-3 text-sm font-bold text-navy">{machinePrice(m) !== undefined ? `${machineHasMultiplePrices(m) ? "From " : ""}${formatPrice(machinePrice(m))}` : "Request pricing"}</p>
+                  machinePrice(m) !== undefined ? <p className="mt-3 text-sm font-bold text-navy">{machineHasMultiplePrices(m) ? "From " : ""}{formatPrice(machinePrice(m))}</p> : <p className="mt-3 text-[12px] text-grey">{m.configurations.length > 1 ? `${m.configurations.length} configurations` : "Priced in your quote"}</p>
                 )}
                 <Button onClick={() => onSelect(m.id)} variant={selected ? "primary" : "secondary"} size="sm" className="mt-4 w-full" aria-pressed={selected} icon={selected ? <Check className="size-4" aria-hidden /> : undefined}>
                   {selected ? "Selected" : "Select"}

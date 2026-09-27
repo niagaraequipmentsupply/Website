@@ -13,6 +13,7 @@ import { useCatalogue } from "@/components/CatalogueProvider";
 import { track } from "@/lib/analytics";
 
 interface Props {
+  kind?: "excavators" | "skid-steers" | "loaders" | "track-dumpers";
   machine?: Machine;
   configurationLabel?: string;
   totals: BuildTotals;
@@ -24,7 +25,7 @@ interface Props {
   className?: string;
 }
 
-export function BuildSummary({ machine, configurationLabel, totals, financing, onRemoveLine, onRequest, onSave, savedAt, className = "" }: Props) {
+export function BuildSummary({ kind = "excavators", machine, configurationLabel, totals, financing, onRemoveLine, onRequest, onSave, savedAt, className = "" }: Props) {
   const { taxLabel, phoneHref } = useCatalogue();
   const attachmentLines = totals.lines.filter((l) => l.group === "attachment");
   const protectionLines = totals.lines.filter((l) => l.group === "protection" || l.group === "warranty" || l.group === "delivery");
@@ -45,7 +46,7 @@ export function BuildSummary({ machine, configurationLabel, totals, financing, o
       <div className="px-5 py-4">
         {machine ? (
           <div className="flex gap-4">
-            <EquipmentImage image={machine.images[0]} kind="excavators" alt={machine.modelName} className="w-32 shrink-0" ratio="aspect-square" sizes="128px" />
+            <EquipmentImage image={machine.images[0]} kind={kind} alt={machine.modelName} className="w-32 shrink-0" ratio="aspect-square" sizes="128px" />
             <div className="min-w-0">
               <p className="display text-xl text-charcoal">{machine.modelName}</p>
               <p className="text-[13px] text-grey">{configurationLabel ?? "Compact Excavator"}</p>

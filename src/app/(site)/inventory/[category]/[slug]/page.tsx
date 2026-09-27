@@ -25,6 +25,7 @@ import { machinePrice, machineHasMultiplePrices } from "@/lib/pricing";
 import { formatPrice } from "@/lib/format";
 import { plateLabels } from "@/lib/plates";
 import { isThin } from "@/lib/machines";
+import { builderHref } from "@/lib/builders";
 
 type Params = { category: string; slug: string };
 
@@ -150,7 +151,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
               <div className="mt-5">
                 <ConfigurationPicker machine={m} />
                 <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                  {m.builderEnabled && <Button href={`/builder/excavator?model=${m.slug}`} variant="secondary" size="md" arrow>Build a full package</Button>}
+                  {builderHref(m) && <Button href={builderHref(m)!} variant="secondary" size="md" arrow>Build a full package</Button>}
                   <Button href={site.phoneHref} variant="secondary" size="md" icon={<Phone className="size-4" aria-hidden />}>Call {site.phone}</Button>
                 </div>
               </div>
@@ -260,7 +261,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
                 <p className="mt-1 text-grey">{m.plateNote ?? "We can modify or change the attachment plate on this machine so you can keep using attachments you already own, or run a different plate standard. Ask about plate conversions when you request a quote."}</p>
               </div>
             )}
-            {m.builderEnabled && <Button href={`/builder/excavator?model=${m.slug}`} variant="secondary" arrow className="mt-6">Build a {m.modelName} package</Button>}
+            {builderHref(m) && <Button href={builderHref(m)!} variant="secondary" arrow className="mt-6">Build a {m.modelName} package</Button>}
           </Container>
         </section>
       )}

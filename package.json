@@ -19,7 +19,8 @@
     "import:attachments": "payload run src/scripts/import-attachments.ts",
     "purge:media": "payload run src/scripts/purge-orphan-media.ts",
     "preview": "next build && next start -p 3001",
-    "seed:category-images": "payload run src/scripts/seed-category-images.ts"
+    "seed:category-images": "payload run src/scripts/seed-category-images.ts",
+    "seed:post-covers": "payload run src/scripts/seed-post-covers.ts"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.88.0",

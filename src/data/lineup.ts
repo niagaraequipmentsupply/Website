@@ -336,7 +336,7 @@ const ssStd = (extra: string[]) => ["Quick-attach plate", "Auxiliary hydraulic c
 
 export const skidSteers: LineupModel[] = [
   {
-    slug: "rs03", modelName: "RS03", category: "skid-steers", series: "RS Series", sortOrder: 1, builderEnabled: false, featured: false,
+    slug: "rs03", modelName: "RS03", category: "skid-steers", series: "RS Series", sortOrder: 1, builderEnabled: true, featured: false,
     shortDescription: "Stand-on mini tracked loader, 45 in wide, Briggs & Stratton XR2100 gasoline. Landscaping, rentals and tight sites.",
     longDescription: "The RS03 is a stand-on compact track loader that fits through a 4-foot gate and turns in its own length. A Briggs & Stratton XR2100 gasoline engine drives a triple gear pump with a 50.4 L/min combined flow, so it runs augers, trenchers, sweepers and grapples as well as buckets. Two groups of five attachment lines let you run multi-function attachments at once. Ideal for landscaping crews, hardscape, farm chores and rental fleets.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
@@ -364,7 +364,7 @@ export const skidSteers: LineupModel[] = [
     brochure: "RIPPA-RS03-Spec-Sheet.pdf", targetUsers: "Landscapers, homeowners and rental fleets needing a gate-width loader", noiseLevel: "Standard working level", indoorUse: false,
   },
   {
-    slug: "rs04", modelName: "RS04", category: "skid-steers", series: "RS Series", sortOrder: 2, builderEnabled: false, featured: true,
+    slug: "rs04", modelName: "RS04", category: "skid-steers", series: "RS Series", sortOrder: 2, builderEnabled: true, featured: true,
     shortDescription: "Stand-on compact loader with Kubota Z482 diesel or gasoline power, tracked or wheeled. 480 kg tipping load, 45 in wide.",
     longDescription: "The RS04 is the diesel step up from the RS03: a Kubota Z482 driving a triple gear pump with 42 L/min combined flow, 480 kg tipping load and a 2,080 mm lift height, still only 1,150 mm wide. Tracked or wheeled undercarriage, quick-change travel module, two groups of five auxiliary lines. Built for construction, landscaping and farm work in tight spaces.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
@@ -396,7 +396,7 @@ export const skidSteers: LineupModel[] = [
     brochure: "RIPPA-RS04-Spec-Sheet.pdf", targetUsers: "Low sheds, confined agricultural facilities and small projects in tight spaces", noiseLevel: "Standard working level", indoorUse: false,
   },
   {
-    slug: "rs06", modelName: "RS06", category: "skid-steers", series: "RS Series", sortOrder: 3, builderEnabled: false, featured: false,
+    slug: "rs06", modelName: "RS06", category: "skid-steers", series: "RS Series", sortOrder: 3, builderEnabled: true, featured: false,
     shortDescription: "Stand-on tracked loader with Kubota D1105, load-sensing piston pump (112.5 L/min), vertical lift and 600 kg tipping load.",
     longDescription: "The RS06 brings load-sensing hydraulics to the stand-on class. A Kubota D1105 diesel drives a 112.5 L/min piston pump through a load-sensing multi-section valve, so flow and pressure follow the load for smooth multi-tasking and less heat. Vertical-lift arms reach 2,530 mm, tipping load is 600 kg, and dual-speed travel tops out at 6.5 km/h. 230 mm wide tracks minimise ground damage on finished sites.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
@@ -424,7 +424,7 @@ export const skidSteers: LineupModel[] = [
     brochure: "RIPPA-RS06-Spec-Sheet.pdf", targetUsers: "Small job sites, farms and municipal maintenance needing flexible operation", noiseLevel: "Standard working level", indoorUse: false,
   },
   {
-    slug: "rs07", modelName: "RS07", category: "skid-steers", series: "RS Series", sortOrder: 4, builderEnabled: false, featured: true,
+    slug: "rs07", modelName: "RS07", category: "skid-steers", series: "RS Series", sortOrder: 4, builderEnabled: true, featured: true,
     shortDescription: "Cab skid steer with Kubota D1105, four-pump pilot hydraulics, tracked or wheeled. 670 kg tipping load, 8 km/h travel.",
     longDescription: "The RS07 is a sit-in skid steer with an enclosed cab in a 1,100 mm wide body. Kubota D1105 diesel, a four-pump hydraulic system (two closed-circuit drive pumps, charge pump and gear pump) with pilot multi-way valve, 670 kg tipping load, 2,260 mm lift and 8 km/h travel. Available tracked or wheeled. Cab heater, wiper with independent switch and a comfortable seat make it a year-round machine.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
@@ -455,7 +455,7 @@ export const skidSteers: LineupModel[] = [
     brochure: "RIPPA-RS07-Spec-Sheet.pdf", targetUsers: "Precision stacking and loading at height with forward visibility", noiseLevel: "Quiet & comfortable", indoorUse: false,
   },
   {
-    slug: "rs10", modelName: "RS10", category: "skid-steers", series: "RS Series", sortOrder: 5, builderEnabled: false, featured: true,
+    slug: "rs10", modelName: "RS10", category: "skid-steers", series: "RS Series", sortOrder: 5, builderEnabled: true, featured: true,
     shortDescription: "Full-size wheeled skid steer with Kubota V2607 (47.6 hp), enclosed cab, 1,212 kg tipping load and 10 km/h travel.",
     longDescription: "The RS10 is a full-size wheeled skid steer for contractors, landscapers and bulk-material yards. A Kubota V2607 diesel drives a four-pump hydraulic system with pilot multi-way valve, 1,212 kg tipping load, 3,029 mm lift height and 10 km/h travel. Spacious enclosed cab with side-opening door, air conditioning, floating bucket function and auto bucket levelling. Auxiliary flow of 46.2 L/min runs sweepers, augers, snow blowers and grapples.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
@@ -483,7 +483,7 @@ export const skidSteers: LineupModel[] = [
     brochure: "RIPPA-RS10-Spec-Sheet.pdf", targetUsers: "Small contractors, landscaping and bulk material such as sand, gravel and feed", noiseLevel: "Quiet & comfortable", indoorUse: false,
   },
   {
-    slug: "rs20", modelName: "RS20", category: "skid-steers", series: "RS Series", sortOrder: 6, builderEnabled: false, featured: false,
+    slug: "rs20", modelName: "RS20", category: "skid-steers", series: "RS Series", sortOrder: 6, builderEnabled: true, featured: false,
     shortDescription: "Heavy-duty compact track loader with Kubota V2607, load-sensing hydraulics (329.8 L/min), 2,000 kg tipping load and 147 in lift.",
     longDescription: "The RS20 is the production loader of the range: 4,064 kg, 2,000 kg tipping load, 3,750 mm vertical lift and a Kubota V2607 driving a four-pump system with load-sensing piston pump and multi-section valve for 329.8 L/min total flow. 99 L/min auxiliary flow runs mulchers, stump grinders and snow blowers. Dual-speed travel to 10 km/h, spacious enclosed cab, vertical-lift, floating bucket and auto-levelling. Tracked or wheeled.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",

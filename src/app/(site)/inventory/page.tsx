@@ -33,7 +33,7 @@ export default async function InventoryPage() {
       </section>
       <section className="section-tight bg-light/60">
         <Container>
-          <SectionHeading title="Featured Equipment" link={{ href: "/builder/excavator", label: "Build an Excavator" }} />
+          <SectionHeading title="Featured Equipment" link={{ href: "/builder/excavator", label: "Build an Excavator or Skid Steer" }} />
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {featured.map((m) => <li key={m.id}><ProductCard machine={m} /></li>)}
           </ul>

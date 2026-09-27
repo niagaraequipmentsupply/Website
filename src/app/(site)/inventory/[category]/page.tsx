@@ -12,6 +12,7 @@ import { EquipmentImage } from "@/components/ui/EquipmentImage";
 import { ComparisonChart } from "@/components/equipment/ComparisonChart";
 import { AttachmentCard } from "@/components/equipment/AttachmentCard";
 import { getSiteContent, getCategory, getMachines } from "@/lib/catalogue";
+import { builderForCategory } from "@/lib/builders";
 
 type Params = { category: string };
 
@@ -48,7 +49,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
         aside={<EquipmentImage image={cat.image} kind={cat.slug} alt={cat.name} ratio="aspect-[16/9]" className="bg-white" />}
       >
         <div className="flex flex-wrap gap-3">
-          {cat.slug === "excavators" && <Button href="/builder/excavator" arrow>Build Your Excavator</Button>}
+          {builderForCategory(cat.slug) && <Button href={builderForCategory(cat.slug)!.href} arrow>Build Your {builderForCategory(cat.slug)!.label}</Button>}
           {hasChart && <Button href="#compare" variant="secondary">Compare Models</Button>}
           {attCat && <Button href={`/attachments/${attCat.slug}`} variant="secondary" arrow>{attCat.name}</Button>}
         </div>

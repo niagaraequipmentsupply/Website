@@ -17,15 +17,16 @@ interface Props {
   onAdd: (attachmentId: string, variantId?: string) => void;
   onRemove: (attachmentId: string, variantId?: string) => void;
   onQuantity: (attachmentId: string, variantId: string | undefined, qty: number) => void;
+  browseHref: string;
 }
 
-export function AttachmentSelector({ machine, attachments, selections, onAdd, onRemove, onQuantity }: Props) {
+export function AttachmentSelector({ machine, attachments, selections, onAdd, onRemove, onQuantity, browseHref }: Props) {
   const groups = useMemo(() => groupAttachments(attachments), [attachments]);
   const [type, setType] = useState<string>("all");
   const visible = type === "all" ? groups : groups.filter(([t]) => t === type);
   const selectedCount = selections.length;
   return (
-    <BuilderSection id="add-attachments" step={2} title="Add Attachments" text={machine ? `Attachments RIPPA lists for the ${machine.modelName}, grouped by type. Pick a size, then add.${selectedCount ? ` ${selectedCount} added.` : ""}` : "Select a model to see compatible attachments."} link={{ href: "/attachments/excavator-attachments", label: "Browse all attachments" }}>
+    <BuilderSection id="add-attachments" step={2} title="Add Attachments" text={machine ? `Attachments RIPPA lists for the ${machine.modelName}, grouped by type. Pick a size, then add.${selectedCount ? ` ${selectedCount} added.` : ""}` : "Select a model to see compatible attachments."} link={{ href: browseHref, label: "Browse all attachments" }}>
       {!machine ? (
         <p className="rounded-card bg-light p-6 text-center text-sm text-grey">Choose a model above to unlock compatible attachments.</p>
       ) : attachments.length === 0 ? (

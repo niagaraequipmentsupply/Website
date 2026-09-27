@@ -1,4 +1,5 @@
 "use client";
+import { builderForCategory } from "@/lib/builders";
 import Link from "next/link";
 import { X, Minus, Plus, ArrowRight } from "lucide-react";
 import { useQuote } from "@/store/quote";
@@ -21,7 +22,7 @@ export function QuoteList() {
         <div className="mt-4 flex flex-wrap justify-center gap-3 text-sm font-semibold text-navy">
           <Link href="/inventory" className="inline-flex items-center gap-1 hover:text-electric">Browse inventory <ArrowRight className="size-4" /></Link>
           <Link href="/attachments" className="inline-flex items-center gap-1 hover:text-electric">Browse attachments <ArrowRight className="size-4" /></Link>
-          <Link href="/builder/excavator" className="inline-flex items-center gap-1 hover:text-electric">Excavator builder <ArrowRight className="size-4" /></Link>
+          <Link href="/builder/excavator" className="inline-flex items-center gap-1 hover:text-electric">Excavator builder <ArrowRight className="size-4" /></Link><Link href="/builder/skid-steer" className="inline-flex items-center gap-1 hover:text-electric">Skid steer builder <ArrowRight className="size-4" /></Link>
         </div>
       </div>
     );
@@ -63,7 +64,7 @@ function QuoteRow({ item, catalogue, taxRate, onRemove, onQty }: { item: QuoteIt
   const m = catalogue.machines.find((x) => x.id === item.configuration.selectedModelId);
   return (
     <div className="flex gap-4">
-      <EquipmentImage image={m?.images[0]} kind="excavators" alt={m?.modelName ?? "Build"} className="w-24 shrink-0" ratio="aspect-square" sizes="96px" />
+      <EquipmentImage image={m?.images[0]} kind={m?.category ?? "excavators"} alt={m?.modelName ?? "Build"} className="w-24 shrink-0" ratio="aspect-square" sizes="96px" />
       <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-2">
           <div>
@@ -76,7 +77,7 @@ function QuoteRow({ item, catalogue, taxRate, onRemove, onQty }: { item: QuoteIt
           {totals.lines.map((l) => <li key={l.id}>• {l.label}{l.detail ? ` (${l.detail})` : ""}{l.quantity > 1 ? ` × ${l.quantity}` : ""} — {l.lineTotal !== undefined ? formatPrice(l.lineTotal) : "quote"}</li>)}
         </ul>
         <div className="mt-2 flex items-center justify-between text-sm">
-          <Link href="/builder/excavator" className="font-semibold text-navy hover:text-electric">Edit in builder</Link>
+          <Link href={(m && builderForCategory(m.category)?.href) ?? "/builder/excavator"} className="font-semibold text-navy hover:text-electric">Edit in builder</Link>
           <p className="font-bold text-charcoal">{totals.total > 0 ? `Est. ${formatPrice(totals.total)}${totals.unpricedCount > 0 ? " + items on request" : ""}` : "Priced on request"}</p>
         </div>
       </div>

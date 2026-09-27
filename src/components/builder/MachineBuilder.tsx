@@ -17,6 +17,7 @@ import { compatibleAttachments, findIncompatibleSelections, isAddonEligible } fr
 import { calculateTotals } from "@/lib/pricing";
 import type { PricedLine } from "@/lib/types";
 import { track } from "@/lib/analytics";
+import type { BuilderKind } from "@/lib/builders";
 
 const steps = [
   { id: "model", label: "Choose Model", href: "#choose-model" },
@@ -25,7 +26,7 @@ const steps = [
   { id: "review", label: "Review Build", href: "#review" },
 ];
 
-export function ExcavatorBuilder() {
+export function MachineBuilder({ builder }: { builder: BuilderKind }) {
   const router = useRouter();
   const initialModelId = useSearchParams().get("model") ?? undefined;
   const b = useBuilder();
@@ -33,7 +34,7 @@ export function ExcavatorBuilder() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const { catalogue, financing, taxRate } = useCatalogue();
 
-  const machines = useMemo(() => catalogue.machines.filter((m) => m.builderEnabled && m.category === "excavators"), [catalogue]);
+  const machines = useMemo(() => catalogue.machines.filter((m) => m.builderEnabled && m.category === builder.category), [catalogue, builder]);
   const machine = catalogue.machines.find((m) => m.id === b.selectedModelId);
   const attachmentsById = useMemo(() => new Map(catalogue.attachments.map((a) => [a.id, a])), [catalogue]);
 
@@ -41,13 +42,14 @@ export function ExcavatorBuilder() {
   const hydrated = useBuilder((s) => s.hydrated);
   useEffect(() => {
     if (!hydrated) return;
+    b.setBuilderKind(builder.kind);
     b.pruneUnknown(new Set(catalogue.machines.map((m) => m.id)), new Set(catalogue.attachments.map((a) => a.id)), new Set(catalogue.addons.map((a) => a.id)), new Set(catalogue.warranties.map((w) => w.id)));
     const target = initialModelId && machines.find((m) => m.id === initialModelId || m.slug === initialModelId);
     if (target && !useBuilder.getState().selectedModelId) b.selectModel(target.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated, initialModelId, catalogue]);
 
-  const compatAttachments = useMemo(() => (machine ? compatibleAttachments(catalogue.attachments.filter((a) => a.attachmentCategory === "excavator-attachments"), machine) : []), [machine, catalogue]);
+  const compatAttachments = useMemo(() => (machine ? compatibleAttachments(catalogue.attachments.filter((a) => a.attachmentCategory === builder.attachmentCategory), machine) : []), [machine, catalogue, builder]);
   const eligibleAddons = useMemo(() => (machine ? catalogue.addons.filter((a) => a.selectable && isAddonEligible(a, machine)) : catalogue.addons.filter((a) => a.selectable)), [machine, catalogue]);
   const eligibleWarranties = useMemo(() => (machine ? catalogue.warranties.filter((w) => isAddonEligible(w, machine)) : catalogue.warranties), [machine, catalogue]);
 
@@ -84,7 +86,7 @@ export function ExcavatorBuilder() {
   const pendingTarget = pending ? machines.find((m) => m.id === pending.targetModelId) : undefined;
 
   const summary = (
-    <BuildSummary machine={machine} configurationLabel={machine?.configurations?.find((c) => c.id === b.selectedConfigurationId)?.label} totals={totals} financing={financing} onRemoveLine={onRemoveLine} onRequest={onRequest} onSave={onSave} savedAt={b.savedAt} />
+    <BuildSummary kind={builder.category} machine={machine} configurationLabel={machine?.configurations?.find((c) => c.id === b.selectedConfigurationId)?.label} totals={totals} financing={financing} onRemoveLine={onRemoveLine} onRequest={onRequest} onSave={onSave} savedAt={b.savedAt} />
   );
 
   return (
@@ -94,8 +96,8 @@ export function ExcavatorBuilder() {
       </div>
       <Container className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 py-8 pb-28 lg:grid-cols-[minmax(0,7fr)_minmax(300px,3fr)] lg:pb-10">
         <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6">
-          <ModelSelector machines={machines} selectedId={b.selectedModelId} configurationId={b.selectedConfigurationId} onSelect={onSelectModel} onConfiguration={b.setConfiguration} />
-          <AttachmentSelector machine={machine} attachments={compatAttachments} selections={b.attachmentSelections} onAdd={b.addAttachment} onRemove={b.removeAttachment} onQuantity={b.setAttachmentQuantity} />
+          <ModelSelector machines={machines} selectedId={b.selectedModelId} configurationId={b.selectedConfigurationId} onSelect={onSelectModel} onConfiguration={b.setConfiguration} builder={builder} />
+          <AttachmentSelector machine={machine} attachments={compatAttachments} selections={b.attachmentSelections} onAdd={b.addAttachment} onRemove={b.removeAttachment} onQuantity={b.setAttachmentQuantity} browseHref={builder.browseHref} />
           <ProtectionOptions addons={eligibleAddons} warranties={eligibleWarranties} selectedAddons={b.addonSelections} warrantyId={b.warrantySelectionId} onToggleAddon={b.toggleAddon} onWarranty={b.setWarranty} disabled={!machine} />
           <FinancingSelector value={b.financeSelection} onChange={b.setFinance} config={financing} />
           <div id="review" className="scroll-mt-28 lg:hidden">{summary}</div>

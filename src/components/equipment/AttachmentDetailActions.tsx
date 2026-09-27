@@ -5,6 +5,7 @@ import { attachmentUnitPrice } from "@/lib/pricing";
 import { formatPrice } from "@/lib/format";
 import { AddToQuoteButton } from "./AddToQuoteButton";
 import { Button } from "@/components/ui/Button";
+import { builderForAttachmentCategory } from "@/lib/builders";
 
 const shortPlate: Record<string, string> = { "toro-dingo": "Toro Dingo plate", "rippa-mini": "RIPPA plate", "universal-ssl": "Universal plate" };
 const field = "h-11 w-full rounded-btn border border-line bg-white px-3 text-[15px] text-charcoal focus:border-electric";
@@ -58,7 +59,7 @@ export function AttachmentDetailActions({ attachment, machines }: { attachment: 
       </div>
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
         <AddToQuoteButton kind="attachment" id={attachment.id} variantId={current?.id} quantity={qty} size="lg" />
-        {attachment.attachmentCategory === "excavator-attachments" && <Button href={`/builder/excavator?model=${fits.find((m) => m.id === modelId)?.slug ?? ""}`} variant="secondary" size="lg" arrow>Configure in Builder</Button>}
+        {builderForAttachmentCategory(attachment.attachmentCategory) && <Button href={`${builderForAttachmentCategory(attachment.attachmentCategory)!.href}?model=${fits.find((m) => m.id === modelId)?.slug ?? ""}`} variant="secondary" size="lg" arrow>Configure in Builder</Button>}
       </div>
     </div>
   );

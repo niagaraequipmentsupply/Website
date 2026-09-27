@@ -22,6 +22,8 @@ import { financing as seedFinancing, financePromos as seedPromos } from "@/data/
 export const getPayloadClient = cache(async () => getPayload({ config }));
 
 const relId = (v: number | { id: number } | null | undefined) => (v == null ? undefined : String(typeof v === "number" ? v : v.id));
+/** Static menu tiles generated for the Service Centre group (public/images/menu, 800×600). */
+const menuImage = (name: string, alt: string): ImageAsset => ({ src: `/images/menu/${name}.jpg`, alt, width: 800, height: 600 });
 const relIds = (v: (number | { id: number })[] | null | undefined) => (v ?? []).map(relId).filter((x): x is string => !!x);
 
 /** Media docs by id for relations fetched at depth 0 (set per getSiteContent run). */
@@ -270,10 +272,10 @@ async function loadSiteContent(): Promise<SiteContent> {
     {
       label: "Service Centre", href: "/service",
       children: [
-        { label: "RIPPA Service Centre", href: "/service", description: "Warranty handled, certified repairs, owner training. Every RIPPA owner welcome", artKind: "generic" },
-        { label: "Warranty & Claims", href: "/service#warranty", description: "We diagnose, file with RIPPA and fit the parts", artKind: "generic" },
-        { label: "RIPPA Parts", href: "/service/parts", description: "Genuine parts shipped across Canada", artKind: "attachment" },
-        { label: "Oil & Lubricants", href: "/lubricants", description: "Chevron and Catalys oils, greases and fluids", artKind: "generic" },
+        { label: "RIPPA Service Centre", href: "/service", description: "Warranty handled, certified repairs, owner training. Every RIPPA owner welcome", artKind: "generic", image: menuImage("service-centre", "Technician servicing a RIPPA excavator") },
+        { label: "Warranty & Claims", href: "/service#warranty", description: "We diagnose, file with RIPPA and fit the parts", artKind: "generic", image: menuImage("warranty", "Warranty shield and service form") },
+        { label: "RIPPA Parts", href: "/service/parts", description: "Genuine parts shipped across Canada", artKind: "attachment", image: menuImage("parts", "Genuine RIPPA filters, hoses and bucket teeth") },
+        { label: "Oil & Lubricants", href: "/lubricants", description: "Chevron and Catalys oils, greases and fluids", artKind: "generic", image: menuImage("lubricants", "Oil pail, hydraulic oil and grease gun") },
       ],
     },
     { label: "Blog", href: "/blog" },

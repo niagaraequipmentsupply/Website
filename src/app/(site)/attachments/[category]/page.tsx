@@ -10,6 +10,7 @@ import { slugify } from "@/lib/format";
 import Link from "next/link";
 import { plateLabels } from "@/lib/plates";
 import { groupAttachments } from "@/lib/attachment-groups";
+import { builderForAttachmentCategory } from "@/lib/builders";
 
 type Params = { category: string };
 
@@ -42,7 +43,7 @@ export default async function AttachmentCategoryPage({ params, searchParams }: {
   return (
     <>
       <PageHero title={cat.name} text={cat.description} crumbs={[{ href: "/attachments", label: "Attachments" }, { label: cat.name }]}>
-        {cat.slug === "excavator-attachments" && <Button href="/builder/excavator" arrow>See What Fits Your Excavator</Button>}
+        {builderForAttachmentCategory(cat.slug) && <Button href={builderForAttachmentCategory(cat.slug)!.href} arrow>See What Fits Your {builderForAttachmentCategory(cat.slug)!.label}</Button>}
       </PageHero>
       <section className="section">
         <Container>

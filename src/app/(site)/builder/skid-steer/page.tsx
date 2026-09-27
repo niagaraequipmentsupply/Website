@@ -9,11 +9,11 @@ import { MachineBuilder } from "@/components/builder/MachineBuilder";
 import { getSiteContent } from "@/lib/catalogue";
 import { BUILDERS } from "@/lib/builders";
 
-const builder = BUILDERS["excavator"];
+const builder = BUILDERS["skid-steer"];
 
 export const metadata: Metadata = {
-  title: "Excavator Builder | Configure Your RIPPA Mini Excavator",
-  description: "Choose your RIPPA excavator model and configuration, add compatible attachments, protection packages and warranty, then request your build from Niagara Equipment Supply.",
+  title: "Skid Steer Builder | Configure Your RIPPA Mini Skid Steer",
+  description: "Choose your RIPPA skid steer model (RS03 to RS20), pick the engine and undercarriage, add the buckets, forks, augers and attachments that fit its plate, then request your build from Niagara Equipment Supply.",
   alternates: { canonical: builder.href },
 };
 

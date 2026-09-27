@@ -11,6 +11,9 @@ export interface PendingModelChange {
 
 interface BuilderState extends BuilderConfiguration {
   savedAt?: string;
+  /** Which builder the saved build belongs to ("excavator" | "skid-steer"); switching builders starts a fresh build. */
+  builderKind?: string;
+  setBuilderKind: (kind: string) => void;
   /** True once localStorage has been read. */
   hydrated: boolean;
   pruneUnknown: (machineIds: Set<string>, attachmentIds: Set<string>, addonIds: Set<string>, warrantyIds: Set<string>) => void;
@@ -101,6 +104,7 @@ export const useBuilder = create<BuilderState>()(
       setFinance: (financeSelection) => set({ financeSelection }),
       markSaved: () => set({ savedAt: new Date().toISOString() }),
       reset: () => set({ ...initial, savedAt: undefined, pendingModelChange: undefined }),
+      setBuilderKind: (kind) => { if (get().builderKind !== kind) set({ ...initial, savedAt: undefined, pendingModelChange: undefined, builderKind: kind }); },
     }),
     {
       name: "nes-builder",

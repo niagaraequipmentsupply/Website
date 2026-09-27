@@ -100,8 +100,10 @@ export default async function ServicePage() {
         </Container>
       </section>
 
-      <section className="section-tight bg-light/60">
-        <Container>
+      <section className="section-tight relative overflow-hidden bg-light/60">
+        <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/farm-field.jpg')] bg-cover bg-[position:center_35%]" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-white/92 via-white/88 to-white" />
+        <Container className="relative">
           <SectionHeading title="Support built around how you work" subtitle="A first machine on an acreage and a fleet on a job site need different things from a dealer. We set the Service Centre up for both." rule={false} />
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {owners.map((o) => <li key={o.title} className="flex gap-4 rounded-card border border-line bg-white p-5"><span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-tint text-navy"><o.icon className="size-6" strokeWidth={1.75} aria-hidden /></span><div><h3 className="text-base font-bold text-charcoal">{o.title}</h3><p className="mt-1 text-sm text-grey">{o.text}</p></div></li>)}

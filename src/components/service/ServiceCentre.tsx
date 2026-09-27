@@ -25,8 +25,10 @@ export const PILLARS: { icon: LucideIcon; title: string; text: string; href: str
 /** Compact strip for product pages and the builder: the promise plus the four pillars as links. */
 export function ServiceCentreStrip({ phone, phoneHref, className = "" }: { phone: string; phoneHref: string; className?: string }) {
   return (
-    <aside className={`rounded-card border border-navy/15 bg-navy p-5 text-white ${className}`} aria-label={SERVICE_CENTRE.name}>
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <aside className={`relative overflow-hidden rounded-card border border-navy/15 bg-navy p-5 text-white ${className}`} aria-label={SERVICE_CENTRE.name}>
+      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/service-bay.jpg')] bg-cover bg-center opacity-40" />
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-navy/60" />
+      <div className="relative flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
           <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/70">Backed by the</p>
           <p className="display mt-1 text-2xl leading-none">{SERVICE_CENTRE.name}</p>
@@ -37,7 +39,7 @@ export function ServiceCentreStrip({ phone, phoneHref, className = "" }: { phone
           <a href={phoneHref} className="inline-flex h-10 items-center gap-1.5 rounded-btn border border-white/40 px-4 text-sm font-semibold text-white hover:bg-white/10"><Phone className="size-4" aria-hidden />{phone}</a>
         </div>
       </div>
-      <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="relative mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
         {PILLARS.map((p) => (
           <li key={p.title}>
             <Link href={p.href} className="flex h-full items-start gap-2 rounded-md bg-white/10 px-3 py-2.5 text-sm hover:bg-white/15">

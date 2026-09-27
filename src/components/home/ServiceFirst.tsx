@@ -16,8 +16,9 @@ export async function ServiceFirst() {
     { icon: Droplets, title: "Oil & lubricant programs", text: "Chevron and Catalys oils over the counter, or a supply program for your farm, shop or fleet.", href: "/lubricants", cta: "Set up a program" },
   ];
   return (
-    <section className="section bg-light/60">
-      <Container>
+    <section className="section relative overflow-hidden bg-light/60">
+      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/light-grid.svg')] bg-cover bg-center opacity-50" />
+      <Container className="relative">
         <SectionHeading eyebrow={SERVICE_CENTRE.name} title={SERVICE_CENTRE.tagline} subtitle={SERVICE_CENTRE.promise} rule={false} link={{ href: "/service", label: "Visit the Service Centre" }} />
         <ul className="grid gap-4 md:grid-cols-3">
           {tiles.map((t) => (

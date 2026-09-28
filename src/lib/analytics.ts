@@ -22,8 +22,10 @@ export function registerAnalytics(fn: Dispatcher) {
 
 export function track(event: AnalyticsEvent) {
   if (typeof window === "undefined") return;
-  const w = window as unknown as { dataLayer?: unknown[] };
-  w.dataLayer?.push({ event: event.name, ...event });
+  const w = window as unknown as { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void };
+  // GA4: every site event (quote_add, builder_complete, call_click, lead_submit…) becomes a GA4 event with its fields as params.
+  if (typeof w.gtag === "function") { const { name, ...params } = event as { name: string } & Record<string, unknown>; w.gtag("event", name, params); }
+  else w.dataLayer?.push({ event: event.name, ...event });
   for (const fn of dispatchers) fn(event);
   if (process.env.NODE_ENV === "development") console.debug("[analytics]", event);
 }

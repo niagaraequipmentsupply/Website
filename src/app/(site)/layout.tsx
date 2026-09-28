@@ -5,6 +5,7 @@ import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { OrganizationSchema } from "@/components/layout/OrganizationSchema";
+import { Analytics } from "@/components/layout/Analytics";
 import { CatalogueProvider } from "@/components/CatalogueProvider";
 import { getSiteContent } from "@/lib/catalogue";
 import { site as siteDefaults } from "@/data/site";
@@ -38,6 +39,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
           <Footer site={site} />
         </CatalogueProvider>
         <OrganizationSchema site={site} />
+        <Analytics />
       </body>
     </html>
   );

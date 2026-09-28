@@ -8,7 +8,7 @@ import { CtaBand } from "@/components/home/CtaBand";
 import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
-  title: "RIPPA Equipment for Sale in Ontario | Mini Excavators, Skid Steers & Loaders",
+  title: "RIPPA Equipment for Sale in Ontario",
   description: "Browse RIPPA mini excavators, skid steers, loaders, backhoe loaders and track dumpers available from Niagara Equipment Supply across Ontario.",
   alternates: { canonical: "/inventory" },
 };

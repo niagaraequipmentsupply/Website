@@ -7,8 +7,8 @@ import { getSiteContent } from "@/lib/catalogue";
 import { site as siteDefaults } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Contact Us",
-  description: `Contact Niagara Equipment Supply in ${siteDefaults.address.city}, Ontario for RIPPA equipment sales, parts, service and quotes.`,
+  title: "Contact Us in Thorold, Ontario",
+  description: `Call, email or visit Niagara Equipment Supply at 16-2275 Hwy 20, ${siteDefaults.address.city}, Ontario for RIPPA equipment sales, parts, the RIPPA Service Centre and written quotes.`,
   alternates: { canonical: "/contact" },
 };
 

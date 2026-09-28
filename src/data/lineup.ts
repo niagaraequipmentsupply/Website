@@ -35,7 +35,7 @@ export const lineup: LineupModel[] = [
   // ============================================================ R06 ECO
   {
     slug: "r06-eco", modelName: "R06 ECO", category: "excavators", series: "ECO Series", sortOrder: 1, builderEnabled: true, featured: false,
-    shortDescription: "Micro excavator that fits through a 30-inch doorway. Kubota or Briggs & Stratton power for interiors, backyards and rentals.",
+    shortDescription: "Backyard-scale micro excavator that fits through a 30\" gate. Kubota or Briggs & Stratton power, 39\" dig depth, tows behind a half-ton.",
     longDescription: "At 747 mm wide the R06 ECO works where nothing else will: narrow side yards, basements, crawlspaces and interior renovations. A 70° boom swing each way lets you dig against walls, retractable tracks widen from 747 to 1,000 mm for stability, and the reinforced dozer blade with quick-fold pin handles levelling. Choose the Kubota Z482 diesel or the Briggs & Stratton gasoline engine, in open canopy or enclosed cab.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
     configurations: [
@@ -63,13 +63,13 @@ export const lineup: LineupModel[] = [
     standardEquipment: ["Dozer blade with quick-fold width pin", "Retractable undercarriage 747–1,000 mm", "Four-way auxiliary hydraulic lines", "Mechanical quick coupler", "Four-post canopy with front safety net (canopy version)", "Foot pedal for boom swing", "LED work lights and warning light", "Lifting eyes", "Dashboard with hour meter"],
     applications: ["Interior renovation", "Backyard landscaping", "Fence posts", "Drainage and utility trenching", "Rental fleets"],
     faqs: excFaqs("R06 ECO", "747 mm (29.4 in)", "747 kg (1,647 lb)", "It passes a standard 30-inch doorway and any residential gate."),
-    images: [{ key: "r06-eco-render", alt: "RIPPA R06 ECO micro excavator" }, { key: "r06-eco-cover", alt: "RIPPA R06 ECO on site" }, { key: "r06-eco-action", alt: "RIPPA R06 ECO digging" }, { key: "r06-eco-feat-jobsite", alt: "RIPPA R06 ECO working in a narrow corridor" }],
+    images: [{ key: "r06-eco-render", alt: "RIPPA R06 ECO micro excavator" }, { key: "r06-eco-canopy", alt: "RIPPA R06 ECO micro excavator, open canopy" }, { key: "r06-eco-cover", alt: "RIPPA R06 ECO on site" }, { key: "r06-eco-action", alt: "RIPPA R06 ECO digging" }, { key: "r06-eco-feat-jobsite", alt: "RIPPA R06 ECO working in a narrow corridor" }],
     brochure: "RIPPA-R06-ECO-Spec-Sheet.pdf", targetUsers: "Homeowners, interior contractors and rental fleets needing doorway access", noiseLevel: "Ultra-quiet", indoorUse: true,
   },
   // ============================================================ R10 ECO
   {
     slug: "r10-eco", modelName: "R10 ECO", category: "excavators", series: "ECO Series", sortOrder: 2, builderEnabled: true, featured: true,
-    shortDescription: "1-tonne class homeowner excavator. Retractable tracks from 900 mm, Kubota Z482 diesel or gasoline, canopy or cab.",
+    shortDescription: "1-ton micro excavator with retractable tracks and a 6 ft dig depth. Gas or Kubota diesel, open canopy or enclosed cab.",
     longDescription: "The R10 ECO is RIPPA's ultra-compact starter machine for backyard projects, fence installation and light digging. Hydraulically retractable tracks narrow to 900 mm for gates and widen to 1,200 mm for stability, and the boom swings 74° left / 47° right for working against walls. A reinforced dozer blade with quick-fold pin, four-way auxiliary lines and a standard hydraulic thumb make it work-ready out of the crate.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
     configurations: [
@@ -97,13 +97,13 @@ export const lineup: LineupModel[] = [
     standardEquipment: ["Hydraulic thumb", "Mechanical quick coupler", "Four-way auxiliary hydraulic lines", "Retractable undercarriage 900–1,200 mm", "Quick-fold dozer blade", "Four-post canopy with front safety net and plastic roof (canopy version)", "Foot pedal for boom swing", "LED spotlight and warning light", "Rearview mirror", "Lifting holes", "Dashboard with hour meter", "Counterweight"],
     applications: ["Backyard projects", "Fence installation", "Garden beds and drainage", "Light trenching", "Rental fleets"],
     faqs: excFaqs("R10 ECO", "912 mm (35.9 in)", "1,142 kg (2,518 lb)", "It passes a standard 36-inch gate with the tracks retracted."),
-    images: [{ key: "r10-eco-render", alt: "RIPPA R10 ECO mini excavator" }, { key: "r10-eco-cover", alt: "RIPPA R10 ECO on site" }, { key: "r10-eco-action", alt: "RIPPA R10 ECO digging" }, { key: "r10-eco-feat-jobsite", alt: "RIPPA R10 ECO in a backyard" }],
+    images: [{ key: "r10-eco-render", alt: "RIPPA R10 ECO mini excavator" }, { key: "r10-eco-cab", alt: "RIPPA R10 ECO enclosed cab, Kubota diesel" }, { key: "r10-eco-canopy-gas", alt: "RIPPA R10 ECO open canopy, Briggs & Stratton gas engine" }, { key: "r10-eco-cab-gas", alt: "RIPPA R10 ECO enclosed cab, gas engine" }, { key: "r10-eco-cover", alt: "RIPPA R10 ECO on site" }, { key: "r10-eco-action", alt: "RIPPA R10 ECO digging" }, { key: "r10-eco-feat-jobsite", alt: "RIPPA R10 ECO in a backyard" }],
     brochure: "RIPPA-R10-ECO-Spec-Sheet.pdf", targetUsers: "Homeowners for backyard projects", noiseLevel: "Ultra-quiet", indoorUse: true,
   },
   // ============================================================ R13 PRO
   {
     slug: "r13-pro", modelName: "R13 PRO", category: "excavators", series: "PRO Series", sortOrder: 3, builderEnabled: true, featured: false,
-    shortDescription: "Compact PRO excavator, 849 mm wide with Kubota D722 power, ROPS canopy and retractable tracks. Open canopy only.",
+    shortDescription: "Pilot-control 1.3-ton with hydraulic thumb, quick coupler and steel tracks standard. The value PRO for fence, deck and utility crews.",
     longDescription: "The R13 PRO puts PRO-series build quality into an 849 mm machine. Kubota D722 diesel, retractable tracks from 750 to 990 mm, a retractable dozer blade, front ROPS bar, hydraulic thumb and quick coupler as standard. Sound-insulated seat cover, nickel-plated grease fittings and lower-frame lifting points round out a machine built for landscapers and utility contractors who work in confined spaces.",
     certifications: ["CE", "EPA", "ROPS"], warranty: "2 year warranty",
     configurations: [{ id: "r13-d722-canopy", label: "Kubota D722 diesel · Open canopy", engine: "Kubota D722 diesel", horsepower: "13.7 hp (10.2 kW)", operatingWeight: "1,323 kg", price: 24650 }],
@@ -126,13 +126,13 @@ export const lineup: LineupModel[] = [
     standardEquipment: ["Hydraulic thumb", "Quick coupler", "Four-way auxiliary hydraulic lines", "Retractable undercarriage 750–990 mm", "Retractable dozer blade", "Front ROPS bar (foldable)", "Canopy with front safety net", "Roof spotlight, warning light and rearview mirror", "Sound-insulated seat cover", "Nickel-plated grease fittings", "Lower-frame lifting points", "Full-opening bonnet"],
     applications: ["Landscaping", "Trenching", "Utility work", "Backyard access jobs", "Maintenance contractors"],
     faqs: excFaqs("R13 PRO", "849 mm (33.4 in)", "1,323 kg (2,917 lb)", "It passes a 36-inch gate with room to spare.").filter((f) => !f.question.startsWith("Open canopy")).concat([{ question: "Is there an enclosed cab version?", answer: "No. The R13 PRO is canopy-only. For an enclosed cab in this size class, look at the R15 ECO or R18 PRO." }]),
-    images: [{ key: "r13-pro-render", alt: "RIPPA R13 PRO mini excavator" }, { key: "r13-pro-cover", alt: "RIPPA R13 PRO on site" }, { key: "r13-pro-action", alt: "RIPPA R13 PRO digging" }, { key: "r13-pro-feat-jobsite", alt: "RIPPA R13 PRO trenching beside a house" }],
+    images: [{ key: "r13-pro-render", alt: "RIPPA R13 PRO mini excavator" }, { key: "r13-pro-canopy", alt: "RIPPA R13 PRO open canopy with Kubota D722" }, { key: "r13-pro-cover", alt: "RIPPA R13 PRO on site" }, { key: "r13-pro-action", alt: "RIPPA R13 PRO digging" }, { key: "r13-pro-feat-jobsite", alt: "RIPPA R13 PRO trenching beside a house" }],
     brochure: "RIPPA-R13-PRO-Spec-Sheet.pdf", targetUsers: "Budget-conscious buyers needing stronger lift in a narrow machine", noiseLevel: "Ultra-quiet", indoorUse: false,
   },
   // ============================================================ R15 ECO
   {
     slug: "r15-eco", modelName: "R15 ECO", category: "excavators", series: "ECO Series", badge: "Most Popular", sortOrder: 4, builderEnabled: true, featured: true,
-    shortDescription: "Our best-selling compact excavator. Kubota D722, retractable tracks 900–1,200 mm, canopy or enclosed cab.",
+    shortDescription: "1.5-ton with a 9-way pilot valve and retractable tracks. Narrow enough for a gate, stable enough for stumps and footings.",
     longDescription: "The R15 ECO balances size, power and price for homeowners and small farms. A Kubota D722 diesel drives a machine that narrows to 900 mm for doorways and widens to 1,200 mm for stability, with a 52° / 40° boom swing, quick-fold reinforced dozer blade, dual pilot foot valves and four-way auxiliary lines. Available with the four-post safety canopy or a fully enclosed cab.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
     configurations: cabPair("r15-d722", "Kubota D722 diesel", "13.7 hp (10.2 kW)", "1,532 kg", "1,600 kg", 22677, 24049),
@@ -155,13 +155,13 @@ export const lineup: LineupModel[] = [
     standardEquipment: ["Four-way auxiliary hydraulic lines", "Quick coupler", "Retractable undercarriage 900–1,200 mm", "Quick-fold dozer blade", "Dual pilot foot valves", "High / low travel speed", "Four-post canopy with front safety net (canopy version)", "Front headlight and warning light", "Sound-insulated seat cover", "Lifting holes"],
     applications: ["Driveway repair", "Drainage trenching", "Stump removal", "Tree planting", "Fence installation", "Small foundations", "Farm work"],
     faqs: excFaqs("R15 ECO", "983 mm (38.7 in)", "1,532 kg (3,377 lb)", "It passes most double gates; retract the tracks for a standard 36-inch gate (900 mm track gauge)."),
-    images: [{ key: "r15-eco-render", alt: "RIPPA R15 ECO mini excavator" }, { key: "r15-eco-cover", alt: "RIPPA R15 ECO on site" }, { key: "r15-eco-action", alt: "RIPPA R15 ECO with breaker" }, { key: "r15-eco-feat-jobsite", alt: "RIPPA R15 ECO digging beside a house" }],
+    images: [{ key: "r15-eco-render", alt: "RIPPA R15 ECO mini excavator" }, { key: "r15-eco-cab", alt: "RIPPA R15 ECO enclosed cab" }, { key: "r15-eco-canopy", alt: "RIPPA R15 ECO open canopy" }, { key: "r15-eco-cover", alt: "RIPPA R15 ECO on site" }, { key: "r15-eco-action", alt: "RIPPA R15 ECO with breaker" }, { key: "r15-eco-feat-jobsite", alt: "RIPPA R15 ECO digging beside a house" }],
     brochure: "RIPPA-R15-ECO-Spec-Sheet.pdf", targetUsers: "Homeowners and small farm owners", noiseLevel: "Ultra-quiet", indoorUse: false,
   },
   // ============================================================ R18 PRO
   {
     slug: "r18-pro", modelName: "R18 PRO", category: "excavators", series: "PRO Series", sortOrder: 5, builderEnabled: true, featured: true,
-    shortDescription: "2-tonne class PRO excavator with Kubota D902, explosion-proof boom valve, 998–1,318 mm retractable tracks, canopy or cab.",
+    shortDescription: "2-ton class with a variable-displacement piston pump and 10-way valve. 8 ft 7\" dig depth, canopy or cab.",
     longDescription: "The R18 PRO adds real reach and lift for acreages, landscapers and contractors. Kubota D902 diesel, 2,627 mm dig depth, a hydraulically adjustable track gauge from 998 to 1,318 mm, retractable dozer blade and a 69° / 42° boom swing. PRO-series safety comes standard: explosion-proof boom valve, front ROPS bar, safety-net canopy with spotlight and warning light, and a canopy top window. Enclosed cab available.",
     certifications: ["CE", "EPA", "ROPS"], warranty: "2 year warranty",
     configurations: cabPair("r18-d902", "Kubota D902 diesel", "15.8 hp (11.8 kW)", "1,933 kg", "2,000 kg", 36339, 37707),
@@ -184,13 +184,13 @@ export const lineup: LineupModel[] = [
     standardEquipment: ["Hydraulic thumb", "Quick coupler", "Four-way auxiliary hydraulic lines", "Explosion-proof boom valve", "Retractable undercarriage 998–1,318 mm", "Retractable dozer blade", "Front ROPS bar (foldable)", "Canopy with top window and front safety net (canopy version)", "Roof spotlight, warning light and rearview mirror", "Wire-spring hose guards", "Counterweight"],
     applications: ["Stump removal", "Log moving", "Tree planting", "Driveway repair", "Drainage trenching", "Fence installation", "Farm construction"],
     faqs: excFaqs("R18 PRO", "998 mm (39.3 in)", "1,933 kg (4,262 lb)", "Retract the tracks to 998 mm for a 40-inch opening; most double gates are no problem."),
-    images: [{ key: "r18-pro-render", alt: "RIPPA R18 PRO mini excavator" }, { key: "r18-pro-cover", alt: "RIPPA R18 PRO on site" }, { key: "r18-pro-action", alt: "RIPPA R18 PRO digging" }, { key: "r18-pro-feat-jobsite", alt: "RIPPA R18 PRO between a house and fence" }],
+    images: [{ key: "r18-pro-render", alt: "RIPPA R18 PRO mini excavator" }, { key: "r18-pro-cab", alt: "RIPPA R18 PRO enclosed cab" }, { key: "r18-pro-canopy", alt: "RIPPA R18 PRO open canopy" }, { key: "r18-pro-cover", alt: "RIPPA R18 PRO on site" }, { key: "r18-pro-action", alt: "RIPPA R18 PRO digging" }, { key: "r18-pro-feat-jobsite", alt: "RIPPA R18 PRO between a house and fence" }],
     brochure: "RIPPA-R18-PRO-Spec-Sheet.pdf", targetUsers: "Users handling tree roots and log moving", noiseLevel: "Ultra-quiet", indoorUse: false,
   },
   // ============================================================ R22 PRO
   {
     slug: "r22-pro", modelName: "R22 PRO", category: "excavators", series: "PRO Series", sortOrder: 6, builderEnabled: true, featured: false,
-    shortDescription: "2.5-tonne class PRO excavator with Kubota D1105, 1,300–1,500 mm retractable tracks and a heated, air-conditioned cab option.",
+    shortDescription: "2.5-ton with enclosed cab, load-sensing piston pump and 22.9 hp Kubota D1105. Septic, utility and snow contractors.",
     longDescription: "The R22 PRO is the step into contractor-grade work. A Kubota D1105 diesel, 2,293 mm dig depth and a hydraulically adjustable 1,300 to 1,500 mm track gauge give stability for full-reach digging while still fitting a farm-barn aisle. Boom swing 71° left / 54° right, reinforced quick-fold dozer blade, hydraulic thumb, quick coupler and explosion-proof boom valve are standard. Choose the safety canopy or an enclosed cab with heating and cooling.",
     certifications: ["CE", "EPA", "ROPS", "TOPS"], warranty: "2 year warranty",
     configurations: cabPair("r22-d1105", "Kubota D1105 diesel", "22.9 hp (17.1 kW)", "2,539 kg", "2,620 kg", 46052, 48839),
@@ -213,13 +213,13 @@ export const lineup: LineupModel[] = [
     standardEquipment: ["Hydraulic thumb", "Quick coupler", "Four-way auxiliary hydraulic lines", "Explosion-proof boom valve", "Retractable undercarriage 1,300–1,500 mm", "Quick-fold dozer blade", "Front ROPS bar", "Canopy with front safety net, spotlight and warning light (canopy version)", "Heated & air-conditioned cab (cab version)", "Rearview mirror", "Counterweight"],
     applications: ["Pool digging", "Driveway repair", "Drainage trenching", "Stump removal", "Small foundations", "Farm construction", "Demolition with breaker"],
     faqs: excFaqs("R22 PRO", "1,300 mm (51.2 in)", "2,539 kg (5,597 lb)", "It needs a double gate or a 52-inch opening."),
-    images: [{ key: "r22-pro-render", alt: "RIPPA R22 PRO mini excavator" }, { key: "r22-pro-cover", alt: "RIPPA R22 PRO on site" }, { key: "r22-pro-action", alt: "RIPPA R22 PRO digging" }, { key: "r22-pro-feat-jobsite", alt: "RIPPA R22 PRO in a barn" }],
+    images: [{ key: "r22-pro-render", alt: "RIPPA R22 PRO mini excavator" }, { key: "r22-pro-cab", alt: "RIPPA R22 PRO enclosed cab" }, { key: "r22-pro-canopy", alt: "RIPPA R22 PRO open canopy" }, { key: "r22-pro-cover", alt: "RIPPA R22 PRO on site" }, { key: "r22-pro-action", alt: "RIPPA R22 PRO digging" }, { key: "r22-pro-feat-jobsite", alt: "RIPPA R22 PRO in a barn" }],
     brochure: "RIPPA-R22-PRO-Spec-Sheet.pdf", targetUsers: "Semi-professional contractors", noiseLevel: "Quiet & comfortable", indoorUse: false,
   },
   // ============================================================ R57 PRO
   {
     slug: "r57-pro", modelName: "R57 PRO", category: "excavators", series: "PRO Series", sortOrder: 8, builderEnabled: true, featured: true,
-    shortDescription: "6-tonne class excavator with Kubota V2607, 8-way load-sensing hydraulics, heated air-suspension seat and climate-controlled cab.",
+    shortDescription: "5.8-ton midi with a 46.9 hp Kubota V2607 and 149 L/min load-sensing hydraulics. Site development and demolition class.",
     longDescription: "The R57 PRO is a full-time production machine for farms and land contractors: 5,792 kg, 3,785 mm dig depth, 32 kN digging force and a Kubota V2607 driving a 149.6 L/min variable-displacement pump through an 8-way load-sensing valve. The cab is fitted with a fully adjustable heated air-suspension seat, air conditioning with climate control, radio, LCD monitor and an upward-opening front window. Rubber or steel tracks. Canopy or enclosed cab.",
     certifications: ["CE", "EPA", "ROPS"], warranty: "2 year warranty",
     configurations: [
@@ -251,13 +251,13 @@ export const lineup: LineupModel[] = [
       { question: "Open canopy or enclosed cab?", answer: "The enclosed cab includes the heated air-suspension seat, climate control and radio. The canopy version is lighter and lower cost for seasonal work." },
       { question: "What attachments fit?", answer: "Buckets, tilt buckets, thumbs, rakes, rippers, grapples, augers and breakers sized for the 6-tonne class. See the attachments list on this page." },
     ],
-    images: [{ key: "r57-pro-render", alt: "RIPPA R57 PRO excavator" }, { key: "r57-pro-cover", alt: "RIPPA R57 PRO on site" }, { key: "r57-pro-action", alt: "RIPPA R57 PRO digging" }, { key: "r57-pro-feat-jobsite", alt: "RIPPA R57 PRO on a farm" }],
+    images: [{ key: "r57-pro-render", alt: "RIPPA R57 PRO excavator" }, { key: "r57-pro-cab", alt: "RIPPA R57 PRO enclosed cab, rubber tracks" }, { key: "r57-pro-cover", alt: "RIPPA R57 PRO on site" }, { key: "r57-pro-action", alt: "RIPPA R57 PRO digging" }, { key: "r57-pro-feat-jobsite", alt: "RIPPA R57 PRO on a farm" }],
     brochure: "RIPPA-R57-PRO-Spec-Sheet.pdf", targetUsers: "Professional farms and land contractors", noiseLevel: "Standard working level", indoorUse: false,
   },
   // ============================================================ R82 PRO
   {
     slug: "r82-pro", modelName: "R82 PRO", category: "excavators", series: "PRO Series", sortOrder: 9, builderEnabled: true, featured: false,
-    shortDescription: "8-tonne class excavator with Kubota V2607, 55 kN digging force, load-sensing piston pump and ROPS cab with climate control.",
+    shortDescription: "8-ton class with 46.9 hp Kubota V2607, 172.8 L/min load-sensing pump and a full cab with A/C. 13 ft 2\" dig depth.",
     longDescription: "The R82 PRO is the largest mini in the RIPPA range: 8,275 kg operating weight, 4,020 mm dig depth and 55 kN of bucket force from a Kubota V2607 driving a load-sensing variable-displacement piston pump through an 8-way valve. The ROPS cab has a heated air-suspension seat, air conditioning with climate control, a large glass door and an LCD monitor with real-time diagnostics. Anti-collision net and OPG cover are optional.",
     certifications: ["CE", "EPA", "ROPS"], warranty: "2 year warranty",
     configurations: [
@@ -294,7 +294,7 @@ export const lineup: LineupModel[] = [
   // ============================================================ R230 PRO
   {
     slug: "r230-pro", modelName: "R230 PRO", category: "excavators", series: "PRO Series", sortOrder: 10, builderEnabled: false, featured: false,
-    shortDescription: "21.5-tonne excavator with a 157 kW Kubota engine, Kawasaki hydraulics and a fully electronic hydraulic system.",
+    shortDescription: "21.5-ton full-size excavator with a 210.9 hp Kubota-branded engine and fully electronic hydraulics. Heavy civil and aggregate work.",
     longDescription: "The R230 is RIPPA's full-size excavator: 21,500 kg, 6,630 mm dig depth, 136 kN bucket force and a 157.3 kW Kubota 5009 engine. A fully electronic hydraulic system controls the main pump and valve directly from the joysticks, improving fuel efficiency by around 10% compared with the previous generation. Comfortable cab with shock-absorbing seat, centralized buttons, colour LCD display and air conditioning.",
     certifications: ["CE"], warranty: "2 year warranty",
     configurations: [{ id: "r230-cab", label: "Kubota 5009 · Enclosed cab", engine: "Kubota 5009 diesel", horsepower: "210.9 hp (157.3 kW)", operatingWeight: "21,500 kg" }],
@@ -318,7 +318,7 @@ export const lineup: LineupModel[] = [
       { question: "Is the R230 stocked?", answer: "The R230 is ordered to spec. Talk to us about lead time, configuration and float delivery." },
       { question: "Is it in the Excavator Builder?", answer: "No. Full-size machines are quoted directly with attachments and options matched to the job." },
     ],
-    images: [{ key: "r230-pro-render", alt: "RIPPA R230 excavator" }, { key: "r230-pro-cover", alt: "RIPPA R230 excavator on rock" }, { key: "r230-pro-feat-jobsite", alt: "RIPPA R230 side view" }],
+    images: [{ key: "r230-pro-render", alt: "RIPPA R230 excavator" }, { key: "r230-pro-site", alt: "RIPPA R230 PRO on a construction site" }, { key: "r230-pro-cover", alt: "RIPPA R230 excavator on rock" }, { key: "r230-pro-feat-jobsite", alt: "RIPPA R230 side view" }],
     brochure: "RIPPA-R230-PRO-Spec-Sheet.pdf", targetUsers: "Earthmoving and infrastructure contractors", noiseLevel: "Standard working level", indoorUse: false,
   },
 ];
@@ -337,7 +337,7 @@ const ssStd = (extra: string[]) => ["Quick-attach plate", "Auxiliary hydraulic c
 export const skidSteers: LineupModel[] = [
   {
     slug: "rs03", modelName: "RS03", category: "skid-steers", series: "RS Series", sortOrder: 1, builderEnabled: true, featured: false,
-    shortDescription: "Stand-on mini tracked loader, 45 in wide, Briggs & Stratton XR2100 gasoline. Landscaping, rentals and tight sites.",
+    shortDescription: "Gas-powered stand-on mini track loader that fits through a 45\" gate. 11.3 hp Briggs & Stratton, 450 lb max load, 5 ft dump height.",
     longDescription: "The RS03 is a stand-on compact track loader that fits through a 4-foot gate and turns in its own length. A Briggs & Stratton XR2100 gasoline engine drives a triple gear pump with a 50.4 L/min combined flow, so it runs augers, trenchers, sweepers and grapples as well as buckets. Two groups of five attachment lines let you run multi-function attachments at once. Ideal for landscaping crews, hardscape, farm chores and rental fleets.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
     configurations: [{ id: "rs03-bs-tracked", label: "Briggs & Stratton XR2100 gasoline · Tracked · Stand-on", engine: "Briggs & Stratton XR2100 gasoline", horsepower: "11.3 hp (8.4 kW)", operatingWeight: "639 kg", price: 7900 }],
@@ -360,12 +360,12 @@ export const skidSteers: LineupModel[] = [
     standardEquipment: ssStd(["Stand-on platform (flip-up)", "Two groups of five attachment lines", "Dual-hand control levers"]),
     applications: ["Landscaping", "Hardscape and paver work", "Farm chores", "Tree and nursery work", "Rental fleets"],
     faqs: ssFaqs("RS03", "1,150 mm (45.3 in)", "639 kg (1,409 lb)", "The RS03 is a stand-on platform loader. There is no cab option; see the RS07 or RS10 for enclosed cabs."),
-    images: [{ key: "rs03-render", alt: "RIPPA RS03 stand-on mini track loader" }, { key: "rs03-cover", alt: "RIPPA RS03 in a garden" }, { key: "rs03-action", alt: "RIPPA RS03 dumping soil" }, { key: "rs03-feat-action", alt: "RIPPA RS03 at work" }],
+    images: [{ key: "rs03-render", alt: "RIPPA RS03 stand-on mini track loader" }, { key: "rs03-site", alt: "RIPPA RS03 stand-on loader on site" }, { key: "rs03-cover", alt: "RIPPA RS03 in a garden" }, { key: "rs03-action", alt: "RIPPA RS03 dumping soil" }, { key: "rs03-feat-action", alt: "RIPPA RS03 at work" }],
     brochure: "RIPPA-RS03-Spec-Sheet.pdf", targetUsers: "Landscapers, homeowners and rental fleets needing a gate-width loader", noiseLevel: "Standard working level", indoorUse: false,
   },
   {
     slug: "rs04", modelName: "RS04", category: "skid-steers", series: "RS Series", sortOrder: 2, builderEnabled: true, featured: true,
-    shortDescription: "Stand-on compact loader with Kubota Z482 diesel or gasoline power, tracked or wheeled. 480 kg tipping load, 45 in wide.",
+    shortDescription: "Kubota diesel stand-on loader with 1,058 lb max load and a 15-minute track-to-wheel swap. 45\" wide.",
     longDescription: "The RS04 is the diesel step up from the RS03: a Kubota Z482 driving a triple gear pump with 42 L/min combined flow, 480 kg tipping load and a 2,080 mm lift height, still only 1,150 mm wide. Tracked or wheeled undercarriage, quick-change travel module, two groups of five auxiliary lines. Built for construction, landscaping and farm work in tight spaces.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
     configurations: [
@@ -392,12 +392,12 @@ export const skidSteers: LineupModel[] = [
     standardEquipment: ssStd(["Stand-on platform", "Two groups of five attachment lines", "Quick-change travel module (tracked / wheeled)"]),
     applications: ["Construction", "Landscaping", "Farm work", "Material handling in sheds", "Rental fleets"],
     faqs: ssFaqs("RS04", "1,150 mm (45.3 in)", "930 kg (2,050 lb)", "The RS04 is a stand-on platform loader. For an enclosed cab, see the RS07, RS10 or RS20."),
-    images: [{ key: "rs04-render", alt: "RIPPA RS04 stand-on compact loader" }, { key: "rs04-cover", alt: "RIPPA RS04 on a farm" }, { key: "rs04-action", alt: "RIPPA RS04 carrying a crate" }, { key: "rs04-feat-action", alt: "RIPPA RS04 at work" }],
+    images: [{ key: "rs04-render", alt: "RIPPA RS04 stand-on compact loader" }, { key: "rs04-tracked", alt: "RIPPA RS04 tracked stand-on loader, Kubota diesel" }, { key: "rs04-cover", alt: "RIPPA RS04 on a farm" }, { key: "rs04-action", alt: "RIPPA RS04 carrying a crate" }, { key: "rs04-feat-action", alt: "RIPPA RS04 at work" }],
     brochure: "RIPPA-RS04-Spec-Sheet.pdf", targetUsers: "Low sheds, confined agricultural facilities and small projects in tight spaces", noiseLevel: "Standard working level", indoorUse: false,
   },
   {
     slug: "rs06", modelName: "RS06", category: "skid-steers", series: "RS Series", sortOrder: 3, builderEnabled: true, featured: false,
-    shortDescription: "Stand-on tracked loader with Kubota D1105, load-sensing piston pump (112.5 L/min), vertical lift and 600 kg tipping load.",
+    shortDescription: "Diesel stand-on with vertical lift, 1,322 lb max load and load-sensing hydraulics. 4 mph travel, 45\" wide, runs high-flow attachments.",
     longDescription: "The RS06 brings load-sensing hydraulics to the stand-on class. A Kubota D1105 diesel drives a 112.5 L/min piston pump through a load-sensing multi-section valve, so flow and pressure follow the load for smooth multi-tasking and less heat. Vertical-lift arms reach 2,530 mm, tipping load is 600 kg, and dual-speed travel tops out at 6.5 km/h. 230 mm wide tracks minimise ground damage on finished sites.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
     configurations: [{ id: "rs06-d1105-tracked", label: "Kubota D1105 diesel · Tracked · Stand-on", engine: "Kubota D1105 diesel", horsepower: "24.8 hp (18.2 kW)", operatingWeight: "1,475 kg", price: 26638 }],
@@ -420,12 +420,12 @@ export const skidSteers: LineupModel[] = [
     standardEquipment: ssStd(["Stand-on platform", "Vertical lift arms", "Dual-speed travel", "Two groups of five attachment lines", "230 mm rubber tracks"]),
     applications: ["Small job sites", "Farm work", "Municipal maintenance", "Landscaping", "Material handling"],
     faqs: ssFaqs("RS06", "1,150 mm (45.3 in)", "1,475 kg (3,252 lb)", "The RS06 is a stand-on platform loader with no cab option. See the RS07 for a cab in this power class."),
-    images: [{ key: "rs06-render", alt: "RIPPA RS06 stand-on track loader" }, { key: "rs06-cover", alt: "RIPPA RS06 loading soil" }, { key: "rs06-action", alt: "RIPPA RS06 carrying blocks" }, { key: "rs06-feat-action", alt: "RIPPA RS06 at work" }],
+    images: [{ key: "rs06-render", alt: "RIPPA RS06 stand-on track loader" }, { key: "rs06-3-render", alt: "RIPPA RS06-3 stand-on track loader" }, { key: "rs06-cover", alt: "RIPPA RS06 loading soil" }, { key: "rs06-action", alt: "RIPPA RS06 carrying blocks" }, { key: "rs06-feat-action", alt: "RIPPA RS06 at work" }],
     brochure: "RIPPA-RS06-Spec-Sheet.pdf", targetUsers: "Small job sites, farms and municipal maintenance needing flexible operation", noiseLevel: "Standard working level", indoorUse: false,
   },
   {
     slug: "rs07", modelName: "RS07", category: "skid-steers", series: "RS Series", sortOrder: 4, builderEnabled: true, featured: true,
-    shortDescription: "Cab skid steer with Kubota D1105, four-pump pilot hydraulics, tracked or wheeled. 670 kg tipping load, 8 km/h travel.",
+    shortDescription: "Compact cab skid steer with four-pump hydraulics and 1,477 lb max load. Tracked or wheeled, 43\" wide.",
     longDescription: "The RS07 is a sit-in skid steer with an enclosed cab in a 1,100 mm wide body. Kubota D1105 diesel, a four-pump hydraulic system (two closed-circuit drive pumps, charge pump and gear pump) with pilot multi-way valve, 670 kg tipping load, 2,260 mm lift and 8 km/h travel. Available tracked or wheeled. Cab heater, wiper with independent switch and a comfortable seat make it a year-round machine.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
     configurations: [
@@ -451,12 +451,12 @@ export const skidSteers: LineupModel[] = [
     standardEquipment: ssStd(["Enclosed cab with heater", "Windshield wiper", "Pilot joystick controls", "Tracked or wheeled undercarriage"]),
     applications: ["Stacking and loading at height", "Construction", "Landscaping", "Farm work", "Snow removal"],
     faqs: ssFaqs("RS07", "1,100 mm (43.3 in)", "1,386 kg (3,056 lb)", "The RS07 comes with an enclosed cab and heater as standard."),
-    images: [{ key: "rs07-render", alt: "RIPPA RS07 skid steer loader" }, { key: "rs07-cover", alt: "RIPPA RS07 on gravel" }, { key: "rs07-action", alt: "RIPPA RS07 carrying crates" }, { key: "rs07-feat-action", alt: "RIPPA RS07 sweeping" }],
+    images: [{ key: "rs07-render", alt: "RIPPA RS07 skid steer loader" }, { key: "rs07-cab-wheeled", alt: "RIPPA RS07 wheeled, heated enclosed cab" }, { key: "rs07-cab-tracked", alt: "RIPPA RS07 tracked, enclosed cab" }, { key: "rs07-canopy-tracked", alt: "RIPPA RS07 tracked, open canopy" }, { key: "rs07-cover", alt: "RIPPA RS07 on gravel" }, { key: "rs07-action", alt: "RIPPA RS07 carrying crates" }, { key: "rs07-feat-action", alt: "RIPPA RS07 sweeping" }],
     brochure: "RIPPA-RS07-Spec-Sheet.pdf", targetUsers: "Precision stacking and loading at height with forward visibility", noiseLevel: "Quiet & comfortable", indoorUse: false,
   },
   {
     slug: "rs10", modelName: "RS10", category: "skid-steers", series: "RS Series", sortOrder: 5, builderEnabled: true, featured: true,
-    shortDescription: "Full-size wheeled skid steer with Kubota V2607 (47.6 hp), enclosed cab, 1,212 kg tipping load and 10 km/h travel.",
+    shortDescription: "47.6 hp wheeled skid steer with 2,672 lb max load and 6.2 mph travel. Universal SSQA plate, spacious cab.",
     longDescription: "The RS10 is a full-size wheeled skid steer for contractors, landscapers and bulk-material yards. A Kubota V2607 diesel drives a four-pump hydraulic system with pilot multi-way valve, 1,212 kg tipping load, 3,029 mm lift height and 10 km/h travel. Spacious enclosed cab with side-opening door, air conditioning, floating bucket function and auto bucket levelling. Auxiliary flow of 46.2 L/min runs sweepers, augers, snow blowers and grapples.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
     configurations: [{ id: "rs10-v2607-wheeled", label: "Kubota V2607 diesel · Wheeled · Enclosed cab", engine: "Kubota V2607 diesel", horsepower: "47.6 hp (35.5 kW)", operatingWeight: "3,025 kg", price: 63857 }],
@@ -479,12 +479,12 @@ export const skidSteers: LineupModel[] = [
     standardEquipment: ssStd(["Enclosed cab with air conditioning", "Side-opening cab door", "Pilot joystick controls", "Floating bucket function", "Auto bucket levelling", "Wheeled undercarriage"]),
     applications: ["Bulk material handling", "Sand, gravel and feed", "Landscaping projects", "Small contractors", "Snow removal"],
     faqs: ssFaqs("RS10", "1,760 mm (69.3 in)", "3,025 kg (6,669 lb)", "The RS10 comes with an enclosed, air-conditioned cab as standard.").filter((f) => !f.question.startsWith("Tracked")),
-    images: [{ key: "rs10-render", alt: "RIPPA RS10 wheeled skid steer" }, { key: "rs10-cover", alt: "RIPPA RS10 on a mountain road" }, { key: "rs10-action", alt: "RIPPA RS10 carrying hay" }, { key: "rs10-feat-action", alt: "RIPPA RS10 at work" }],
+    images: [{ key: "rs10-render", alt: "RIPPA RS10 wheeled skid steer" }, { key: "rs10-cab", alt: "RIPPA RS10 wheeled skid steer, heated cab" }, { key: "rs10-cover", alt: "RIPPA RS10 on a mountain road" }, { key: "rs10-action", alt: "RIPPA RS10 carrying hay" }, { key: "rs10-feat-action", alt: "RIPPA RS10 at work" }],
     brochure: "RIPPA-RS10-Spec-Sheet.pdf", targetUsers: "Small contractors, landscaping and bulk material such as sand, gravel and feed", noiseLevel: "Quiet & comfortable", indoorUse: false,
   },
   {
     slug: "rs20", modelName: "RS20", category: "skid-steers", series: "RS Series", sortOrder: 6, builderEnabled: true, featured: false,
-    shortDescription: "Heavy-duty compact track loader with Kubota V2607, load-sensing hydraulics (329.8 L/min), 2,000 kg tipping load and 147 in lift.",
+    shortDescription: "47.6 hp heavy-duty compact track loader with 4,409 lb max load and load-sensing four-pump hydraulics. Universal SSQA plate.",
     longDescription: "The RS20 is the production loader of the range: 4,064 kg, 2,000 kg tipping load, 3,750 mm vertical lift and a Kubota V2607 driving a four-pump system with load-sensing piston pump and multi-section valve for 329.8 L/min total flow. 99 L/min auxiliary flow runs mulchers, stump grinders and snow blowers. Dual-speed travel to 10 km/h, spacious enclosed cab, vertical-lift, floating bucket and auto-levelling. Tracked or wheeled.",
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
     configurations: [
@@ -510,7 +510,7 @@ export const skidSteers: LineupModel[] = [
     standardEquipment: ssStd(["Enclosed cab", "Side-opening cab door", "Vertical lift arms", "Auto bucket levelling", "Dual-speed travel", "Pilot joystick controls", "Tracked or wheeled undercarriage"]),
     applications: ["Tough construction sites", "Large farms", "Industrial material handling", "Mulching and land clearing", "Snow removal"],
     faqs: ssFaqs("RS20", "1,850 mm (72.8 in)", "4,064 kg (8,959 lb)", "The RS20 comes with a spacious enclosed cab as standard."),
-    images: [{ key: "rs20-render", alt: "RIPPA RS20 compact track loader" }, { key: "rs20-cover", alt: "RIPPA RS20 on a farm" }, { key: "rs20-action", alt: "RIPPA RS20 grading gravel" }, { key: "rs20-feat-action", alt: "RIPPA RS20 at work" }],
+    images: [{ key: "rs20-render", alt: "RIPPA RS20 compact track loader" }, { key: "rs20-cab-tracked", alt: "RIPPA RS20 compact track loader, heated cab with A/C" }, { key: "rs20-cover", alt: "RIPPA RS20 on a farm" }, { key: "rs20-action", alt: "RIPPA RS20 grading gravel" }, { key: "rs20-feat-action", alt: "RIPPA RS20 at work" }],
     brochure: "RIPPA-RS20-Spec-Sheet.pdf", targetUsers: "Tough construction sites, large farms and industrial settings needing heavy lifting", noiseLevel: "Quiet & comfortable", indoorUse: false,
   },
 ];

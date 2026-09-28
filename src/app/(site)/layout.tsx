@@ -21,8 +21,11 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-/** Revalidate every 5 minutes; Payload hooks also purge the cache on every admin save. */
-export const revalidate = 300;
+/**
+ * Always render from the live CMS. Railway builds without the data volume mounted, so build-time static generation
+ * would bake in seed fallbacks; the in-process content memo (60 s, purged on every CMS save) keeps this fast.
+ */
+export const dynamic = "force-dynamic";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const { catalogue, financing, site, nav } = await getSiteContent();

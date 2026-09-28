@@ -9,8 +9,8 @@ import { ContentRequest } from "@/components/content/ContentRequest";
 import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
-  title: "RIPPA Service Guides, Field Calls & How-To Videos",
-  description: "DIY maintenance guides, field-call write-ups and technical help for RIPPA mini excavators and skid steers from certified technicians at Niagara Equipment Supply, Ontario.",
+  title: "RIPPA Guides, Field Calls & How-To Videos",
+  description: "Maintenance guides, field-call write-ups and how-to videos for RIPPA mini excavators and skid steers, written by certified technicians in Niagara, Ontario.",
   alternates: { canonical: "/blog" },
 };
 

@@ -8,7 +8,8 @@ import { LeadForm } from "@/components/quote/LeadForm";
 import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
-  title: "Get a Quote",
+  title: "Request a Quote",
+  robots: { index: false, follow: true },
   description: "Request a quote on RIPPA equipment, attachments or a configured excavator build from Niagara Equipment Supply.",
   alternates: { canonical: "/quote" },
 };

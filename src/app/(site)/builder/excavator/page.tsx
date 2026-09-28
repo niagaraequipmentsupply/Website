@@ -12,8 +12,8 @@ import { BUILDERS } from "@/lib/builders";
 const builder = BUILDERS["excavator"];
 
 export const metadata: Metadata = {
-  title: "Excavator Builder | Configure Your RIPPA Mini Excavator",
-  description: "Choose your RIPPA excavator model and configuration, add compatible attachments, protection packages and warranty, then request your build from Niagara Equipment Supply.",
+  title: "RIPPA Excavator Builder",
+  description: "Pick a RIPPA excavator, choose engine and cab, add the attachments that fit, then send the build for a written quote from Niagara Equipment Supply.",
   alternates: { canonical: builder.href },
 };
 

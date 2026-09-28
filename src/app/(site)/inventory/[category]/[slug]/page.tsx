@@ -48,8 +48,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const thin = isThin(m);
   return {
     ...(thin ? { robots: { index: false, follow: true } } : {}),
-    title: `${m.brand} ${m.modelName} ${kind} for Sale in Ontario | Specs, Attachments & Dealer Support`.replace(/\s+/g, " "),
-    description: `${m.shortDescription} Sold, set up and serviced by ${site.name} in ${site.address.city}, Ontario. Dealer PDI, financing and delivery across Ontario.`.slice(0, 300),
+    title: `${m.brand} ${m.modelName} ${kind} for Sale in Ontario`.replace(/\s+/g, " "),
+    description: `${m.shortDescription.replace(/\s+$/, "")} Written quotes, dealer PDI and delivery across Ontario from ${site.name}, ${site.address.city}.`.slice(0, 160),
     alternates: { canonical: `/inventory/${m.category}/${m.slug}` },
     keywords: [`RIPPA ${m.modelName}`, `${m.modelName} ${kind.toLowerCase()}`, `RIPPA ${kind.toLowerCase()} Ontario`, `RIPPA dealer Niagara`, `${kind.toLowerCase()} for sale Ontario`],
     openGraph: m.images[0] ? { images: [{ url: m.images[0].src, alt: m.images[0].alt }] } : undefined,
@@ -90,8 +90,12 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
     description: m.shortDescription,
     category: cat.name,
     image: m.images.map((i) => i.src),
-    sku: m.slug, mpn: m.modelName, model: m.modelName,
-    ...(m.showPrice && price !== undefined ? { offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: price, offerCount: Math.max(1, m.configurations.length), availability: m.inStock ? "https://schema.org/InStock" : "https://schema.org/PreOrder", areaServed: "Ontario, Canada", seller: { "@type": "LocalBusiness", name: site.name, telephone: site.phone, address: { "@type": "PostalAddress", addressLocality: site.address.city, addressRegion: "ON", addressCountry: "CA" } } } } : {}),
+    sku: m.slug, mpn: m.modelName, model: m.modelName, url: `${site.url}/inventory/${m.category}/${m.slug}`,
+    itemCondition: "https://schema.org/NewCondition",
+    manufacturer: { "@type": "Organization", name: "Shandong Rippa Machinery Group" },
+    additionalProperty: heroStats.map((s) => ({ "@type": "PropertyValue", name: s.label, value: s.value })),
+    ...(m.configurations.length > 1 ? { hasVariant: m.configurations.map((c) => ({ "@type": "Product", name: `${m.brand} ${m.modelName} · ${c.label}`, sku: c.sku ?? `${m.slug}-${c.id}`, mpn: m.modelName })) } : {}),
+    ...(m.showPrice && price !== undefined ? { offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: price, offerCount: Math.max(1, m.configurations.length), itemCondition: "https://schema.org/NewCondition", availability: m.inStock ? "https://schema.org/InStock" : "https://schema.org/PreOrder", areaServed: "Ontario, Canada", seller: { "@type": "LocalBusiness", name: site.name, telephone: site.phone, address: { "@type": "PostalAddress", addressLocality: site.address.city, addressRegion: "ON", addressCountry: "CA" } } } } : {}),
     ...(m.faqs.length ? { subjectOf: { "@type": "FAQPage", mainEntity: m.faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })) } } : {}),
   };
 

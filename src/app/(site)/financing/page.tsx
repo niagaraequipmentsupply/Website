@@ -11,7 +11,7 @@ import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
   title: "Equipment Financing & Leasing",
-  description: "Finance or lease RIPPA equipment in Ontario through our partner LeaseLink. Current promotions, seasonal leasing, deferred payments and fast pre-approval from Niagara Equipment Supply.",
+  description: "Finance or lease RIPPA equipment in Ontario through our partner LeaseLink: seasonal leasing, deferred payments and pre-approval in about one business day.",
   alternates: { canonical: "/financing" },
 };
 
@@ -158,6 +158,7 @@ export default async function FinancingPage() {
           <LeadForm source="financing" title="Financing Request" submitLabel="Request Pre-Approval" messageLabel="Equipment of interest, preferred term / down payment, and any questions" />
         </Container>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }) }} />
     </>
   );
 }

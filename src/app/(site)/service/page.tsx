@@ -15,8 +15,8 @@ import { SERVICE_CENTRE, PILLARS } from "@/components/service/ServiceCentre";
 import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
-  title: "RIPPA Service Centre Ontario | Warranty, Repairs, Parts & Owner Support",
-  description: "The RIPPA Service Centre at Niagara Equipment Supply in Thorold: certified RIPPA technicians, warranty claims handled for you, repairs in-shop or on site, genuine parts shipped across Canada and free owner training. Every RIPPA owner welcome.",
+  title: "RIPPA Service Centre in Thorold, Ontario",
+  description: "Certified RIPPA technicians in Thorold, Ontario. Warranty claims handled for you, in-shop and field repairs, genuine parts across Canada. Every RIPPA owner welcome.",
   alternates: { canonical: "/service" },
   keywords: ["RIPPA service", "RIPPA warranty", "RIPPA repair Ontario", "RIPPA parts Canada", "RIPPA dealer service Niagara", "mini excavator service Thorold"],
 };

@@ -5,8 +5,8 @@ import { CtaBand } from "@/components/home/CtaBand";
 import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
-  title: "About Us",
-  description: "Niagara Equipment Supply is an official RIPPA dealer serving contractors, landscapers, farms and municipalities across Ontario.",
+  title: "About Us · RIPPA Dealer in Niagara",
+  description: "Niagara Equipment Supply is an official RIPPA dealer in Thorold, Ontario: mini excavators, skid steers, loaders and attachments, backed by the RIPPA Service Centre and Canada-wide parts.",
   alternates: { canonical: "/about" },
 };
 

@@ -22,7 +22,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const cat = await getAttachmentCategory((await params).category);
   if (!cat) return {};
-  return { title: cat.name, description: cat.description, alternates: { canonical: `/attachments/${cat.slug}` } };
+  return { title: `RIPPA ${cat.name} in Ontario`, description: `${cat.description} Sized by model, with plate and coupler fitment confirmed by Niagara Equipment Supply, Thorold.`.slice(0, 160), alternates: { canonical: `/attachments/${cat.slug}` } };
 }
 
 export default async function AttachmentCategoryPage({ params, searchParams }: { params: Promise<Params>; searchParams: Promise<{ model?: string; plate?: string }> }) {

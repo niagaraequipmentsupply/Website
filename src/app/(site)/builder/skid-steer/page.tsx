@@ -12,8 +12,8 @@ import { BUILDERS } from "@/lib/builders";
 const builder = BUILDERS["skid-steer"];
 
 export const metadata: Metadata = {
-  title: "Skid Steer Builder | Configure Your RIPPA Mini Skid Steer",
-  description: "Choose your RIPPA skid steer model (RS03 to RS20), pick the engine and undercarriage, add the buckets, forks, augers and attachments that fit its plate, then request your build from Niagara Equipment Supply.",
+  title: "RIPPA Skid Steer Builder",
+  description: "Pick a RIPPA skid steer from the RS03 to RS20, choose engine and tracks, add buckets, forks and augers that fit its plate, then request a written quote.",
   alternates: { canonical: builder.href },
 };
 

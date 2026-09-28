@@ -1,0 +1,542 @@
+[
+ {
+  "id": "22",
+  "slug": "lp02011066u06-r10-eco-kubota-z482-top",
+  "name": "R10 ECO - KUBOTA Z482 Top",
+  "url": "https://www.rippagroup.ca/en/shop/lp02011066u06-r10-eco-kubota-z482-top-22",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/22/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r10-966"
+  ],
+  "sku": "LP02011066",
+  "imageHash": "21fb42d72770d55030ba14bd4f5cbccf",
+  "hasImage": true
+ },
+ {
+  "id": "15",
+  "slug": "lp02280003u02-rs03-skid-steer-gas-briggs-stratton-tracked",
+  "name": "RS03 Skid Steer Gas Briggs&Stratton  Tracked",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280003u02-rs03-skid-steer-gas-briggs-stratton-tracked-15",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/15/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs03-961"
+  ],
+  "sku": "LP02280003",
+  "imageHash": "386463995fe2d9837d6414f79da9b860",
+  "hasImage": true
+ },
+ {
+  "id": "1053",
+  "slug": "lp02280034u02-rs04-c-skid-steer-kubota-z482-tracked",
+  "name": "RS04-C Skid Steer KUBOTA Z482 Tracked",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280034u02-rs04-c-skid-steer-kubota-z482-tracked-1053",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1053/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs04-962"
+  ],
+  "sku": "LP02280034",
+  "imageHash": "2100f31ac47199965735887f1165bed8",
+  "hasImage": true
+ },
+ {
+  "id": "1058",
+  "slug": "lp02280045u02-rs07-t-skid-steer-kubota-d1105-tracked-cab-heated",
+  "name": "RS07-T Skid Steer KUBOTA D1105 Tracked Cab Heated",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280045u02-rs07-t-skid-steer-kubota-d1105-tracked-cab-heated-1058",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1058/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs07-964"
+  ],
+  "sku": "LP02280045",
+  "imageHash": "36b2940cf7916e84ddeb8646b084b818",
+  "hasImage": true
+ },
+ {
+  "id": "1056",
+  "slug": "lp02280044u02-rs07-w-skid-steer-kubota-v1105-wheeled-cabin-heated-kubota-d1105",
+  "name": "RS07-W Skid Steer KUBOTA V1105 Wheeled Cabin Heated KUBOTA D1105",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280044u02-rs07-w-skid-steer-kubota-v1105-wheeled-cabin-heated-kubota-d1105-1056",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1056/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs07-964"
+  ],
+  "sku": "LP02280044",
+  "imageHash": "424da1035c4b3cbdc08b9f2f7908c9be",
+  "hasImage": true
+ },
+ {
+  "id": "960",
+  "slug": "lp02011093u03-r22-pro-kubota-d1105-top",
+  "name": "R22 PRO - KUBOTA D1105 Top",
+  "url": "https://www.rippagroup.ca/en/shop/lp02011093u03-r22-pro-kubota-d1105-top-960",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/960/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r22-970"
+  ],
+  "sku": "LP02011093",
+  "imageHash": "9091434f6f5c00a6556c910a1408c374",
+  "hasImage": true
+ },
+ {
+  "id": "968",
+  "slug": "lp02010363u05-r32-pro-kubota-v1505-top",
+  "name": "R32 PRO - KUBOTA V1505 Top",
+  "url": "https://www.rippagroup.ca/en/shop/lp02010363u05-r32-pro-kubota-v1505-top-968",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/968/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r32-971"
+  ],
+  "sku": "LP02010363",
+  "imageHash": "77352eb022462f88582b423bea0c2733",
+  "hasImage": true
+ },
+ {
+  "id": "1052",
+  "slug": "lp02280063u02-rs04-c-skid-steer-gas-b-s-tracked",
+  "name": "RS04-C Skid Steer Gas B&S Tracked",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280063u02-rs04-c-skid-steer-gas-b-s-tracked-1052",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1052/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs04-962"
+  ],
+  "sku": "LP02280063",
+  "imageHash": "2100f31ac47199965735887f1165bed8",
+  "hasImage": true
+ },
+ {
+  "id": "1051",
+  "slug": "lp02280039u02-rs04-w-skid-steer-kubota-z482-wheeled",
+  "name": "RS04-W Skid Steer KUBOTA Z482 Wheeled,",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280039u02-rs04-w-skid-steer-kubota-z482-wheeled-1051",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1051/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs04-962"
+  ],
+  "sku": "LP02280039",
+  "imageHash": "780bd9779e3decda3145887af565bc53",
+  "hasImage": true
+ },
+ {
+  "id": "1057",
+  "slug": "lp02280045a-rs07-w-skid-steer-kd1105-tracked-canopy",
+  "name": "RS07-W Skid Steer KD1105 Tracked Canopy",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280045a-rs07-w-skid-steer-kd1105-tracked-canopy-1057",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1057/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs07-964"
+  ],
+  "sku": "LP02280045",
+  "imageHash": "36b2940cf7916e84ddeb8646b084b818",
+  "hasImage": true
+ },
+ {
+  "id": "1055",
+  "slug": "lp02011077-rs07-w-skid-steer-kubota-d1105-wheeled-canopy",
+  "name": "RS07-W Skid Steer KUBOTA D1105 Wheeled Canopy",
+  "url": "https://www.rippagroup.ca/en/shop/lp02011077-rs07-w-skid-steer-kubota-d1105-wheeled-canopy-1055",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1055/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs07-964"
+  ],
+  "sku": "LP02011077",
+  "imageHash": "424da1035c4b3cbdc08b9f2f7908c9be",
+  "hasImage": true
+ },
+ {
+  "id": "1060",
+  "slug": "lp02280001a-rs20-w-yanmar-engine-cabin-wheeled-heat-ac",
+  "name": "RS20-W Yanmar Engine Cabin Wheeled Heat/AC",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280001a-rs20-w-yanmar-engine-cabin-wheeled-heat-ac-1060",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1060/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs20-965"
+  ],
+  "sku": "LP02280001",
+  "imageHash": "780bd9779e3decda3145887af565bc53",
+  "hasImage": true
+ },
+ {
+  "id": "1345",
+  "slug": "lp02010983u06-r10-eco-b-s-gas-top-ng",
+  "name": "R10 ECO -  B&S Gas Top NG",
+  "url": "https://www.rippagroup.ca/en/shop/lp02010983u06-r10-eco-b-s-gas-top-ng-1345",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1345/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r10-966"
+  ],
+  "sku": "LP02010983",
+  "imageHash": "e34d24a9c043f3fc7c9014e27bb10b95",
+  "hasImage": true
+ },
+ {
+  "id": "1347",
+  "slug": "lp02010979u04-r13-pro-kubota-d722-top",
+  "name": "R13 PRO - KUBOTA D722 Top",
+  "url": "https://www.rippagroup.ca/en/shop/lp02010979u04-r13-pro-kubota-d722-top-1347",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1347/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r13-967"
+  ],
+  "sku": "LP02010979",
+  "imageHash": "73b3c623c58627f33af0ce4e41b2bf7f",
+  "hasImage": true
+ },
+ {
+  "id": "1348",
+  "slug": "lp02011074u05-r15-eco-kubota-d722-top",
+  "name": "R15 ECO - KUBOTA D722 Top",
+  "url": "https://www.rippagroup.ca/en/shop/lp02011074u05-r15-eco-kubota-d722-top-1348",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1348/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r15-968"
+  ],
+  "sku": "LP02011074",
+  "imageHash": "bed81a764baf12e8e7dc9428badc72f4",
+  "hasImage": true
+ },
+ {
+  "id": "1349",
+  "slug": "lp02011003u05-r18-pro-kubota-d902-top",
+  "name": "R18 PRO - KUBOTA D902 Top",
+  "url": "https://www.rippagroup.ca/en/shop/lp02011003u05-r18-pro-kubota-d902-top-1349",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1349/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r18-969"
+  ],
+  "sku": "LP02011003",
+  "imageHash": "e2788fe24a2d86680fce90211ea4d154",
+  "hasImage": true
+ },
+ {
+  "id": "1350",
+  "slug": "lp02010981u03-r22-pro-kubota-d1105-cab",
+  "name": "R22 PRO - KUBOTA D1105 Cab",
+  "url": "https://www.rippagroup.ca/en/shop/lp02010981u03-r22-pro-kubota-d1105-cab-1350",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1350/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r22-970"
+  ],
+  "sku": "LP02010981",
+  "imageHash": "5f04a1bc4ada5eb3c132510d0eb9f0ff",
+  "hasImage": true
+ },
+ {
+  "id": "1354",
+  "slug": "lp02010983u06-jss-r10-eco-b-s-essence-cab",
+  "name": "R10 ECO - B&S Essence Cab",
+  "url": "https://www.rippagroup.ca/en/shop/lp02010983u06-jss-r10-eco-b-s-essence-cab-1354",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1354/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r10-966"
+  ],
+  "sku": "LP02010983",
+  "imageHash": "0077578927a154667e1b43eb1e4be009",
+  "hasImage": true
+ },
+ {
+  "id": "1355",
+  "slug": "lp02011066u06-jss-r10-eco-kubota-z482-cab",
+  "name": "R10 ECO - KUBOTA Z482 Cab",
+  "url": "https://www.rippagroup.ca/en/shop/lp02011066u06-jss-r10-eco-kubota-z482-cab-1355",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1355/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r10-966"
+  ],
+  "sku": "LP02011066",
+  "imageHash": "0077578927a154667e1b43eb1e4be009",
+  "hasImage": true
+ },
+ {
+  "id": "1356",
+  "slug": "lp02011074u05-jss-r15-eco-kubota-d722-cab",
+  "name": "R15 ECO - KUBOTA D722 Cab",
+  "url": "https://www.rippagroup.ca/en/shop/lp02011074u05-jss-r15-eco-kubota-d722-cab-1356",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1356/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r15-968"
+  ],
+  "sku": "LP02011074",
+  "imageHash": "b4ed29f2ef733ddcb93268db28ce1b16",
+  "hasImage": true
+ },
+ {
+  "id": "1357",
+  "slug": "lp02011003u05-jss-r18-pro-kubota-d902-cab",
+  "name": "R18 PRO - KUBOTA D902 Cab",
+  "url": "https://www.rippagroup.ca/en/shop/lp02011003u05-jss-r18-pro-kubota-d902-cab-1357",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1357/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r18-969"
+  ],
+  "sku": "LP02011003",
+  "imageHash": "d55b6cad20fc7ab96e120f6bb8f1a194",
+  "hasImage": true
+ },
+ {
+  "id": "1460",
+  "slug": "lp02300003-rb-r57-pro-kubota-v2607-cabine-rubber-tracks",
+  "name": "R57 PRO KUBOTA V2607 Cabine rubber tracks",
+  "url": "https://www.rippagroup.ca/en/shop/lp02300003-rb-r57-pro-kubota-v2607-cabine-rubber-tracks-1460",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1460/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r57-972"
+  ],
+  "sku": "LP02300003",
+  "imageHash": "694f40e8dbdcb3cf697be9b0d6352126",
+  "hasImage": true
+ },
+ {
+  "id": "1548",
+  "slug": "lp02280048-rl06-loader-kubota",
+  "name": "RL06 Loader Kubota",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280048-rl06-loader-kubota-1548",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1548/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-loader-1184",
+   "/en/shop/category/machinery-loader-rl06-1186"
+  ],
+  "sku": "LP02280048",
+  "imageHash": "6108fb6327edbc3ca453d711e63337ec",
+  "hasImage": true
+ },
+ {
+  "id": "1549",
+  "slug": "lp02280049-rl06-t-loader-telescopic-mat-kubota",
+  "name": "RL06-T Loader (T\u00e9l\u00e9scopic Mat) Kubota",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280049-rl06-t-loader-telescopic-mat-kubota-1549",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1549/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-loader-1184",
+   "/en/shop/category/machinery-loader-rl06-1186"
+  ],
+  "sku": "LP02280049",
+  "imageHash": "4153c53c98ceee5a536dbe82b0e59b89",
+  "hasImage": true
+ },
+ {
+  "id": "1550",
+  "slug": "lp02280050-rb06-loader-excavator-backhoe-kubota",
+  "name": "RB06 Loader+Excavator Backhoe Kubota",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280050-rb06-loader-excavator-backhoe-kubota-1550",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1550/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-loader-1184",
+   "/en/shop/category/machinery-loader-rb06-1185"
+  ],
+  "sku": "LP02280050",
+  "imageHash": "11090b4017181461bd11ed38c3b9cae5",
+  "hasImage": true
+ },
+ {
+  "id": "1552",
+  "slug": "lp02280062-rd06-dump-truck-briggs-strat",
+  "name": "RD06 Dump Truck Briggs&Strat.",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280062-rd06-dump-truck-briggs-strat-1552",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1552/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-dump-truck-1181",
+   "/en/shop/category/machinery-dump-truck-rd06-1182"
+  ],
+  "sku": "LP02280062",
+  "imageHash": "0d7e2c6005c7257878275d3e18884b80",
+  "hasImage": true
+ },
+ {
+  "id": "1553",
+  "slug": "lp02280061-rd06-e-lifting-dump-truck-briggs-strat",
+  "name": "RD06-E Lifting Dump Truck Briggs&Strat.",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280061-rd06-e-lifting-dump-truck-briggs-strat-1553",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1553/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-dump-truck-1181",
+   "/en/shop/category/machinery-dump-truck-rd06-1182"
+  ],
+  "sku": "LP02280061",
+  "imageHash": "bddac0c3e49fb65c254ccd70d2aa86e3",
+  "hasImage": true
+ },
+ {
+  "id": "1572",
+  "slug": "lp02011125-r06-eco-kubota-z482",
+  "name": "R06 ECO - KUBOTA Z482",
+  "url": "https://www.rippagroup.ca/en/shop/lp02011125-r06-eco-kubota-z482-1572",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1572/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r06-1272"
+  ],
+  "sku": "LP02011125",
+  "imageHash": "78e45996d2be667deb0882e28887d7a3",
+  "hasImage": true
+ },
+ {
+  "id": "1780",
+  "slug": "lp02280040u02-rs20-c-skid-steer-cab-heated-ac-kubota-v2607",
+  "name": "RS20-C Skid Steer Cab Heated/AC KUBOTA V2607",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280040u02-rs20-c-skid-steer-cab-heated-ac-kubota-v2607-1780",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1780/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs20-965"
+  ],
+  "sku": "LP02280040",
+  "imageHash": "d85a61da30f4c47b84688e3ea544a94f",
+  "hasImage": true
+ },
+ {
+  "id": "1781",
+  "slug": "lp02280041u02-rs20-w-skid-steer-wheeled-chauffee-ac-kubota-v2607",
+  "name": "RS20-W Skid Steer Wheeled Chauff\u00e9e/AC KUBOTA V2607",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280041u02-rs20-w-skid-steer-wheeled-chauffee-ac-kubota-v2607-1781",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1781/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs20-965"
+  ],
+  "sku": "LP02280041",
+  "imageHash": "780bd9779e3decda3145887af565bc53",
+  "hasImage": true
+ },
+ {
+  "id": "1783",
+  "slug": "lp02280022-rs10-w-skid-steer-wheeled-heated-cab-kubota-v2607",
+  "name": "RS10-W Skid Steer Wheeled Heated Cab KUBOTA V2607",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280022-rs10-w-skid-steer-wheeled-heated-cab-kubota-v2607-1783",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1783/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs10-1313"
+  ],
+  "sku": "LP02280022",
+  "imageHash": "d0e9b29995ab9c42517a5c8a087e4f65",
+  "hasImage": true
+ },
+ {
+  "id": "1795",
+  "slug": "lp02300003-sb-r57-pro-kubota-v2607-cabine-rubber-tracks-sb",
+  "name": "R57 PRO KUBOTA V2607 Cabine Rubber Tracks-SB",
+  "url": "https://www.rippagroup.ca/en/shop/lp02300003-sb-r57-pro-kubota-v2607-cabine-rubber-tracks-sb-1795",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1795/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r57-972"
+  ],
+  "sku": "LP02300003",
+  "imageHash": "694f40e8dbdcb3cf697be9b0d6352126",
+  "hasImage": true
+ },
+ {
+  "id": "1796",
+  "slug": "lp02300003-sb-st-r57-pro-kubota-v2607-cabine-steel-tracks-sb-plastic-pocks",
+  "name": "R57 PRO KUBOTA V2607 Cabine Steel Tracks-SB-Plastic Pocks",
+  "url": "https://www.rippagroup.ca/en/shop/lp02300003-sb-st-r57-pro-kubota-v2607-cabine-steel-tracks-sb-plastic-pocks-1796",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/1796/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r57-972"
+  ],
+  "sku": "LP02300003",
+  "imageHash": "694f40e8dbdcb3cf697be9b0d6352126",
+  "hasImage": true
+ },
+ {
+  "id": "2773",
+  "slug": "lp02280005u03-rs06-3-chargeuse-sur-chenilles-kubota-d1105",
+  "name": "RS06-3 Chargeuse sur chenilles KUBOTA D1105",
+  "url": "https://www.rippagroup.ca/en/shop/lp02280005u03-rs06-3-chargeuse-sur-chenilles-kubota-d1105-2773",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/2773/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-skid-steer-loader-953",
+   "/en/shop/category/machinery-skid-steer-loader-rs06-963"
+  ],
+  "sku": "LP02280005",
+  "imageHash": "c4cbd2ad016ccd3c65472a56373cfc8e",
+  "hasImage": true
+ },
+ {
+  "id": "3000",
+  "slug": "lp02010656u05-02-r32-pro-kubota-v1505-cabine-ng-2026-3560kg",
+  "name": "R32 PRO - KUBOTA V1505 Cabine NG 2026 (3560KG)",
+  "url": "https://www.rippagroup.ca/en/shop/lp02010656u05-02-r32-pro-kubota-v1505-cabine-ng-2026-3560kg-3000",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/3000/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r32-971"
+  ],
+  "sku": "LP02010656",
+  "imageHash": "f15d2ae0f89e462d53547fc4d246d1b4",
+  "hasImage": true
+ },
+ {
+  "id": "3009",
+  "slug": "lp02270917-r210-kubota-5009-epa-tier-4-canada-oem-21t",
+  "name": "R210 KUBOTA 5009 - EPA TIER 4 - CANADA OEM-21T",
+  "url": "https://www.rippagroup.ca/en/shop/lp02270917-r210-kubota-5009-epa-tier-4-canada-oem-21t-3009",
+  "imageUrl": "https://www.rippagroup.ca/web/image/product.template/3009/image_1024",
+  "categories": [
+   "/en/shop/category/machinery-952",
+   "/en/shop/category/machinery-excavator-954",
+   "/en/shop/category/machinery-excavator-r230-1342"
+  ],
+  "sku": "LP02270917",
+  "imageHash": "fad9a3aaf4d26241f60f451d13a0e492",
+  "hasImage": true
+ }
+]

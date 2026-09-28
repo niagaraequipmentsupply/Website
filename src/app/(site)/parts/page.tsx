@@ -12,8 +12,8 @@ import { isThin } from "@/lib/machines";
 import { systemLabel, systemOrder } from "@/lib/parts";
 
 export const metadata: Metadata = {
-  title: "Genuine RIPPA Parts Catalogue | Filters, Tracks, Hydraulics by Model",
-  description: "Browse genuine RIPPA parts by machine: R06 to R230 excavators, RS03 to RS20 skid steers, RL06 and RB06 loaders. Filters, hydraulic cylinders, undercarriage, electrical, engine parts and more, shipped across Canada from Niagara Equipment Supply.",
+  title: "Genuine RIPPA Parts Catalogue by Model",
+  description: "Genuine RIPPA parts by model and system: filters, hydraulics, undercarriage, electrical and engine parts for R06 to R230, RS03 to RS20 and RL06. Shipped across Canada.",
   alternates: { canonical: "/parts" },
 };
 

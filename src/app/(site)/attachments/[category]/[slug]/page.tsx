@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug, category } = await params;
   const a = await getAttachment(slug);
   if (!a || a.attachmentCategory !== category) return {};
-  return { title: `RIPPA ${a.name} for Sale in Ontario | ${(await getAttachmentCategory(category))?.name}`, description: `${a.name}: ${a.description}. Available from Niagara Equipment Supply.`, alternates: { canonical: `/attachments/${category}/${a.slug}` } };
+  return { openGraph: a.images[0] ? { images: [{ url: a.images[0].src, alt: a.images[0].alt }] } : undefined, title: `RIPPA ${a.name} | ${(await getAttachmentCategory(category))?.name ?? "Attachments"}`, description: `${(a.longDescription ?? a.description).split(/(?<=\.)\s/)[0]} Sizes and part numbers by model, fitment confirmed by Niagara Equipment Supply.`.slice(0, 160), alternates: { canonical: `/attachments/${category}/${a.slug}` } };
 }
 
 export default async function AttachmentPage({ params }: { params: Promise<Params> }) {
@@ -82,6 +82,7 @@ export default async function AttachmentPage({ params }: { params: Promise<Param
         </Container>
       </section>
       <CtaBand title="Ready to add it to your setup?" text="Add this attachment to your quote list or configure it inside the Excavator Builder." primary={{ href: "/builder/excavator", label: "Open Builder" }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Product", name: `RIPPA ${a.name}`, brand: { "@type": "Brand", name: "RIPPA" }, category: a.attachmentType, image: a.images.map((i) => i.src), description: a.description, ...(a.variants.length ? { model: a.variants.map((v) => v.sku).filter(Boolean).slice(0, 20).join(", ") } : {}), offers: { "@type": "Offer", availability: "https://schema.org/InStock", priceCurrency: "CAD", price: 0, priceSpecification: { "@type": "PriceSpecification", priceCurrency: "CAD", valueAddedTaxIncluded: false }, seller: { "@type": "Organization", name: "Niagara Equipment Supply" } } }) }} />
     </>
   );
 }

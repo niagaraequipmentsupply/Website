@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   if (!p) return {};
   const fits = catalogue.machines.filter((m) => p.compatibleModelIds.includes(m.id)).map((m) => m.modelName).join(", ");
   return {
-    title: `${p.name} ${p.sku} | Genuine RIPPA Part${fits ? ` for ${fits}` : ""}`,
+    title: `${p.name} ${p.sku} | RIPPA Part`,
     description: `Genuine RIPPA ${p.name} (part number ${p.sku})${fits ? ` for the ${fits}` : ""}. ${systemLabel(p.system)}. Request it from Niagara Equipment Supply; shipped across Canada.`,
     alternates: { canonical: `/parts/item/${p.slug}` },
   };

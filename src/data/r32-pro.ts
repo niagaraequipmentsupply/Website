@@ -10,7 +10,7 @@ export const r32 = {
   modelName: "R32 PRO",
   series: "PRO Series",
   badge: "Best Seller",
-  shortDescription: "3.5-tonne class mini excavator with Kubota V1505 power, load-sensing hydraulics, tilting dozer blade and a fully equipped cab. Semi-pro grade for bigger excavation, pool digging, foundations and light construction.",
+  shortDescription: "3.5-ton zero-tail with cab, A/C, load-sensing hydraulics and tilting blade. 9 ft 3\" dig depth for pools, foundations and trenching.",
   longDescription:
     "The R32 PRO is RIPPA's semi-professional 3.5-tonne class mini excavator. A Kubota V1505 diesel drives a variable-displacement piston pump and a load-sensing 9-way multiplex valve, so the machine stays responsive when you dig, swing and travel at the same time. A tailless swing and a boom that offsets 47° right and 74° left let it work against walls and fences, while the tilting dozer blade handles levelling and slope trimming without repositioning. The enclosed cab comes with air conditioning, a fan heater, flip-up windshield and a mechanically suspended seat for full-day comfort.",
   warranty: "2 year warranty",
@@ -87,6 +87,8 @@ export const r32 = {
   ] satisfies Faq[],
   /** Gallery order: first is the main image. */
   images: [
+    { key: "r32-pro-cab-photo", alt: "RIPPA R32 PRO enclosed cab at the dealership" },
+    { key: "r32-pro-canopy", alt: "RIPPA R32 PRO open canopy" },
     { key: "r32-pro-render", alt: "RIPPA R32 PRO mini excavator, enclosed cab, three-quarter view" },
     { key: "r32-pro-jobsite", alt: "RIPPA R32 PRO grading gravel on a residential driveway" },
     { key: "r32-pro-stump", alt: "RIPPA R32 PRO lifting a tree stump with a hydraulic thumb" },

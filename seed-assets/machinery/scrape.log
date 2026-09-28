@@ -1,0 +1,30 @@
+machinery: 36
+machinery-skid-steer-loader: 13
+machinery-skid-steer-loader-rs03: 1
+machinery-skid-steer-loader-rs04: 3
+machinery-skid-steer-loader-rs06: 1
+machinery-skid-steer-loader-rs07: 4
+machinery-skid-steer-loader-rs20: 3
+machinery-skid-steer-loader-rs10: 1
+machinery-dump-truck: 2
+machinery-dump-truck-rd06: 2
+machinery-loader: 3
+machinery-loader-rb06: 1
+machinery-loader-rl06: 2
+machinery-excavator: 18
+machinery-excavator-r06: 1
+machinery-excavator-r10: 4
+machinery-excavator-r13: 1
+machinery-excavator-r15: 2
+machinery-excavator-r18: 2
+machinery-excavator-r22: 2
+machinery-excavator-r230: 1
+machinery-excavator-r32: 2
+machinery-excavator-r57: 3
+machinery-excavator-r82: 0
+machinery-telehandler: 0
+machinery-telehandler-rh34: 0
+machinery-telehandler-rh35: 0
+products: 36 in 12 s
+most shared image hash 780bd9779e3decda3145887af565bc53 count 3
+done

@@ -6,6 +6,7 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
 import { excavatorComparison, excavatorGuideSpecs, categoryContent } from "../data/excavator-comparison";
+import { extraCategoryContent } from "../data/category-content-extra";
 import { skidSteerComparison } from "../data/skid-steer-comparison";
 
 const payload = await getPayload({ config });
@@ -46,7 +47,7 @@ for (const [slug, c] of Object.entries(skidSteerComparison)) {
 }
 log(`Updated comparison data on ${k} skid steers`);
 
-for (const [slug, content] of Object.entries(categoryContent)) {
+for (const [slug, content] of [...Object.entries(categoryContent), ...Object.entries(extraCategoryContent)]) {
   const cat = await payload.find({ collection: "categories", where: { slug: { equals: slug } }, limit: 1 });
   if (!cat.docs[0]) continue;
   await payload.update({ collection: "categories", id: cat.docs[0].id, data: {

@@ -11,7 +11,7 @@ import { ServiceFirst } from "@/components/home/ServiceFirst";
 
 export const metadata: Metadata = {
   title: "Niagara Equipment Supply | Official RIPPA Dealer in Ontario",
-  description: "Compact equipment built for real work. RIPPA mini excavators, skid steers, loaders, backhoe loaders, track dumpers and attachments with financing, service and Ontario-wide delivery.",
+  description: "Official RIPPA dealer in Thorold, Ontario: mini excavators, skid steers, loaders, track dumpers and attachments, with the RIPPA Service Centre, parts and Ontario-wide delivery.",
   alternates: { canonical: "/" },
 };
 

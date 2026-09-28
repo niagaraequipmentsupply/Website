@@ -7,8 +7,8 @@ import { LeadForm } from "@/components/quote/LeadForm";
 import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
-  title: "RIPPA Parts Canada | Filters, Tracks, Hydraulics Shipped Nationwide",
-  description: "Order genuine RIPPA mini excavator and skid steer parts from Niagara Equipment Supply. Filters, rubber tracks, hoses, couplers, teeth and more, shipped across Canada. Sourcing help for US owners.",
+  title: "Order RIPPA Parts, Shipped Across Canada",
+  description: "Order genuine RIPPA parts by part number or photo: filters, tracks, hoses, couplers and teeth shipped across Canada, with sourcing help for US owners.",
   alternates: { canonical: "/service/parts" },
 };
 
@@ -40,6 +40,7 @@ export default async function PartsPage({ searchParams }: { searchParams: Promis
           <LeadForm source="parts" title="Parts request" submitLabel="Request Parts Quote" messageLabel="Model, serial number, hours, and the parts you need" defaultMessage={`${sku ? `Part number: ${sku}\n` : ""}${machine ? `Model: RIPPA ${machine.modelName}\nSerial #: \nHours: \nParts needed: ` : undefined}`} />
         </Container>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }) }} />
     </>
   );
 }

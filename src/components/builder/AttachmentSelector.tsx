@@ -1,5 +1,5 @@
-import { RuggedChip } from "@/components/ui/RuggedChip";
 "use client";
+import { RuggedChip } from "@/components/ui/RuggedChip";
 import { useMemo, useState } from "react";
 import { Check, Plus, Minus } from "lucide-react";
 import type { Attachment, AttachmentSelection, Machine } from "@/lib/types";

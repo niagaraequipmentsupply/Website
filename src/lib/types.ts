@@ -51,6 +51,11 @@ export interface AttachmentCategory {
   slug: AttachmentCategorySlug;
   name: string;
   description: string;
+  /** Category page content (same shape as machine categories), optional for seed fallbacks. */
+  intro?: string;
+  buyingGuide?: { title: string; text: string; modelIds: string[] }[];
+  highlights?: { title: string; text: string }[];
+  faqs?: Faq[];
   /** Machine categories this attachment family fits. */
   image?: ImageAsset;
   machineCategories: CategorySlug[];

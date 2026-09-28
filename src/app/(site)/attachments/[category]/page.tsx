@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AttachmentCard } from "@/components/equipment/AttachmentCard";
 import { CtaBand } from "@/components/home/CtaBand";
 import { Button } from "@/components/ui/Button";
 import { getSiteContent, getAttachmentCategory, getAttachments } from "@/lib/catalogue";
 import { slugify } from "@/lib/format";
 import Link from "next/link";
+import { Check } from "lucide-react";
 import { plateLabels } from "@/lib/plates";
 import { groupAttachments } from "@/lib/attachment-groups";
 import { builderForAttachmentCategory } from "@/lib/builders";
@@ -61,6 +63,7 @@ export default async function AttachmentCategoryPage({ params, searchParams }: {
             )}
             <p className="mt-3 text-[13px] text-grey">{machine ? `${items.length} attachments listed by RIPPA for the ${machine.modelName}.` : `${items.length} attachments.`} Not sure which plate you have, or want to run attachments from another machine? We convert plates and fit adapters. <Link href="/contact" className="font-semibold text-navy">Ask us</Link>.</p>
           </div>
+          {cat.intro && !machine && !plate && <p className="mb-6 max-w-3xl text-[16px] leading-relaxed text-charcoal/85">{cat.intro}</p>}
           {types.length > 1 && (
             <ul className="mb-6 flex flex-wrap gap-2" aria-label="Attachment types">
               {types.map((t) => <li key={t}><a href={`#${slugify(t)}`} className="inline-flex h-10 items-center rounded-full border border-line px-4 text-sm font-semibold text-navy hover:border-electric hover:text-electric">{t}</a></li>)}
@@ -76,6 +79,36 @@ export default async function AttachmentCategoryPage({ params, searchParams }: {
           ))}
         </Container>
       </section>
+      {((cat.buyingGuide ?? []).length > 0 || (cat.highlights ?? []).length > 0) && (
+        <section className="section-tight bg-light/60">
+          <Container>
+            {(cat.buyingGuide ?? []).length > 0 && (
+              <>
+                <SectionHeading eyebrow="Buying guide" title="What to add first" rule={false} />
+                <ul className="mb-8 grid gap-4 md:grid-cols-3">
+                  {(cat.buyingGuide ?? []).map((b) => <li key={b.title} className="rounded-card border border-line bg-white p-5"><h3 className="font-bold text-charcoal">{b.title}</h3><p className="mt-1 text-sm text-grey">{b.text}</p></li>)}
+                </ul>
+              </>
+            )}
+            {(cat.highlights ?? []).length > 0 && (
+              <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {(cat.highlights ?? []).map((h) => <li key={h.title} className="flex gap-3 rounded-card border border-line bg-white p-4"><Check className="mt-0.5 size-5 shrink-0 text-navy" aria-hidden /><div><h3 className="font-bold text-charcoal">{h.title}</h3><p className="mt-1 text-sm text-grey">{h.text}</p></div></li>)}
+              </ul>
+            )}
+          </Container>
+        </section>
+      )}
+      {(cat.faqs ?? []).length > 0 && (
+        <section className="section-tight">
+          <Container className="grid gap-8 lg:grid-cols-[1fr_2fr]">
+            <div><h2 className="display text-charcoal">{cat.name} FAQ</h2><p className="mt-2 text-sm text-grey">Plate types, fitment and what to buy first. Still unsure? <Link href="/contact" className="font-semibold text-navy">Ask our team</Link>.</p></div>
+            <dl className="divide-y divide-line rounded-card border border-line bg-white">
+              {(cat.faqs ?? []).map((f) => <div key={f.question} className="p-4"><dt className="font-bold text-charcoal">{f.question}</dt><dd className="mt-1 text-sm text-grey">{f.answer}</dd></div>)}
+            </dl>
+          </Container>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: (cat.faqs ?? []).map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })) }) }} />
+        </section>
+      )}
       <CtaBand title="Add attachments to your quote" text="Combine machines and attachments in one request. Our team confirms compatibility and pricing." />
     </>
   );

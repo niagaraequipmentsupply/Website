@@ -47,7 +47,7 @@ export function ConfigurationAxes({ machine, value, onChange, compact = false }:
               const on = picks[a.axis] === o; const ok = available(a.axis, o);
               return (
                 <button key={o} type="button" onClick={() => pick(a.axis, o)} aria-pressed={on} title={ok ? o : `${o}: not offered with the other options selected`}
-                  className={`inline-flex items-center gap-1 rounded-btn border font-semibold transition-colors ${btn} ${on ? "border-navy bg-navy text-white" : ok ? "border-line bg-white text-charcoal hover:border-electric" : "border-dashed border-line bg-light text-grey"}`}>
+                  className={`chamfer inline-flex items-center gap-1 border-2 font-bold uppercase tracking-[0.08em] transition-colors ${btn} ${on ? "border-navy bg-navy text-white" : ok ? "border-charcoal/70 bg-white text-charcoal hover:border-navy hover:text-navy" : "border-dashed border-line bg-light text-grey"}`}>
                   {on && <Check className="size-3.5" aria-hidden />}{short(o)}
                 </button>
               );

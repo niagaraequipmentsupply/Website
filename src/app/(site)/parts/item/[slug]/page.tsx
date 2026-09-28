@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { RuggedChip } from "@/components/ui/RuggedChip";
 import { notFound } from "next/navigation";
 import { Check, Package, Phone } from "lucide-react";
 import { Container } from "@/components/ui/Container";
@@ -54,7 +55,7 @@ export default async function PartPage({ params }: { params: Promise<Params> }) 
               <div className="mt-5 border-t border-line pt-4">
                 <h2 className="text-sm font-bold text-charcoal">Fits these machines</h2>
                 {fits.length ? (
-                  <ul className="mt-2 flex flex-wrap gap-2">{fits.map((m) => <li key={m.id}><Link href={`/parts/${m.slug}`} className="inline-flex h-8 items-center rounded-full bg-tint px-3 text-sm font-semibold text-navy hover:bg-navy hover:text-white">{m.modelName}</Link></li>)}</ul>
+                  <ul className="mt-2 flex flex-wrap gap-2">{fits.map((m) => <li key={m.id}><RuggedChip href={`/parts/${m.slug}`} size="sm">{m.modelName}</RuggedChip></li>)}</ul>
                 ) : <p className="mt-1 text-sm text-grey">Fitment to be confirmed. Send us your model and serial number.</p>}
               </div>
               <ul className="mt-5 space-y-2 text-sm text-charcoal">

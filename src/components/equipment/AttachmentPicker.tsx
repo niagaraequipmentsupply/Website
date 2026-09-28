@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { RuggedChip } from "@/components/ui/RuggedChip";
 import { ChevronDown } from "lucide-react";
 import type { Attachment, Machine } from "@/lib/types";
 import { EquipmentImage } from "@/components/ui/EquipmentImage";
@@ -23,7 +24,7 @@ export function AttachmentPicker({ attachments, machine }: { attachments: Attach
   return (
     <div>
       <nav aria-label="Attachment types" className="mb-4 flex flex-wrap gap-1.5">
-        {groups.map(([t, items]) => <button key={t} type="button" onClick={() => { setOpen((s) => new Set(s).add(t)); document.getElementById(`att-${slug(t)}`)?.scrollIntoView({ behavior: "smooth", block: "start" }); }} className="rounded-full border border-line bg-white px-3 py-1 text-[12px] font-semibold text-charcoal hover:border-electric hover:text-navy">{t} <span className="text-grey">{items.length}</span></button>)}
+        {groups.map(([t, items]) => <RuggedChip key={t} size="sm" count={items.length} onClick={() => { setOpen((s) => new Set(s).add(t)); document.getElementById(`att-${slug(t)}`)?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>{t}</RuggedChip>)}
       </nav>
       <div className="divide-y divide-line rounded-card border border-line bg-white">
         {groups.map(([type, items]) => {

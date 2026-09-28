@@ -1,3 +1,4 @@
+import { RuggedChip } from "@/components/ui/RuggedChip";
 "use client";
 import { useMemo, useState } from "react";
 import { Check, Plus, Minus } from "lucide-react";
@@ -34,8 +35,8 @@ export function AttachmentSelector({ machine, attachments, selections, onAdd, on
       ) : (
         <>
           <div className="no-scrollbar -mx-1 mb-4 flex gap-1.5 overflow-x-auto px-1 pb-1" role="tablist" aria-label="Attachment types">
-            <button type="button" role="tab" aria-selected={type === "all"} onClick={() => setType("all")} className={`shrink-0 rounded-full border px-3 py-1.5 text-[13px] font-semibold ${type === "all" ? "border-navy bg-navy text-white" : "border-line bg-white text-charcoal hover:border-electric"}`}>All <span className={type === "all" ? "text-white/70" : "text-grey"}>{attachments.length}</span></button>
-            {groups.map(([t, items]) => <button key={t} type="button" role="tab" aria-selected={type === t} onClick={() => setType(t)} className={`shrink-0 rounded-full border px-3 py-1.5 text-[13px] font-semibold ${type === t ? "border-navy bg-navy text-white" : "border-line bg-white text-charcoal hover:border-electric"}`}>{t} <span className={type === t ? "text-white/70" : "text-grey"}>{items.length}</span></button>)}
+            <RuggedChip role="tab" aria-selected={type === "all"} active={type === "all"} onClick={() => setType("all")} size="sm" count={attachments.length} className="shrink-0">All</RuggedChip>
+            {groups.map(([t, items]) => <RuggedChip key={t} role="tab" aria-selected={type === t} active={type === t} onClick={() => setType(t)} size="sm" count={items.length} className="shrink-0">{t}</RuggedChip>)}
           </div>
           <div className="space-y-6">
             {visible.map(([t, items]) => (

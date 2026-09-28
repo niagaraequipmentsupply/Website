@@ -21,8 +21,8 @@ export const site: SiteConfig = {
   description:
     "Niagara Equipment Supply is your trusted RIPPA dealer for mini excavators, skid steers, loaders, backhoe loaders, track dumpers and attachments across Ontario.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://niagaraequipment.ca",
-  phone: "(905) 555-0123", // TODO: replace with real dealer phone
-  phoneHref: "tel:+19055550123",
+  phone: "111-111-1111", // placeholder until the dealer line is live
+  phoneHref: "tel:+11111111111",
   email: "info@niagaraequip.com",
   address: { street: "16-2275 Hwy 20", city: "Thorold", region: "ON", postal: "L3B 5N5", country: "CA" },
   serviceArea: "Serving all of Ontario",

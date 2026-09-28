@@ -13,7 +13,7 @@ interface Props {
 export function PageHero({ title, text, crumbs, children, aside }: Props) {
   return (
     <section className="relative border-b border-line bg-light/60">
-      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/light-grid.svg')] bg-cover bg-right opacity-40" />
+      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/light-angles.svg')] bg-cover bg-right opacity-80" />
       <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
       <Container className="relative grid items-center gap-8 py-10 lg:grid-cols-[3fr_2fr] lg:py-12">
         <div>

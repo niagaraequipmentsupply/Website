@@ -5,7 +5,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 type Variant = "primary" | "secondary" | "ghost" | "white";
 type Size = "sm" | "md" | "lg";
 
-const base = "inline-flex items-center justify-center gap-2 font-semibold rounded-btn transition-colors duration-200 whitespace-nowrap select-none disabled:opacity-50 disabled:pointer-events-none";
+const base = "chamfer inline-flex items-center justify-center gap-2 font-semibold transition-colors duration-200 whitespace-nowrap select-none disabled:opacity-50 disabled:pointer-events-none";
 const variants: Record<Variant, string> = {
   primary: "bg-navy text-white hover:bg-electric active:bg-navy-dark",
   secondary: "bg-white text-navy border-2 border-navy hover:bg-tint hover:border-electric hover:text-electric",

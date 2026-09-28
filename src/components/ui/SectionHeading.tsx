@@ -18,7 +18,7 @@ export function SectionHeading({ title, subtitle, eyebrow, link, as: Tag = "h2",
       <div className="flex min-w-0 flex-1 basis-full items-center gap-5 sm:basis-0">
         <div className="min-w-0 flex-1">
           {eyebrow && <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-grey">{eyebrow}</p>}
-          <Tag className="display text-charcoal">{title}</Tag>
+          <Tag className="display accent-bar text-charcoal">{title}</Tag>
           {subtitle && <p className="mt-2 max-w-2xl text-[15px] text-grey">{subtitle}</p>}
         </div>
         {rule && !subtitle && <div className="hidden h-px flex-1 bg-line md:block" aria-hidden />}

@@ -274,7 +274,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
       {/* ---------- Applications ---------- */}
       {m.applications.length > 0 && (
         <section id="applications" className="section-tight relative scroll-mt-32 overflow-hidden bg-navy text-white">
-          <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/navy-topo.svg')] bg-cover bg-center opacity-60" />
+          <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/dark-chevron.svg')] bg-cover bg-center opacity-50" />
           <Container className="relative">
             <p className="mb-2 text-[12px] font-semibold uppercase tracking-[0.3em] text-white/80">Built for</p>
             <h2 className="display text-white">What owners do with the {m.modelName}</h2>

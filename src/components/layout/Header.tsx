@@ -50,10 +50,10 @@ export function Header({ nav, contact }: Props) {
   return (
     <header className={`sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur transition-[height,box-shadow] duration-200 ${scrolled ? "shadow-card" : ""}`}>
       <StoreHydration />
-      <Container className={`flex items-center justify-between gap-6 transition-[height] duration-200 ${scrolled ? "h-16" : "h-[76px]"}`}>
+      <Container className={`flex items-center justify-between gap-4 transition-[height] duration-200 ${scrolled ? "h-16" : "h-[76px]"}`}>
         <Logo compact={scrolled} />
         <nav aria-label="Primary" className="hidden lg:block">
-          <ul className="flex items-center gap-6">
+          <ul className="flex items-center gap-4 xl:gap-6">
             {nav.map((n) => (
               <li key={n.href}>
                 {n.children?.length ? (

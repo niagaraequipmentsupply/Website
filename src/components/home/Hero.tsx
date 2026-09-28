@@ -2,36 +2,32 @@ import { ShieldCheck, Users, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { IconFeature } from "@/components/ui/IconFeature";
-import { HeroVisual } from "./HeroVisual";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-line bg-light">
-      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/hero-site.jpg')] bg-cover bg-[position:70%_60%]" />
-      <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/40 lg:via-white/90 lg:to-white/20" />
-      <div aria-hidden className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
-      <Container className="relative grid items-center gap-10 py-12 lg:grid-cols-[45fr_55fr] lg:gap-8 lg:py-0">
-        <div className="lg:py-20">
-          <p className="mb-4 text-[12px] font-semibold uppercase tracking-[0.3em] text-navy">Official RIPPA Dealer</p>
-          <h1 className="display text-charcoal">
+    <section className="relative overflow-hidden bg-[#070d1a] text-white">
+      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/hero-shards.jpg')] bg-cover bg-[position:75%_50%]" />
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#070d1a] via-[#070d1a]/85 to-transparent" />
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-1.5 bg-gradient-to-r from-electric via-navy to-transparent" />
+      <Container className="relative py-14 lg:min-h-[600px] lg:py-24">
+        <div className="max-w-2xl">
+          <p className="mb-4 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.22em] text-electric sm:text-[12px] sm:tracking-[0.3em]"><span className="h-px w-8 shrink-0 bg-electric" aria-hidden /><span>Official RIPPA Dealer · Thorold, Ontario</span></p>
+          <h1 className="display text-white">
             Compact Equipment<br />
-            <span className="text-navy">Built for Real Work</span>
+            <span className="text-electric">Built for Real Work</span>
           </h1>
-          <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-charcoal/85">
-            Niagara Equipment Supply is your trusted RIPPA dealer for Excavators, Skid Steers, Loaders, Backhoe Loaders and Track Dumpers across Ontario.
+          <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-white/80">
+            RIPPA mini excavators, skid steers, loaders and track dumpers, backed by the RIPPA Service Centre, genuine parts across Canada and delivery anywhere in Ontario.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <Button href="/inventory" size="lg" arrow>Shop Inventory</Button>
-            <Button href="/attachments" size="lg" variant="secondary" arrow>Browse Attachments</Button>
+            <Button href="/inventory" size="lg" arrow className="bg-electric hover:bg-white hover:text-navy">Shop Equipment</Button>
+            <Button href="/builder/excavator" size="lg" arrow className="border-2 border-white/70 bg-transparent text-white hover:border-white hover:bg-white hover:text-navy">Build Your Machine</Button>
           </div>
           <ul className="mt-9 grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-4">
-            <li><IconFeature icon={ShieldCheck} title="Quality Equipment" text="Built to perform" compact /></li>
-            <li><IconFeature icon={Users} title="Expert Support" text="Before & after you buy" compact /></li>
-            <li><IconFeature icon={MapPin} title="Ontario Wide" text="Delivery available" compact /></li>
+            <li><IconFeature icon={ShieldCheck} title="RIPPA Service Centre" text="Warranty handled for you" compact dark /></li>
+            <li><IconFeature icon={Users} title="Expert Support" text="Before & after you buy" compact dark /></li>
+            <li><IconFeature icon={MapPin} title="Ontario Wide" text="Delivery available" compact dark /></li>
           </ul>
-        </div>
-        <div className="relative lg:min-h-[520px]">
-          <HeroVisual />
         </div>
       </Container>
     </section>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { RuggedChip } from "@/components/ui/RuggedChip";
 import { notFound } from "next/navigation";
 import { Wrench, Droplets, BookOpen } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
@@ -49,7 +50,7 @@ export default async function ModelPartsPage({ params }: { params: Promise<Param
       >
         <div className="flex flex-wrap gap-3"><Button href={`/service/parts?model=${m.slug}`} size="lg" arrow>Request a Part</Button><Button href={`/inventory/${m.category}/${m.slug}`} size="lg" variant="secondary">{m.modelName} machine page</Button></div>
         <nav aria-label="Systems" className="mt-5 flex flex-wrap gap-1.5">
-          {groups.map(([s, items]) => <a key={s} href={`#parts-${s}`} className="rounded-full border border-line bg-white px-3 py-1 text-[12px] font-semibold text-charcoal hover:border-electric hover:text-navy">{systemLabel(s)} <span className="text-grey">{items.length}</span></a>)}
+          {groups.map(([s, items]) => <RuggedChip key={s} href={`#parts-${s}`} size="sm" count={items.length}>{systemLabel(s)}</RuggedChip>)}
         </nav>
       </PageHero>
 

@@ -87,9 +87,9 @@ export const r32 = {
   ] satisfies Faq[],
   /** Gallery order: first is the main image. */
   images: [
-    { key: "r32-pro-cab-photo", alt: "RIPPA R32 PRO enclosed cab at the dealership" },
-    { key: "r32-pro-canopy", alt: "RIPPA R32 PRO open canopy" },
     { key: "r32-pro-render", alt: "RIPPA R32 PRO mini excavator, enclosed cab, three-quarter view" },
+    { key: "r32-pro-canopy", alt: "RIPPA R32 PRO open canopy" },
+    { key: "r32-pro-cab-photo", alt: "RIPPA R32 PRO enclosed cab at the dealership" },
     { key: "r32-pro-jobsite", alt: "RIPPA R32 PRO grading gravel on a residential driveway" },
     { key: "r32-pro-stump", alt: "RIPPA R32 PRO lifting a tree stump with a hydraulic thumb" },
     { key: "r32-pro-trenching", alt: "RIPPA R32 PRO digging a trench in a backyard" },

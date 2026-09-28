@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { RuggedChip } from "@/components/ui/RuggedChip";
 import { notFound } from "next/navigation";
 import { Check, ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
@@ -55,7 +56,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
         </div>
         {items.length > 1 && (
           <nav aria-label={`${cat.name} models`} className="mt-5 flex flex-wrap gap-1.5">
-            {items.map((m) => <Link key={m.id} href={`/inventory/${m.category}/${m.slug}`} className="rounded-full border border-line bg-white px-3 py-1 text-[12px] font-semibold text-charcoal hover:border-electric hover:text-navy">{m.modelName}</Link>)}
+            {items.map((m) => <RuggedChip key={m.id} href={`/inventory/${m.category}/${m.slug}`} size="sm">{m.modelName}</RuggedChip>)}
           </nav>
         )}
       </PageHero>

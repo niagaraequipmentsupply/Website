@@ -54,7 +54,9 @@ const familyFor = (key: string, cat: string): keyof typeof families | undefined 
 };
 const prettySize = (s: string) => s.replace(/MM/g, " mm").replace(/CM/g, " cm").replace(/\s?X\s?/g, " × ").replace(/''/g, '"').replace(/\s{2,}/g, " ").replace(/\(/g, "(").trim();
 
+const PLACEHOLDER_IMAGES = new Set<string>(fs.existsSync(path.resolve("seed-assets/attachments/placeholder-images.json")) ? JSON.parse(fs.readFileSync(path.resolve("seed-assets/attachments/placeholder-images.json"), "utf8")) : []);
 async function media(id: string, alt: string): Promise<number | undefined> {
+  if (PLACEHOLDER_IMAGES.has(`${id}.jpg`)) return undefined; // Odoo "no photo" logo placeholder: show our art instead
   // Source files are WebP despite the .jpg extension; sharp stores them as .webp, so look both ways before uploading.
   const ex = await payload.find({ collection: "media", where: { filename: { in: [`rippa-att-${id}.webp`, `rippa-att-${id}.jpg`] } }, limit: 1, sort: "createdAt" });
   if (ex.docs[0]) return ex.docs[0].id;

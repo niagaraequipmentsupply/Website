@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { RuggedChip } from "@/components/ui/RuggedChip";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -58,7 +59,7 @@ export default async function AttachmentPage({ params }: { params: Promise<Param
                 ) : (
                   <ul className="mt-2 flex flex-wrap gap-2">
                     {fits.map((m) => (
-                      <li key={m.id}><Link href={`/inventory/${m.category}/${m.slug}`} className="inline-flex h-8 items-center rounded-full bg-tint px-3 text-sm font-semibold text-navy hover:bg-navy hover:text-white">{m.modelName}</Link></li>
+                      <li key={m.id}><RuggedChip href={`/inventory/${m.category}/${m.slug}`} size="sm">{m.modelName}</RuggedChip></li>
                     ))}
                   </ul>
                 )}

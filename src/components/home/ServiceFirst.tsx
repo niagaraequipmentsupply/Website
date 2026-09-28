@@ -17,7 +17,7 @@ export async function ServiceFirst() {
   ];
   return (
     <section className="section relative overflow-hidden bg-light/60">
-      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/light-grid.svg')] bg-cover bg-center opacity-50" />
+      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/light-angles.svg')] bg-cover bg-center opacity-70" />
       <Container className="relative">
         <SectionHeading eyebrow={SERVICE_CENTRE.name} title={SERVICE_CENTRE.tagline} subtitle={SERVICE_CENTRE.promise} rule={false} link={{ href: "/service", label: "Visit the Service Centre" }} />
         <ul className="grid gap-4 md:grid-cols-3">

@@ -16,7 +16,7 @@ export async function CtaBand({ eyebrow, title, text, primary = { href: "/quote"
   const secondary = secondaryProp ?? { href: site.phoneHref, label: "Call Now", phone: true };
   return (
     <section className="relative overflow-hidden bg-navy text-white">
-      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/navy-streaks.jpg')] bg-cover bg-center opacity-90" />
+      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/cta-beams.jpg')] bg-cover bg-center" />
       <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-navy/70 via-navy/40 to-transparent" />
       <Container className="relative flex flex-col items-start justify-between gap-6 py-12 lg:flex-row lg:items-center">
         <div className="max-w-2xl">

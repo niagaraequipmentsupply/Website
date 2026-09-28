@@ -16,6 +16,7 @@ import { FinancePromos } from "./collections/FinancePromos";
 import { Posts } from "./collections/Posts";
 import { Lubricants } from "./collections/Lubricants";
 import { Parts } from "./collections/Parts";
+import { Leads } from "./collections/Leads";
 import { SiteSettings } from "./globals/SiteSettings";
 import { Financing } from "./globals/Financing";
 
@@ -32,7 +33,7 @@ export default buildConfig({
     meta: { titleSuffix: " · Niagara Equipment Supply Admin" },
     importMap: { baseDir: path.resolve(dirname) },
   },
-  collections: [Machines, Attachments, Lubricants, Parts, Posts, Addons, Warranties, FinancePromos, Categories, Media, Documents, Users],
+  collections: [Machines, Attachments, Lubricants, Parts, Posts, Addons, Warranties, FinancePromos, Categories, Media, Documents, Leads, Users],
   globals: [SiteSettings, Financing],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "dev-only-secret-change-me",

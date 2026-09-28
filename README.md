@@ -126,3 +126,21 @@ Live preview: https://web-production-9fdd9.up.railway.app — project `nes-websi
 - Copy local content up: `railway volume files -v web-volume upload --overwrite ./payload.db /payload.db`, then
   `tar czf - media documents | railway ssh -- tar xzf - -C /data/uploads`, then `railway redeploy -y`.
 - Custom domain: `railway domain niagaraequipment.ca` and add the CNAME it prints.
+
+## Leads & GoHighLevel CRM
+
+Every form posts to `/api/lead`. The lead is stored in the **Leads** collection (`/admin/collections/leads`) first, then pushed to
+GoHighLevel and/or a generic webhook; the status column shows `synced` / `failed` with the error text.
+
+GHL setup (Settings → Private Integrations → new token with contacts, opportunities and locations scopes):
+
+| Variable | Purpose |
+|---|---|
+| `GHL_API_KEY` | Private integration token |
+| `GHL_LOCATION_ID` | Sub-account id |
+| `GHL_PIPELINE_ID` / `GHL_STAGE_ID` | Pipeline and default stage for new opportunities |
+| `GHL_STAGE_MAP` | Optional JSON, stage id per lead source (`quote`, `builder`, `contact`, `financing`, `service`, `parts`, `lubricants`) |
+| `GHL_WEBHOOK_URL` | Alternative: a workflow Inbound Webhook URL (receives the full lead JSON) |
+
+Per lead we upsert the contact (tagged `website` + source), add a note with the message and every requested item or build line,
+and open an opportunity named `Name · Quote request · first item`. Content requests are stored and tagged but do not open opportunities.

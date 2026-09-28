@@ -21,7 +21,8 @@
     "preview": "next build && next start -p 3001",
     "seed:category-images": "payload run src/scripts/seed-category-images.ts",
     "seed:post-covers": "payload run src/scripts/seed-post-covers.ts",
-    "import:parts": "payload run src/scripts/import-parts.ts"
+    "import:parts": "payload run src/scripts/import-parts.ts",
+    "ghl:setup": "npx tsx src/scripts/ghl-setup.ts"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.88.0",

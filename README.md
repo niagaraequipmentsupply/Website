@@ -138,9 +138,11 @@ GHL setup (Settings → Private Integrations → new token with contacts, opport
 |---|---|
 | `GHL_API_KEY` | Private integration token |
 | `GHL_LOCATION_ID` | Sub-account id |
-| `GHL_PIPELINE_ID` / `GHL_STAGE_ID` | Pipeline and default stage for new opportunities |
-| `GHL_STAGE_MAP` | Optional JSON, stage id per lead source (`quote`, `builder`, `contact`, `financing`, `service`, `parts`, `lubricants`) |
+| `GHL_SALES_PIPELINE_ID` / `GHL_SALES_STAGE_ID` | Equipment Sales pipeline and its New Lead stage (quote, builder, contact, financing leads) |
+| `GHL_PARTS_PIPELINE_ID` / `GHL_PARTS_STAGE_ID` | Parts & Service pipeline and its New Request stage (parts, service, lubricants leads) |
 | `GHL_WEBHOOK_URL` | Alternative: a workflow Inbound Webhook URL (receives the full lead JSON) |
 
 Per lead we upsert the contact (tagged `website` + source), add a note with the message and every requested item or build line,
-and open an opportunity named `Name · Quote request · first item`. Content requests are stored and tagged but do not open opportunities.
+and open an opportunity named `Name · Quote request · R18 PRO`. Content requests are stored and tagged but do not open opportunities.
+Contact custom fields written (create with these names so the keys match): Lead Source, Model of Interest, Requested Items, First Touchpoint Date,
+First Touchpoint Channel, Customer Segment, Financing Interest, Website Page. `npm run ghl:setup` prints pipeline ids and checks the fields.

@@ -133,7 +133,7 @@ export const loaders: LineupModel[] = [
       { question: "Can I fit it in a pickup or van?", answer: "It is 1,670 mm (65.7\") long, 780 mm (30.7\") wide, 1,200 mm (47.2\") tall and 518 kg (1,140 lb). It rides in a full-size pickup bed with ramps or on a small utility trailer." },
       { question: "What warranty and support do I get?", answer: "Two-year warranty backed by the RIPPA Service Centre, genuine RIPPA and Briggs & Stratton parts, and dealer pre-delivery inspection." },
     ],
-    images: [{ key: "rd06-render", alt: "RIPPA RD06 tracked mini dumper" }],
+    images: [{ key: "rd06-render", alt: "RIPPA RD06 tracked mini dumper" }, { key: "rd06-photo", alt: "RIPPA RD06 mini dumper with self-loading scoop" }],
     brochure: "RIPPA-RD06-Spec-Sheet.pdf", targetUsers: "Landscapers, hardscape crews, nurseries, arborists, rental fleets and homeowners with big backyard projects.",
   },
 ];

@@ -342,4 +342,14 @@ export interface LeadPayload {
   builds?: { configuration: BuilderConfiguration; totals: BuildTotals }[];
   page?: string;
   submittedAt: string;
+  /** CASL express consent to marketing email (checkbox on the form). */
+  marketingConsent?: boolean;
+  /** Cloudflare Turnstile token when the widget is enabled. */
+  turnstileToken?: string;
+  /** When the form was first rendered; very fast submissions are treated as bots. */
+  startedAt?: string;
+}
+
+export interface Testimonial {
+  id: string; quote: string; name: string; location?: string; company?: string; machineId?: string; rating?: number; source?: string; date?: string; featured: boolean; sortOrder: number;
 }

@@ -6,6 +6,7 @@ import { Check, ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { compareHref } from "@/lib/compare";
 import { ProductCard } from "@/components/equipment/ProductCard";
 import { CtaBand } from "@/components/home/CtaBand";
 import { Button } from "@/components/ui/Button";
@@ -139,6 +140,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
           <Container>
             <SectionHeading eyebrow="Buying guide" title={`Compare RIPPA ${cat.name}`} subtitle="Side-by-side specs, who each model is for, how well it handles common jobs and what safety and comfort equipment is included." rule={false} />
             <ComparisonChart machines={items} categoryName={cat.name} />
+            {items.length >= 2 && <p className="mt-4 text-sm"><Link href={compareHref(items.slice(0, 3).map((m) => m.slug))} className="inline-flex items-center gap-1 font-semibold text-navy hover:text-electric">Open the full spec-by-spec comparison <ArrowRight className="size-3.5" aria-hidden /></Link></p>}
             <p className="mt-4 text-[12px] text-grey">Ratings and required attachments follow the RIPPA buying guide. Specifications are manufacturer figures and may vary by configuration. Confirm fitment with our team before ordering attachments.</p>
           </Container>
         </section>

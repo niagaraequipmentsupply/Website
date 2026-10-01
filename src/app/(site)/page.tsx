@@ -8,6 +8,9 @@ import { BuilderPromo } from "@/components/home/BuilderPromo";
 import { FeaturedEquipment } from "@/components/home/FeaturedEquipment";
 import { PromoStrip } from "@/components/home/PromoStrip";
 import { ServiceFirst } from "@/components/home/ServiceFirst";
+import { ServiceAreas } from "@/components/home/ServiceAreas";
+import { Testimonials } from "@/components/home/Testimonials";
+import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
   title: "Niagara Equipment Supply | Official RIPPA Dealer in Ontario",
@@ -15,7 +18,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { testimonials, catalogue } = await getSiteContent();
+  const featured = testimonials.filter((t) => t.featured).slice(0, 6);
+  const machineNames = new Map(catalogue.machines.map((m) => [m.id, m.modelName]));
   return (
     <>
       <Hero />
@@ -23,9 +29,11 @@ export default function HomePage() {
       <CategoryCarousel />
       <FeaturedEquipment />
       <WhyChoose />
+      <Testimonials items={featured} machineNames={machineNames} />
       <AttachmentCarousel category="excavator-attachments" />
       <AttachmentCarousel category="skid-steer-attachments" />
       <ServiceFirst />
+      <ServiceAreas />
       <BuilderPromo />
       <CtaBand
         eyebrow="Get to work sooner"

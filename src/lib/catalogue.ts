@@ -1,8 +1,8 @@
 import { cache } from "react";
 import { getPayload } from "payload";
 import config from "@payload-config";
-import type { Part as PPart, Attachment as PAttachment, Machine as PMachine, Media, Document as PDocument, Addon as PAddon, Warranty as PWarranty, Category as PCategory, FinancePromo as PPromo, Post as PPost, Lubricant as PLubricant } from "@/payload-types";
-import type { Attachment, AttachmentCategory, Category, DocumentAsset, FinancingConfig, ImageAsset, Machine, Addon, WarrantyOption, NavGroup, FinancePromo, Part, ApplicationFit, Post, Lubricant } from "@/lib/types";
+import type { Part as PPart, Attachment as PAttachment, Machine as PMachine, Media, Document as PDocument, Addon as PAddon, Warranty as PWarranty, Category as PCategory, FinancePromo as PPromo, Post as PPost, Lubricant as PLubricant, Testimonial as PTestimonial } from "@/payload-types";
+import type { Attachment, AttachmentCategory, Category, DocumentAsset, FinancingConfig, ImageAsset, Machine, Addon, WarrantyOption, NavGroup, FinancePromo, Part, ApplicationFit, Post, Lubricant, Testimonial } from "@/lib/types";
 import type { Catalogue } from "@/lib/pricing";
 import { slugify } from "@/lib/format";
 import { contentVersion } from "@/lib/content-version";
@@ -135,6 +135,15 @@ export function mapPost(d: PPost): Post {
     readMinutes: d.readMinutes ?? undefined, featured: !!d.featured, author: d.author ?? undefined,
   };
 }
+export function mapTestimonial(d: PTestimonial): Testimonial {
+  const machine = d.machine;
+  return {
+    id: String(d.id), quote: d.quote, name: d.name, location: d.location ?? undefined, company: d.company ?? undefined,
+    machineId: machine == null ? undefined : String(typeof machine === "object" ? machine.id : machine),
+    rating: d.rating ?? undefined, source: d.source ?? undefined, date: d.date ?? undefined, featured: !!d.featured, sortOrder: d.sortOrder ?? 100,
+  };
+}
+
 export function mapLubricant(d: PLubricant): Lubricant {
   return {
     id: String(d.id), slug: d.slug, name: d.name, brand: d.brand || "Chevron", category: d.category, tagline: d.tagline ?? undefined, description: d.description, grades: d.grades ?? undefined,
@@ -159,6 +168,8 @@ export interface SiteContent {
   posts: Post[];
   lubricants: Lubricant[];
   parts: Part[];
+  /** Published customer quotes (featured first). */
+  testimonials: Testimonial[];
   site: typeof siteDefaults & { hoursList: { day: string; time: string }[] };
   nav: NavGroup[];
   /** True while rendering from seed data (database empty). */
@@ -186,12 +197,13 @@ async function loadSiteContent(): Promise<SiteContent> {
   let posts: Post[] = [];
   let lubricants: Lubricant[] = [];
   let parts: Part[] = [];
+  let testimonials: Testimonial[] = [];
   let site: SiteContent["site"] = { ...siteDefaults, hoursList: [...siteDefaults.hours] };
   let usingSeed = true;
 
   try {
     const payload = await getPayloadClient();
-    const [machines, attachments, addons, warranties, cats, settings, fin, promos, postDocs, lubeDocs, media, partDocs] = await Promise.all([
+    const [machines, attachments, addons, warranties, cats, settings, fin, promos, postDocs, lubeDocs, media, partDocs, quoteDocs] = await Promise.all([
       payload.find({ collection: "machines", limit: 500, depth: 1, sort: "sortOrder" }),
       // depth 0: variants relate to machines, and populating them embedded ~9 MB of machine docs per request.
       payload.find({ collection: "attachments", limit: 500, depth: 0, sort: "sortOrder" }),
@@ -205,7 +217,9 @@ async function loadSiteContent(): Promise<SiteContent> {
       payload.find({ collection: "lubricants", limit: 300, depth: 1, sort: "sortOrder" }),
       payload.find({ collection: "media", limit: 5000, depth: 0, pagination: false }),
       payload.find({ collection: "parts", limit: 5000, depth: 0, pagination: false, sort: "sortOrder" }),
+      payload.find({ collection: "testimonials", limit: 100, depth: 0, sort: "sortOrder" }).catch(() => ({ docs: [] as PTestimonial[] })),
     ]);
+    testimonials = quoteDocs.docs.map(mapTestimonial).sort((a, b) => Number(b.featured) - Number(a.featured) || a.sortOrder - b.sortOrder);
     mediaIndex = new Map(media.docs.map((d) => [d.id, d]));
     posts = postDocs.docs.map(mapPost);
     parts = partDocs.docs.map(mapPart).sort((a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name));
@@ -295,7 +309,7 @@ async function loadSiteContent(): Promise<SiteContent> {
     { label: "Contact", href: "/contact" },
   ];
 
-  return { catalogue, categories, attachmentCategories, financing, financePromos, posts, lubricants, parts, site, nav, usingSeed };
+  return { catalogue, categories, attachmentCategories, financing, financePromos, posts, lubricants, parts, testimonials, site, nav, usingSeed };
 }
 
 // ---------- Convenience selectors (server components) ----------

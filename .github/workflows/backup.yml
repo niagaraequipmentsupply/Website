@@ -1,0 +1,73 @@
+# Nightly off-site backup of the production database (and, optionally, uploads) pulled from the live site's
+# /api/backup endpoint and kept as GitHub Actions artifacts.
+#
+# One-time setup (repo → Settings → Secrets and variables → Actions):
+#   secret  BACKUP_URL    = https://niagaraequipment.com
+#   secret  BACKUP_TOKEN  = the same value as BACKUP_TOKEN on Railway
+#   variable BACKUP_UPLOADS = true   (optional: weekly media + documents backup, ~500 MB each)
+name: Nightly backup
+
+on:
+  schedule:
+    - cron: "30 7 * * *" # 03:30 Toronto time (07:30 UTC in summer; 02:30 local in winter)
+  workflow_dispatch:
+    inputs:
+      uploads:
+        description: "Also back up media and documents"
+        type: boolean
+        default: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check configuration
+        env:
+          BACKUP_URL: ${{ secrets.BACKUP_URL }}
+          BACKUP_TOKEN: ${{ secrets.BACKUP_TOKEN }}
+        run: |
+          if [ -z "$BACKUP_URL" ] || [ -z "$BACKUP_TOKEN" ]; then
+            echo "::error::Set the BACKUP_URL and BACKUP_TOKEN repository secrets first."; exit 1
+          fi
+
+      - name: Download database snapshot
+        env:
+          BACKUP_URL: ${{ secrets.BACKUP_URL }}
+          BACKUP_TOKEN: ${{ secrets.BACKUP_TOKEN }}
+        run: |
+          name="nes-db-$(date -u +%F).tar.gz"
+          curl --fail --silent --show-error --retry 3 --retry-delay 20 \
+            -H "Authorization: Bearer $BACKUP_TOKEN" "$BACKUP_URL/api/backup" -o "$name"
+          tar tzf "$name"
+          ls -la "$name"
+
+      - name: Keep database snapshot (90 days)
+        uses: actions/upload-artifact@v4
+        with:
+          name: nes-db-${{ github.run_id }}
+          path: nes-db-*.tar.gz
+          retention-days: 90
+          if-no-files-found: error
+
+      - name: Download full backup with uploads (Sundays, or on request)
+        if: ${{ vars.BACKUP_UPLOADS == 'true' || inputs.uploads == true }}
+        env:
+          BACKUP_URL: ${{ secrets.BACKUP_URL }}
+          BACKUP_TOKEN: ${{ secrets.BACKUP_TOKEN }}
+          FORCE: ${{ inputs.uploads == true }}
+        run: |
+          if [ "$(date -u +%u)" != "7" ] && [ "$FORCE" != "true" ]; then echo "Not Sunday; skipping uploads backup"; exit 0; fi
+          name="nes-full-$(date -u +%F).tar.gz"
+          curl --fail --silent --show-error --retry 2 --retry-delay 30 --max-time 1500 \
+            -H "Authorization: Bearer $BACKUP_TOKEN" "$BACKUP_URL/api/backup?include=uploads" -o "$name"
+          ls -la "$name"
+
+      - name: Keep full backup (30 days)
+        if: ${{ vars.BACKUP_UPLOADS == 'true' || inputs.uploads == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nes-full-${{ github.run_id }}
+          path: nes-full-*.tar.gz
+          retention-days: 30
+          if-no-files-found: ignore

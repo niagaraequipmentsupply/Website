@@ -45,3 +45,6 @@ payload.db*
 /media
 /documents
 !.env.example
+
+# local database/media backups (npm run backup:local)
+backups/

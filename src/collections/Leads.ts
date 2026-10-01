@@ -19,6 +19,10 @@ export const Leads: CollectionConfig = {
     { name: "message", type: "textarea" },
     { name: "lines", type: "array", label: "Requested items", fields: [{ name: "text", type: "text", required: true }] },
     { name: "page", type: "text", admin: { description: "Page the form was sent from." } },
+    { type: "row", fields: [
+      { name: "marketingConsent", type: "checkbox", defaultValue: false, admin: { width: "50%", description: "CASL express consent to marketing email, as ticked on the form." } },
+      { name: "consentAt", type: "date", admin: { width: "50%", readOnly: true } },
+    ] },
     { type: "row", fields: [{ name: "ghlContactId", type: "text", admin: { width: "50%", readOnly: true } }, { name: "ghlOpportunityId", type: "text", admin: { width: "50%", readOnly: true } }] },
     { name: "error", type: "textarea", admin: { readOnly: true } },
     { name: "payload", type: "json", admin: { readOnly: true, description: "Raw submission." } },

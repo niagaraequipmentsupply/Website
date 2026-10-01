@@ -72,6 +72,7 @@ export interface Config {
     lubricants: Lubricant;
     parts: Part;
     posts: Post;
+    testimonials: Testimonial;
     addons: Addon;
     warranties: Warranty;
     'finance-promos': FinancePromo;
@@ -92,6 +93,7 @@ export interface Config {
     lubricants: LubricantsSelect<false> | LubricantsSelect<true>;
     parts: PartsSelect<false> | PartsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     addons: AddonsSelect<false> | AddonsSelect<true>;
     warranties: WarrantiesSelect<false> | WarrantiesSelect<true>;
     'finance-promos': FinancePromosSelect<false> | FinancePromosSelect<true>;
@@ -710,6 +712,46 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Real customer quotes only, with their permission. Published entries appear on the home page and the related machine page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  /**
+   * In the customer's words. Two to four sentences reads best.
+   */
+  quote: string;
+  /**
+   * First name and last initial is fine, e.g. Mike D.
+   */
+  name: string;
+  /**
+   * Town, e.g. Welland, ON
+   */
+  location?: string | null;
+  company?: string | null;
+  /**
+   * Optional: shows the quote on that model's page.
+   */
+  machine?: (number | null) | Machine;
+  /**
+   * 1 to 5 stars
+   */
+  rating?: number | null;
+  source?: ('in-person' | 'email' | 'google' | 'facebook') | null;
+  date?: string | null;
+  /**
+   * Show on the home page.
+   */
+  featured?: boolean | null;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "addons".
  */
@@ -894,6 +936,11 @@ export interface Lead {
    * Page the form was sent from.
    */
   page?: string | null;
+  /**
+   * CASL express consent to marketing email, as ticked on the form.
+   */
+  marketingConsent?: boolean | null;
+  consentAt?: string | null;
   ghlContactId?: string | null;
   ghlOpportunityId?: string | null;
   error?: string | null;
@@ -981,6 +1028,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
       } | null)
     | ({
         relationTo: 'addons';
@@ -1311,6 +1362,25 @@ export interface PostsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  quote?: T;
+  name?: T;
+  location?: T;
+  company?: T;
+  machine?: T;
+  rating?: T;
+  source?: T;
+  date?: T;
+  featured?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "addons_select".
  */
 export interface AddonsSelect<T extends boolean = true> {
@@ -1503,6 +1573,8 @@ export interface LeadsSelect<T extends boolean = true> {
         id?: T;
       };
   page?: T;
+  marketingConsent?: T;
+  consentAt?: T;
   ghlContactId?: T;
   ghlOpportunityId?: T;
   error?: T;

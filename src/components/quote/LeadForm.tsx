@@ -1,5 +1,6 @@
 "use client";
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useQuote } from "@/store/quote";
@@ -7,6 +8,9 @@ import { calculateTotals } from "@/lib/pricing";
 import { useCatalogue } from "@/components/CatalogueProvider";
 import { track } from "@/lib/analytics";
 import type { LeadPayload } from "@/lib/types";
+import { Turnstile } from "./Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 interface Props {
   source: LeadPayload["source"];
@@ -27,6 +31,7 @@ export function LeadForm({ source, title, includeItems = false, submitLabel = "S
   const clear = useQuote((s) => s.clear);
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [error, setError] = useState<string>();
+  const [startedAt] = useState(() => new Date().toISOString());
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,6 +49,9 @@ export function LeadForm({ source, title, includeItems = false, submitLabel = "S
       builds: includeItems ? items.filter((i) => i.kind === "build").map((i) => (i.kind === "build" ? { configuration: i.configuration, totals: calculateTotals(i.configuration, catalogue, taxRate) } : null)).filter((x): x is NonNullable<typeof x> => !!x) : undefined,
       page: typeof window !== "undefined" ? window.location.pathname : undefined,
       submittedAt: new Date().toISOString(),
+      startedAt,
+      marketingConsent: fd.get("marketingConsent") === "on",
+      turnstileToken: String(fd.get("cf-turnstile-response") ?? "") || undefined,
     };
     try {
       const res = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
@@ -79,9 +87,14 @@ export function LeadForm({ source, title, includeItems = false, submitLabel = "S
         <label className="text-sm font-semibold text-charcoal sm:col-span-2">{messageLabel}<textarea name="message" rows={compact ? 3 : 4} defaultValue={defaultMessage} className={`${field} mt-1 h-auto py-2`} placeholder="Machine, attachments, timeline, financing needs…" /></label>
         <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
       </div>
+      <label className="mt-4 flex items-start gap-2.5 text-[13px] text-charcoal/85">
+        <input type="checkbox" name="marketingConsent" className="mt-0.5 size-4 shrink-0 accent-navy" />
+        <span>Yes, email me RIPPA news, promotions and service reminders from Niagara Equipment Supply. I can unsubscribe at any time.</span>
+      </label>
+      {TURNSTILE_SITE_KEY && <div className="mt-3"><Turnstile siteKey={TURNSTILE_SITE_KEY} /></div>}
       {error && <p className="mt-3 text-sm font-semibold text-red-700" role="alert">{error}</p>}
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-[12px] text-grey">By submitting you agree to be contacted about your request. No spam.</p>
+        <p className="max-w-sm text-[12px] text-grey">We use your details only to answer this request. See our <Link href="/privacy" className="font-semibold text-navy underline-offset-2 hover:underline">privacy policy</Link>.</p>
         <Button type="submit" size="lg" arrow disabled={status === "sending"}>{status === "sending" ? "Sending…" : submitLabel}</Button>
       </div>
     </form>

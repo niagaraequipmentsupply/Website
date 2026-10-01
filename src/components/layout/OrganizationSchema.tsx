@@ -1,4 +1,5 @@
 import type { SiteContent } from "@/lib/catalogue";
+import { serviceAreas } from "@/data/service-areas";
 
 export function OrganizationSchema({ site }: { site: SiteContent["site"] }) {
   const data = {
@@ -10,7 +11,8 @@ export function OrganizationSchema({ site }: { site: SiteContent["site"] }) {
     telephone: site.phone,
     email: site.email,
     address: { "@type": "PostalAddress", streetAddress: site.address.street || undefined, addressLocality: site.address.city, addressRegion: site.address.region, postalCode: site.address.postal || undefined, addressCountry: site.address.country },
-    areaServed: "Ontario, Canada",
+    areaServed: [{ "@type": "AdministrativeArea", name: "Ontario, Canada" }, ...serviceAreas.map((a) => ({ "@type": "City", name: a.name, url: `${site.url}/service-area/${a.slug}` }))],
+    ...(site.mapEmbedUrl ? { hasMap: site.mapEmbedUrl } : {}),
     brand: { "@type": "Brand", name: "RIPPA" },
     image: `${site.url}/brand/logo-light.png`,
     logo: `${site.url}/brand/logo-light.png`,

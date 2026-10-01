@@ -58,7 +58,7 @@ export async function pushLeadToGhl(lead: LeadRecord): Promise<{ contactId?: str
     const financing = lead.lines.find((l) => /Financing preference/.test(l))?.split(":")[1]?.trim();
     const upsert = await api<{ contact: { id: string } }>("/contacts/upsert", {
       locationId, ...splitName(c.name), email: c.email, phone: c.phone, companyName: c.company || undefined, city: c.location || undefined,
-      source: `Website · ${SOURCE_NAMES[lead.source]}`, tags: SOURCE_TAGS[lead.source] ?? ["website"],
+      source: `Website · ${SOURCE_NAMES[lead.source]}`, tags: [...(SOURCE_TAGS[lead.source] ?? ["website"]), ...(lead.marketingConsent ? ["casl-express-consent"] : ["casl-no-marketing-consent"])],
       customFields: [
         { key: "contact.lead_source", field_value: LEAD_SOURCE_VALUE[lead.source] },
         { key: "contact.first_touchpoint_channel", field_value: "Website" },

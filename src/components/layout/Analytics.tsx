@@ -7,7 +7,8 @@ export function Analytics() {
   return (
     <>
       <Script src={`https://www.googletagmanager.com/gtag/js?id=${id}`} strategy="afterInteractive" />
-      <Script id="ga4-init" strategy="afterInteractive">{`window.dataLayer = window.dataLayer || [];
+      <Script id="ga4-init" strategy="afterInteractive">{`try{if(localStorage.getItem('nes-consent')==='declined'){window['ga-disable-${id}']=true;}}catch(e){}
+window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${id}', { send_page_view: true });`}</Script>

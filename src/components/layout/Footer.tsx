@@ -4,6 +4,7 @@ import { Facebook, Instagram, Youtube, Linkedin } from "./SocialIcons";
 import type { SiteContent } from "@/lib/catalogue";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "./Logo";
+import { serviceAreas } from "@/data/service-areas";
 
 const quick = [
   [{ href: "/", label: "Home" }, { href: "/inventory", label: "Equipment" }, { href: "/attachments", label: "Attachments" }, { href: "/financing", label: "Financing" }],
@@ -15,7 +16,7 @@ export function Footer({ site }: { site: SiteContent["site"] }) {
   return (
     <footer className="mt-auto">
       <div className="border-t border-line bg-white">
-        <Container className="grid gap-10 py-12 md:grid-cols-[1.2fr_1fr_1fr_0.8fr]">
+        <Container className="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1fr_0.8fr]">
           <div>
             <Logo />
             <p className="mt-4 max-w-xs text-sm text-grey">{site.tagline}. {site.serviceArea}.</p>
@@ -31,6 +32,13 @@ export function Footer({ site }: { site: SiteContent["site"] }) {
             </div>
           </div>
           <div>
+            <h3 className="mb-3 text-sm font-bold text-charcoal">Areas We Serve</h3>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-grey">
+              {serviceAreas.map((a) => <li key={a.slug}><Link href={`/service-area/${a.slug}`} className="hover:text-navy">{a.name}</Link></li>)}
+              <li className="col-span-2"><Link href="/service-area" className="font-semibold text-navy hover:text-electric">All areas &amp; delivery</Link></li>
+            </ul>
+          </div>
+          <div>
             <h3 className="mb-3 text-sm font-bold text-charcoal">Contact Us</h3>
             <ul className="space-y-2.5 text-sm text-grey">
               <li><a href={site.phoneHref} className="flex items-center gap-2 hover:text-navy"><Phone className="size-4 text-navy" aria-hidden />{site.phone}</a></li>
@@ -40,15 +48,16 @@ export function Footer({ site }: { site: SiteContent["site"] }) {
           </div>
           <div>
             <h3 className="mb-3 text-sm font-bold text-charcoal">Follow Us</h3>
+            {!Object.values(site.social).some((u) => typeof u === "string" && /^https?:\/\//.test(u)) && <p className="text-sm text-grey">Social channels coming soon.</p>}
             <ul className="flex gap-2">
               {[
                 { href: site.social.facebook, label: "Facebook", Icon: Facebook },
                 { href: site.social.instagram, label: "Instagram", Icon: Instagram },
                 { href: site.social.youtube, label: "YouTube", Icon: Youtube },
                 { href: site.social.linkedin, label: "LinkedIn", Icon: Linkedin },
-              ].map(({ href, label, Icon }) => (
+              ].filter(({ href }) => /^https?:\/\//.test(href)).map(({ href, label, Icon }) => (
                 <li key={label}>
-                  <a href={href} aria-label={label} className="flex size-10 items-center justify-center rounded-md bg-navy text-white transition-colors hover:bg-electric"><Icon className="size-4" aria-hidden /></a>
+                  <a href={href} aria-label={label} target="_blank" rel="noopener" className="flex size-10 items-center justify-center rounded-md bg-navy text-white transition-colors hover:bg-electric"><Icon className="size-4" aria-hidden /></a>
                 </li>
               ))}
             </ul>
@@ -57,7 +66,7 @@ export function Footer({ site }: { site: SiteContent["site"] }) {
       </div>
       <div className="bg-navy text-white">
         <Container className="flex flex-col items-center justify-between gap-2 py-4 text-[12px] sm:flex-row">
-          <p>© {year} {site.legalName}. All rights reserved.</p>
+          <p>© {year} {site.legalName}. All rights reserved. <span className="whitespace-nowrap"><Link href="/privacy" className="underline-offset-2 hover:underline">Privacy</Link> · <Link href="/terms" className="underline-offset-2 hover:underline">Terms</Link> · <Link href="/accessibility" className="underline-offset-2 hover:underline">Accessibility</Link></span></p>
           <p className="uppercase tracking-[0.15em] text-white/80">Official RIPPA Dealer &nbsp;|&nbsp; Equipment for a stronger tomorrow.</p>
         </Container>
       </div>

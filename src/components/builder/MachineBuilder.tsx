@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Stepper } from "@/components/ui/Stepper";
@@ -11,6 +11,7 @@ import { BuildSummary } from "./BuildSummary";
 import { MobileBuildBar } from "./MobileBuildBar";
 import { ModelChangeDialog } from "./ModelChangeDialog";
 import { useBuilder, toConfiguration } from "@/store/builder";
+import { decodeBuild, encodeBuild } from "@/lib/build-share";
 import { useQuote } from "@/store/quote";
 import { useCatalogue } from "@/components/CatalogueProvider";
 import { compatibleAttachments, findIncompatibleSelections, isAddonEligible } from "@/lib/compatibility";
@@ -28,7 +29,10 @@ const steps = [
 
 export function MachineBuilder({ builder }: { builder: BuilderKind }) {
   const router = useRouter();
-  const initialModelId = useSearchParams().get("model") ?? undefined;
+  const params = useSearchParams();
+  const initialModelId = params.get("model") ?? undefined;
+  const sharedBuild = params.get("b");
+  const appliedShare = useRef<string | null>(null);
   const b = useBuilder();
   const addBuild = useQuote((s) => s.addBuild);
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -46,8 +50,29 @@ export function MachineBuilder({ builder }: { builder: BuilderKind }) {
     b.pruneUnknown(new Set(catalogue.machines.map((m) => m.id)), new Set(catalogue.attachments.map((a) => a.id)), new Set(catalogue.addons.map((a) => a.id)), new Set(catalogue.warranties.map((w) => w.id)));
     const target = initialModelId && machines.find((m) => m.id === initialModelId || m.slug === initialModelId);
     if (target && !useBuilder.getState().selectedModelId) b.selectModel(target.id);
+    // A shared link (?b=) replaces whatever was saved locally, once per link.
+    if (sharedBuild && appliedShare.current !== sharedBuild) {
+      appliedShare.current = sharedBuild;
+      const cfg = decodeBuild(sharedBuild);
+      const model = cfg && machines.find((m) => m.id === cfg.selectedModelId || m.slug === cfg.selectedModelId);
+      if (cfg && model) {
+        const known = new Set(catalogue.attachments.map((a) => a.id));
+        useBuilder.setState({
+          selectedModelId: model.id,
+          selectedConfigurationId: model.configurations.some((c) => c.id === cfg.selectedConfigurationId) ? cfg.selectedConfigurationId : undefined,
+          attachmentSelections: cfg.attachmentSelections.filter((s) => known.has(s.attachmentId)),
+          addonSelections: cfg.addonSelections.filter((id) => catalogue.addons.some((a) => a.id === id)),
+          warrantySelectionId: catalogue.warranties.some((w) => w.id === cfg.warrantySelectionId) ? cfg.warrantySelectionId : undefined,
+          deliverySelectionId: cfg.deliverySelectionId,
+          financeSelection: cfg.financeSelection,
+          pendingModelChange: undefined,
+        });
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hydrated, initialModelId, catalogue]);
+  }, [hydrated, initialModelId, sharedBuild, catalogue]);
+
+  const shareUrl = useMemo(() => (machine && typeof window !== "undefined" ? `${window.location.origin}${builder.href}?b=${encodeBuild(toConfiguration(b))}` : undefined), [machine, b, builder.href]);
 
   const compatAttachments = useMemo(() => (machine ? compatibleAttachments(catalogue.attachments.filter((a) => a.attachmentCategory === builder.attachmentCategory), machine) : []), [machine, catalogue, builder]);
   const eligibleAddons = useMemo(() => (machine ? catalogue.addons.filter((a) => a.selectable && isAddonEligible(a, machine)) : catalogue.addons.filter((a) => a.selectable)), [machine, catalogue]);
@@ -86,7 +111,7 @@ export function MachineBuilder({ builder }: { builder: BuilderKind }) {
   const pendingTarget = pending ? machines.find((m) => m.id === pending.targetModelId) : undefined;
 
   const summary = (
-    <BuildSummary kind={builder.category} machine={machine} configurationLabel={machine?.configurations?.find((c) => c.id === b.selectedConfigurationId)?.label} totals={totals} financing={financing} onRemoveLine={onRemoveLine} onRequest={onRequest} onSave={onSave} savedAt={b.savedAt} />
+    <BuildSummary shareUrl={shareUrl} kind={builder.category} machine={machine} configurationLabel={machine?.configurations?.find((c) => c.id === b.selectedConfigurationId)?.label} totals={totals} financing={financing} onRemoveLine={onRemoveLine} onRequest={onRequest} onSave={onSave} savedAt={b.savedAt} />
   );
 
   return (

@@ -19,6 +19,8 @@ import { ConfigurationPicker } from "@/components/equipment/ConfigurationPicker"
 import { ProductCard } from "@/components/equipment/ProductCard";
 import { LeadForm } from "@/components/quote/LeadForm";
 import { ServiceCentreStrip } from "@/components/service/ServiceCentre";
+import { Testimonials } from "@/components/home/Testimonials";
+import { compareHref } from "@/lib/compare";
 import { MobileQuoteBar } from "@/components/equipment/MobileQuoteBar";
 import { getCategory, getMachine, getSiteContent, getAttachments } from "@/lib/catalogue";
 import { compatibleAttachments } from "@/lib/compatibility";
@@ -62,7 +64,8 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
   const m = await getMachine(slug);
   if (!m || m.category !== category) notFound();
   const cat = (await getCategory(m.category))!;
-  const { site, catalogue, parts } = await getSiteContent();
+  const { site, catalogue, parts, testimonials } = await getSiteContent();
+  const ownerQuotes = testimonials.filter((t) => t.machineId === m.id).slice(0, 3);
   const compat = compatibleAttachments(await getAttachments(), m);
   const price = machinePrice(m);
   const heroStats = m.specs.filter((s) => s.highlight).slice(0, 5);
@@ -315,6 +318,8 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
         </section>
       )}
 
+      <Testimonials items={ownerQuotes} title={`${m.modelName} owners`} subtitle="What customers running this model tell us." />
+
       {/* ---------- Quote ---------- */}
       <section id="quote" className="section scroll-mt-32">
         <Container className="grid gap-8 lg:grid-cols-[2fr_3fr]">
@@ -333,7 +338,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
       {related.length > 0 && (
         <section className="section-tight border-t border-line">
           <Container>
-            <SectionHeading title={`Other ${cat.name}`} link={{ href: `/inventory/${cat.slug}#compare`, label: "Compare models" }} />
+            <SectionHeading title={`Other ${cat.name}`} link={{ href: compareHref([m.slug, ...related.slice(0, 2).map((r) => r.slug)]), label: `Compare ${m.modelName} side by side` }} />
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {related.map((r) => <li key={r.id}><ProductCard machine={r} /></li>)}
             </ul>

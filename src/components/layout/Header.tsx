@@ -9,6 +9,7 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { EquipmentImage } from "@/components/ui/EquipmentImage";
 import { Logo } from "./Logo";
+import { SearchBox } from "./SearchBox";
 import { useQuote, quoteCount } from "@/store/quote";
 import { StoreHydration } from "@/store/StoreHydration";
 import { track } from "@/lib/analytics";
@@ -66,6 +67,7 @@ export function Header({ nav, contact }: Props) {
           </ul>
         </nav>
         <div className="flex items-center gap-2 sm:gap-3">
+          <div className="hidden sm:block"><SearchBox /></div>
           <Link href="/quote" aria-label={`Quote list, ${count} items`} className="relative flex size-11 items-center justify-center rounded-btn text-navy hover:bg-tint">
             <ClipboardList className="size-6" aria-hidden />
             {count > 0 && <span className="absolute -right-0.5 -top-0.5 flex min-w-5 items-center justify-center rounded-full bg-electric px-1 text-[11px] font-bold text-white">{count}</span>}
@@ -93,6 +95,7 @@ export function Header({ nav, contact }: Props) {
               <button type="button" onClick={() => setOpen(false)} aria-label="Close menu" className="flex size-11 items-center justify-center rounded-btn text-navy hover:bg-tint"><X className="size-6" aria-hidden /></button>
             </div>
             <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-2 py-3">
+              <SearchBox variant="inline" onNavigate={() => setOpen(false)} />
               <ul>
                 {nav.map((n) => (
                   <li key={n.href}>

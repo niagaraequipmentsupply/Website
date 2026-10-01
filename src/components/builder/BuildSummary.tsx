@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { X, Bookmark, Phone, Settings2, Check } from "lucide-react";
+import { X, Bookmark, Phone, Settings2, Check, Link2 } from "lucide-react";
 import type { BuildTotals, FinancingConfig, Machine, PricedLine } from "@/lib/types";
 import { EquipmentImage } from "@/components/ui/EquipmentImage";
 import { SpecList } from "@/components/equipment/SpecList";
@@ -22,10 +22,21 @@ interface Props {
   onRequest: () => void;
   onSave: () => void;
   savedAt?: string;
+  /** Link that reopens this exact build (see lib/build-share). */
+  shareUrl?: string;
   className?: string;
 }
 
-export function BuildSummary({ kind = "excavators", machine, configurationLabel, totals, financing, onRemoveLine, onRequest, onSave, savedAt, className = "" }: Props) {
+export function BuildSummary({ kind = "excavators", machine, configurationLabel, totals, financing, onRemoveLine, onRequest, onSave, savedAt, shareUrl, className = "" }: Props) {
+  const [copied, setCopied] = useState(false);
+  const share = async () => {
+    if (!shareUrl) return;
+    try {
+      if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) { await navigator.share({ title: "My RIPPA build", url: shareUrl }); return; }
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true); setTimeout(() => setCopied(false), 2500);
+    } catch { window.prompt("Copy this link to share your build:", shareUrl); }
+  };
   const { taxLabel, phoneHref } = useCatalogue();
   const attachmentLines = totals.lines.filter((l) => l.group === "attachment");
   const protectionLines = totals.lines.filter((l) => l.group === "protection" || l.group === "warranty" || l.group === "delivery");
@@ -100,6 +111,7 @@ export function BuildSummary({ kind = "excavators", machine, configurationLabel,
         <Button onClick={onRequest} size="lg" arrow disabled={!machine}>Request This Build</Button>
         <Button onClick={onSave} variant="secondary" size="lg" icon={savedAt ? <Check className="size-4" aria-hidden /> : <Bookmark className="size-4" aria-hidden />}>{savedAt ? "Build Saved" : "Save Build"}</Button>
         <Button href={phoneHref} variant="secondary" size="lg" icon={<Phone className="size-4" aria-hidden />} onClick={() => track({ name: "phone_click", location: "build_summary" })}>Talk to a Specialist</Button>
+        {shareUrl && <button type="button" onClick={share} className="inline-flex items-center justify-center gap-1.5 py-1 text-[13px] font-semibold text-navy hover:text-electric" aria-live="polite"><Link2 className="size-4" aria-hidden />{copied ? "Link copied" : "Copy a link to this build"}</button>}
         <p className="mt-1 text-center text-[12px] text-grey">Have questions? Our team is here to help.</p>
       </div>
     </aside>

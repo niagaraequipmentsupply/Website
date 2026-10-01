@@ -55,7 +55,7 @@ export async function pushLeadToGhl(lead: LeadRecord): Promise<{ contactId?: str
   if (process.env.GHL_API_KEY && locationId) {
     const c = lead.contact;
     const models = Array.from(new Set(lead.lines.map((l) => l.match(/\b(R\d{2,3} (?:ECO|PRO)|RS\d{2}|RL06|RB06|RD06)\b/)?.[1]).filter((x): x is string => !!x)));
-    const financing = lead.lines.find((l) => /Financing preference/.test(l))?.split(":")[1]?.trim();
+    const financing = lead.lines.find((l) => /Payment method|Financing preference/.test(l))?.split(":")[1]?.trim();
     const upsert = await api<{ contact: { id: string } }>("/contacts/upsert", {
       locationId, ...splitName(c.name), email: c.email, phone: c.phone, companyName: c.company || undefined, city: c.location || undefined,
       source: `Website · ${SOURCE_NAMES[lead.source]}`, tags: [...(SOURCE_TAGS[lead.source] ?? ["website"]), ...(lead.marketingConsent ? ["casl-express-consent"] : ["casl-no-marketing-consent"])],

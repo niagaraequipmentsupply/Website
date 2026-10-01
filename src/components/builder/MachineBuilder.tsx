@@ -23,7 +23,7 @@ import type { BuilderKind } from "@/lib/builders";
 const steps = [
   { id: "model", label: "Choose Model", href: "#choose-model" },
   { id: "attachments", label: "Add Attachments", href: "#add-attachments" },
-  { id: "protection", label: "Protection & Warranty", href: "#protection" },
+  { id: "protection", label: "Service & Protection", href: "#protection" },
   { id: "review", label: "Review Build", href: "#review" },
 ];
 

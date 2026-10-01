@@ -70,8 +70,25 @@ export function BuildSummary({ kind = "excavators", machine, configurationLabel,
         )}
       </div>
 
+      {machine && totals.included.length > 0 && (
+        <div className="border-t border-line px-5 py-4">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <h3 className="text-[12px] font-bold uppercase tracking-wide text-charcoal">Included With Your {machine.modelName}</h3>
+            <span className="chamfer bg-success px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white">No charge</span>
+          </div>
+          <ul className="space-y-1.5">
+            {totals.included.map((i) => (
+              <li key={i.label} className="flex items-center gap-2 text-sm">
+                <Check className="size-4 shrink-0 text-success" aria-hidden />
+                <span className="min-w-0 flex-1 truncate text-charcoal">{i.label}</span>
+                <span className="text-[12px] font-semibold text-success">$0</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <LineGroup title="Selected Attachments" editHref="#add-attachments" lines={attachmentLines} onRemove={onRemoveLine} empty="No attachments added." />
-      <LineGroup title="Protection Packages" editHref="#protection" lines={protectionLines} onRemove={onRemoveLine} empty="No packages added." />
+      <LineGroup title="Service & Protection" editHref="#protection" lines={protectionLines} onRemove={onRemoveLine} empty="No service or protection packages added." />
 
       {totals.unpricedCount === totals.lines.length ? (
         <div className="border-t border-line px-5 py-4 text-sm text-grey">Pricing is quoted per build. Send the request and we reply with a full price on every line, including delivery.</div>

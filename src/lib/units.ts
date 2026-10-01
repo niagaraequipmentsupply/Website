@@ -95,7 +95,10 @@ export function presentMachine(m: Machine): Machine {
     targetUsers: m.targetUsers ? humanizeUnits(m.targetUsers) : undefined,
   };
 }
+/** `300 mm - 12"` (both units in the catalogue) → `12"`; everything else is left for humanizeUnits. */
+const inchesOnly = (s: string) => s.replace(/\d[\d,]*(?:\.\d+)?\s*mm\s*[-–/]\s*(\d[\d,]*(?:\.\d+)?)\s*(?:"|in\b)/gi, '$1"');
+
 export function presentAttachment(a: Attachment): Attachment {
   return { ...a, description: humanizeUnits(a.description), longDescription: a.longDescription ? humanizeUnits(a.longDescription) : undefined,
-    variants: a.variants.map((v) => ({ ...v, label: humanizeUnits(v.label), widthOrSize: v.widthOrSize ? humanizeUnits(v.widthOrSize) : undefined })) };
+    variants: a.variants.map((v) => ({ ...v, label: humanizeUnits(inchesOnly(v.label)), widthOrSize: v.widthOrSize ? humanizeUnits(inchesOnly(v.widthOrSize)) : undefined })) };
 }

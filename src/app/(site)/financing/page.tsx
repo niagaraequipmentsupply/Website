@@ -6,7 +6,8 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { LeadForm } from "@/components/quote/LeadForm";
 import { PromoCard } from "@/components/financing/PromoCard";
-import { PaymentCalculator } from "@/components/financing/PaymentCalculator";
+import { ProductCard } from "@/components/equipment/ProductCard";
+import { Badge } from "@/components/ui/Badge";
 import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
@@ -34,6 +35,11 @@ export default async function FinancingPage() {
   const { financing, financePromos, catalogue, site } = await getSiteContent();
   const promos = financePromos.filter((p) => p.kind === "promo");
   const programs = financePromos.filter((p) => p.kind === "program");
+  // Machines carrying a live, model-specific promotion (set "eligible models" on the promo in the admin).
+  const promoMachines = catalogue.machines
+    .map((m) => ({ machine: m, offers: promos.filter((p) => p.eligibleModelIds !== "all" && p.eligibleModelIds.includes(m.id)) }))
+    .filter((x) => x.offers.length > 0);
+  const everyModelOffers = promos.filter((p) => p.eligibleModelIds === "all");
   const partner = financing.partner;
 
   return (
@@ -55,7 +61,7 @@ export default async function FinancingPage() {
       >
         <div className="flex flex-wrap gap-3">
           <Button href="#apply" size="lg" arrow>Get Pre-Approved</Button>
-          <Button href="#estimator" size="lg" variant="secondary">Estimate a Payment</Button>
+          <Button href="#on-promotion" size="lg" variant="secondary">See Current Offers</Button>
         </div>
       </PageHero>
 
@@ -123,21 +129,46 @@ export default async function FinancingPage() {
         </Container>
       </section>
 
-      <section id="estimator" className="section scroll-mt-28">
-        <Container className="grid gap-8 lg:grid-cols-[1.1fr_1fr]">
-          <PaymentCalculator />
+      <section id="on-promotion" className="section scroll-mt-28">
+        <Container>
+          <SectionHeading eyebrow="On promotion now" title="Machines with a financing offer" subtitle={promoMachines.length ? "Every model below carries a live promotion. Request a quote and we apply it to your written price." : "Offers change through the year. When a model-specific promotion is running, the eligible machines appear here."} rule={false} />
+          {promoMachines.length > 0 ? (
+            <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {promoMachines.map(({ machine, offers }) => (
+                <li key={machine.id} className="relative">
+                  <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-1">
+                    {offers.map((o) => <Badge key={o.id} tone="success">{o.badge ?? o.title}</Badge>)}
+                  </div>
+                  <ProductCard machine={machine} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="rounded-card border border-dashed border-line bg-light/50 p-6 text-sm text-grey">
+              <p className="font-semibold text-charcoal">No model-specific promotion is running right now.</p>
+              <p className="mt-1">Our financing programs below apply to every RIPPA model, and we can often improve the rate on in-stock units. <a href="#apply" className="font-semibold text-navy">Ask for today&apos;s best terms</a>.</p>
+            </div>
+          )}
+          {everyModelOffers.length > 0 && (
+            <p className="mt-4 text-sm text-grey">Also on every model: {everyModelOffers.map((o) => o.badge ?? o.title).join(" · ")}.</p>
+          )}
+        </Container>
+      </section>
+
+      <section id="faq" className="section-tight scroll-mt-28 bg-light/60">
+        <Container className="grid gap-8 lg:grid-cols-[1fr_2fr]">
           <div>
             <h2 className="display text-2xl text-charcoal">Financing FAQ</h2>
-            <dl className="mt-4 divide-y divide-line rounded-card border border-line">
-              {faqs.map((f) => (
-                <div key={f.q} className="p-4">
-                  <dt className="font-bold text-charcoal">{f.q}</dt>
-                  <dd className="mt-1 text-sm text-grey">{f.a}</dd>
-                </div>
-              ))}
-            </dl>
-            <p className="mt-4 text-sm text-grey">Still have questions? Call <a href={site.phoneHref} className="inline-flex items-center gap-1 font-semibold text-navy"><Phone className="size-4" aria-hidden />{site.phone}</a> and ask for financing.</p>
+            <p className="mt-4 text-sm text-grey">Still have questions? Call <a href={site.phoneHref} className="inline-flex items-center gap-1 font-semibold text-navy"><Phone className="size-4" aria-hidden />{site.phone}</a> and we will walk you through the options.</p>
           </div>
+          <dl className="divide-y divide-line rounded-card border border-line bg-white">
+            {faqs.map((f) => (
+              <div key={f.q} className="p-4">
+                <dt className="font-bold text-charcoal">{f.q}</dt>
+                <dd className="mt-1 text-sm text-grey">{f.a}</dd>
+              </div>
+            ))}
+          </dl>
         </Container>
       </section>
 

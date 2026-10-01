@@ -311,6 +311,8 @@ export interface BuildTotals {
   total: number;
   /** Number of lines with no public price. */
   unpricedCount: number;
+  /** Items supplied with the machine at no charge (e.g. hydraulic thumb and quick coupler on excavators). */
+  included: { label: string; detail: string }[];
 }
 
 /** Quote cart line items (quote-first sales flow, no checkout). */

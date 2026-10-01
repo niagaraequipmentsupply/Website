@@ -7,6 +7,9 @@ import { ghlConfigured, pushLeadToGhl, type LeadRecord } from "@/lib/ghl";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
 import { verifyTurnstile, turnstileEnabled } from "@/lib/turnstile";
 import { sendLeadEmails } from "@/lib/lead-email";
+import { includedWith } from "@/lib/included";
+
+const PAYMENT_LABEL: Record<string, string> = { cash: "Pay in full", finance: "Finance / leasing", lease: "Finance / leasing" };
 
 /**
  * Lead endpoint for every website form. Order of operations:
@@ -74,10 +77,11 @@ async function describeItems(body: LeadPayload): Promise<string[]> {
     for (const b of body.builds ?? []) {
       const cfg = b.configuration; const m = machine(cfg.selectedModelId); const c = m?.configurations.find((x) => x.id === cfg.selectedConfigurationId);
       lines.push(`Build: ${m ? `${m.brand} ${m.modelName}` : "machine"}${c ? ` · ${c.label}` : ""}`);
+      const inc = includedWith(m); if (inc.length) lines.push(`  Included at no charge: ${inc.map((i) => i.label).join(", ")}`);
       for (const s of cfg.attachmentSelections) { const a = att(s.attachmentId); const v = a?.variants.find((x) => x.id === s.variantId); lines.push(`  + ${s.quantity > 1 ? `${s.quantity}× ` : ""}${a?.name ?? s.attachmentId}${v?.widthOrSize ? ` · ${v.widthOrSize}` : ""}`); }
       for (const id of cfg.addonSelections) { const a = catalogue.addons.find((x) => x.id === id); if (a) lines.push(`  + ${a.name}`); }
       if (cfg.warrantySelectionId) { const w = catalogue.warranties.find((x) => x.id === cfg.warrantySelectionId); if (w) lines.push(`  + ${w.name}`); }
-      lines.push(`  Financing preference: ${cfg.financeSelection}`);
+      lines.push(`  Payment method: ${PAYMENT_LABEL[cfg.financeSelection] ?? cfg.financeSelection}`);
     }
   } catch (err) { console.error("[lead] describeItems", err); }
   return lines;

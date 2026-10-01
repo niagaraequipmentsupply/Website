@@ -1,4 +1,5 @@
 import type { Addon, Attachment, BuilderConfiguration, BuildTotals, FinancingConfig, Machine, PricedLine, WarrantyOption } from "@/lib/types";
+import { includedWith, isIncludedAttachment } from "@/lib/included";
 
 export interface Catalogue {
   machines: Machine[];
@@ -49,7 +50,7 @@ export function buildLines(config: BuilderConfiguration, cat: Catalogue): Priced
   }
   for (const sel of config.attachmentSelections) {
     const att = cat.attachments.find((a) => a.id === sel.attachmentId);
-    if (!att) continue;
+    if (!att || isIncludedAttachment(machine, att.name)) continue; // ships with the machine at no charge
     const variant = att.variants.find((v) => v.id === sel.variantId);
     const unit = attachmentUnitPrice(att, sel.variantId);
     lines.push({
@@ -77,7 +78,8 @@ export function calculateTotals(config: BuilderConfiguration, cat: Catalogue, ta
   const taxEstimate = taxRate === undefined ? undefined : Math.round(subtotal * taxRate);
   const total = subtotal + (taxEstimate ?? 0);
   const unpricedCount = lines.filter((l) => l.quoteRequired).length;
-  return { lines, subtotal, taxEstimate, total, unpricedCount };
+  const machine = cat.machines.find((m) => m.id === config.selectedModelId);
+  return { lines, subtotal, taxEstimate, total, unpricedCount, included: includedWith(machine).map(({ label, detail }) => ({ label, detail })) };
 }
 
 /** Indicative monthly payment. Returns undefined unless the dealer has configured assumptions. */

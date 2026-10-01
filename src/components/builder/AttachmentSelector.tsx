@@ -1,5 +1,6 @@
 "use client";
 import { RuggedChip } from "@/components/ui/RuggedChip";
+import { includedWith, isIncludedAttachment } from "@/lib/included";
 import { useMemo, useState } from "react";
 import { Check, Plus, Minus } from "lucide-react";
 import type { Attachment, AttachmentSelection, Machine } from "@/lib/types";
@@ -22,7 +23,9 @@ interface Props {
 }
 
 export function AttachmentSelector({ machine, attachments, selections, onAdd, onRemove, onQuantity, browseHref }: Props) {
-  const groups = useMemo(() => groupAttachments(attachments), [attachments]);
+  const included = includedWith(machine);
+  const selectable = useMemo(() => attachments.filter((a) => !isIncludedAttachment(machine, a.name)), [attachments, machine]);
+  const groups = useMemo(() => groupAttachments(selectable), [selectable]);
   const [type, setType] = useState<string>("all");
   const visible = type === "all" ? groups : groups.filter(([t]) => t === type);
   const selectedCount = selections.length;
@@ -34,8 +37,21 @@ export function AttachmentSelector({ machine, attachments, selections, onAdd, on
         <p className="rounded-card bg-light p-6 text-center text-sm text-grey">No attachments have been configured for this model yet.</p>
       ) : (
         <>
+          {included.length > 0 && (
+            <div className="mb-5 rounded-card border border-success/40 bg-success/5 p-4">
+              <p className="flex flex-wrap items-center gap-2 text-[12px] font-bold uppercase tracking-[0.15em] text-charcoal">
+                <Check className="size-4 text-success" aria-hidden />Included with every {machine.modelName}
+                <span className="chamfer bg-success px-2 py-1 text-[10px] text-white">No additional charge</span>
+              </p>
+              <ul className="mt-2 grid gap-2 sm:grid-cols-2">
+                {included.map((i) => (
+                  <li key={i.label} className="flex items-start gap-2 text-sm text-charcoal"><Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden /><span><strong>{i.label}</strong> <span className="text-grey">· {i.detail}</span></span></li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="no-scrollbar -mx-1 mb-4 flex gap-1.5 overflow-x-auto px-1 pb-1" role="tablist" aria-label="Attachment types">
-            <RuggedChip role="tab" aria-selected={type === "all"} active={type === "all"} onClick={() => setType("all")} size="sm" count={attachments.length} className="shrink-0">All</RuggedChip>
+            <RuggedChip role="tab" aria-selected={type === "all"} active={type === "all"} onClick={() => setType("all")} size="sm" count={selectable.length} className="shrink-0">All</RuggedChip>
             {groups.map(([t, items]) => <RuggedChip key={t} role="tab" aria-selected={type === t} active={type === t} onClick={() => setType(t)} size="sm" count={items.length} className="shrink-0">{t}</RuggedChip>)}
           </div>
           <div className="space-y-6">

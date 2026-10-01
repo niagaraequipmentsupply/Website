@@ -8,6 +8,7 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { EquipmentImage } from "@/components/ui/EquipmentImage";
+import { ProductGallery } from "@/components/equipment/ProductGallery";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AddToQuoteButton } from "@/components/equipment/AddToQuoteButton";
 import { ConfigurationTable } from "@/components/equipment/ConfigurationTable";
@@ -66,7 +67,6 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
   const price = machinePrice(m);
   const heroStats = m.specs.filter((s) => s.highlight).slice(0, 5);
   const brochure = m.documents.find((d) => d.kind === "brochure") ?? m.documents[0];
-  const gallery = m.images.slice(1, 7);
   const related = catalogue.machines.filter((x) => x.category === m.category && x.id !== m.id).slice(0, 4);
   const partCount = parts.filter((p) => p.compatibleModelIds.includes(m.id)).length;
 
@@ -107,16 +107,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
           <Breadcrumbs items={[{ href: "/inventory", label: "Equipment" }, { href: `/inventory/${cat.slug}`, label: cat.name }, { label: m.modelName }]} />
           <div className="mt-5 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
             <div>
-              <EquipmentImage image={m.images[0]} kind={m.category} alt={`${m.brand} ${m.modelName}`} priority sizes="(max-width: 1024px) 100vw, 720px" ratio="aspect-[4/3]" className="border border-line bg-white" />
-              {gallery.length > 0 && (
-                <ul className="mt-3 grid grid-cols-6 gap-2" aria-label="More photos">
-                  {gallery.map((img) => (
-                    <li key={img.src} className="relative aspect-[4/3] overflow-hidden rounded-md border border-line bg-white">
-                      <Image src={img.src} alt={img.alt} fill sizes="120px" className="object-cover" />
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <ProductGallery images={m.images} alt={`${m.brand} ${m.modelName}`} kind={m.category} priority />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">

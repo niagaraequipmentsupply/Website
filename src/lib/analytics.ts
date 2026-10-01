@@ -11,7 +11,8 @@ export type AnalyticsEvent =
   | { name: "quote_add"; kind: string; refId: string }
   | { name: "quote_submit"; source: string; items: number }
   | { name: "phone_click"; location: string }
-  | { name: "financing_click"; location: string };
+  | { name: "financing_click"; location: string }
+  | { name: "gallery_open"; refId: string };
 
 type Dispatcher = (event: AnalyticsEvent) => void;
 const dispatchers: Dispatcher[] = [];

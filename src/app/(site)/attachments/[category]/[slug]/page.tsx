@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Badge } from "@/components/ui/Badge";
-import { EquipmentImage } from "@/components/ui/EquipmentImage";
+import { ProductGallery } from "@/components/equipment/ProductGallery";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CtaBand } from "@/components/home/CtaBand";
 import { AttachmentDetailActions } from "@/components/equipment/AttachmentDetailActions";
@@ -42,7 +42,7 @@ export default async function AttachmentPage({ params }: { params: Promise<Param
         <Container className="py-8">
           <Breadcrumbs items={[{ href: "/attachments", label: "Attachments" }, { href: `/attachments/${cat.slug}`, label: cat.name }, { label: a.name }]} />
           <div className="mt-6 grid gap-8 lg:grid-cols-[1.1fr_1fr]">
-            <EquipmentImage image={a.images[0]} kind="attachment" alt={a.name} priority sizes="(max-width: 1024px) 100vw, 640px" className="border border-line bg-white" />
+            <ProductGallery images={a.images} alt={a.name} kind="attachment" priority />
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-[12px] font-semibold uppercase tracking-[0.3em] text-navy">{a.attachmentType}</p>

@@ -48,7 +48,7 @@ export function BuildSummary({ kind = "excavators", machine, configurationLabel,
   }, [totals.total]);
 
   return (
-    <aside aria-label="Your build" className={`rounded-card border border-line bg-white ${className}`}>
+    <aside aria-label="Your build" className={`min-h-[520px] rounded-card border border-line bg-white ${className}`}>
       <div className="flex items-center justify-between border-b border-line px-5 py-4">
         <h2 className="display text-2xl text-charcoal">Your Build</h2>
         <button type="button" onClick={onSave} className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy hover:text-electric"><Bookmark className="size-4" aria-hidden />{savedAt ? "Saved" : "Save Build"}</button>

@@ -16,7 +16,7 @@ import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
   title: "RIPPA Service Centre in Thorold, Ontario",
-  description: "Certified RIPPA technicians in Thorold, Ontario. Warranty claims handled for you, in-shop and field repairs, genuine parts across Canada. Every RIPPA owner welcome.",
+  description: "Certified RIPPA technicians in Thorold, Ontario. Warranty claims handled for you, in-shop and field repairs, genuine parts. Every RIPPA owner welcome.",
   alternates: { canonical: "/service" },
   keywords: ["RIPPA service", "RIPPA warranty", "RIPPA repair Ontario", "RIPPA parts Canada", "RIPPA dealer service Niagara", "mini excavator service Thorold"],
 };
@@ -45,7 +45,7 @@ const services = [
   { icon: Cog, title: "Diagnostics & repairs", text: "Hydraulic leaks, pump and valve issues, electrical faults, track and undercarriage, engine work on Kubota, Yanmar and Briggs & Stratton." },
   { icon: MapPin, title: "Field service", text: "Mobile technician for on-site repairs, seasonal services and attachment installs across Niagara and the Golden Horseshoe." },
   { icon: Snowflake, title: "Winterization & storage", text: "Cold-weather hydraulic oil, coolant checks, block-heater installs, battery care and spring recommissioning." },
-  { icon: ShieldCheck, title: "Warranty & recall work", text: "Authorized warranty repairs and RIPPA recall campaigns, such as the RS06 cooling-fan update, completed in our shop." },
+  { icon: ShieldCheck, title: "Warranty & recall work", text: "Authorized warranty repairs and any RIPPA service campaigns or updates that apply to your serial number, completed in our shop." },
 ];
 
 const warrantySteps = [
@@ -91,7 +91,7 @@ export default async function ServicePage() {
           <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {commitments.map((c, i) => (
               <li key={c.title} className="rounded-card border border-line bg-white p-5">
-                <span className="display text-3xl text-navy/30">{String(i + 1).padStart(2, "0")}</span>
+                <span aria-hidden className="display text-3xl text-navy/30">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className="mt-2 text-base font-bold text-charcoal">{c.title}</h3>
                 <p className="mt-1 text-sm text-grey">{c.text}</p>
               </li>
@@ -101,7 +101,7 @@ export default async function ServicePage() {
       </section>
 
       <section className="section-tight relative overflow-hidden bg-light/60">
-        <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/farm-field.jpg')] bg-cover bg-[position:center_35%]" />
+        <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/farm-field.webp')] bg-cover bg-[position:center_35%]" />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-white/92 via-white/88 to-white" />
         <Container className="relative">
           <SectionHeading title="Support built around how you work" subtitle="A first machine on an acreage and a fleet on a job site need different things from a dealer. We set the Service Centre up for both." rule={false} />
@@ -129,7 +129,7 @@ export default async function ServicePage() {
       <section id="hub" className="section scroll-mt-28">
         <Container>
           <SectionHeading eyebrow="Owner support" title="Find help for your machine" subtitle="Guides, videos, service intervals, parts and oils, sorted by model. Pick your machine to start." rule={false} />
-          <Suspense><ServiceHub machines={catalogue.machines.filter((m) => m.category === "excavators" || m.category === "skid-steers")} posts={posts} lubricants={lubricants} /></Suspense>
+          <Suspense><ServiceHub machines={catalogue.machines.filter((m) => m.category === "excavators" || m.category === "skid-steers").map(({ id, slug, modelName, brand, category, engine, operatingWeight, images, documents }) => ({ id, slug, modelName, brand, category, engine, operatingWeight, images: images.slice(0, 1), documents }))} posts={posts} lubricants={lubricants} /></Suspense>
         </Container>
       </section>
 

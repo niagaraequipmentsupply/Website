@@ -12,7 +12,7 @@ import { lubricantCategories } from "@/collections/Lubricants";
 
 export const metadata: Metadata = {
   title: "Chevron Oil & Lubricants Dealer in Niagara",
-  description: "Chevron Delo and Catalys engine oil, hydraulic fluid, gear oil, grease, coolant and DEF in Thorold, with bulk programs for farms, shops and fleets across Ontario.",
+  description: "Chevron Delo and Catalys engine oil, hydraulic fluid, gear oil, grease, coolant and DEF in Thorold, with bulk programs for farms, shops and fleets.",
   alternates: { canonical: "/lubricants" },
 };
 

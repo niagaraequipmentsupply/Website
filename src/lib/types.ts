@@ -325,6 +325,13 @@ export interface Post {
   id: string; slug: string; title: string; category: string; excerpt: string; publishedAt: string; cover?: ImageAsset; videoUrl?: string;
   /** Plain-text paragraphs (rich text flattened). */
   contentText: string; contentHtml?: string; relatedMachineIds: string[]; tags: string[]; readMinutes?: number; featured: boolean; author?: string;
+  /** Linked Authors doc (preferred over the legacy `author` text). */
+  authorId?: string; updatedAt?: string;
+}
+
+/** A real team member who writes for the site (Authors collection). */
+export interface Author {
+  id: string; slug: string; name: string; role?: string; bio: string; photo?: ImageAsset; credentials: string[]; email?: string; linkedin?: string; website?: string; sortOrder: number;
 }
 
 export interface Part {

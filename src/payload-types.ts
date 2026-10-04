@@ -72,6 +72,7 @@ export interface Config {
     lubricants: Lubricant;
     parts: Part;
     posts: Post;
+    authors: Author;
     testimonials: Testimonial;
     addons: Addon;
     warranties: Warranty;
@@ -93,6 +94,7 @@ export interface Config {
     lubricants: LubricantsSelect<false> | LubricantsSelect<true>;
     parts: PartsSelect<false> | PartsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    authors: AuthorsSelect<false> | AuthorsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     addons: AddonsSelect<false> | AddonsSelect<true>;
     warranties: WarrantiesSelect<false> | WarrantiesSelect<true>;
@@ -702,6 +704,13 @@ export interface Post {
    */
   readMinutes?: number | null;
   featured?: boolean | null;
+  /**
+   * Who wrote this. Their bio appears under the post and in the structured data.
+   */
+  writer?: (number | null) | Author;
+  /**
+   * Legacy free-text byline; shown only when no writer is linked.
+   */
   author?: string | null;
   /**
    * URL path segment, e.g. r15-5-eco. Auto-filled from the name when empty.
@@ -710,6 +719,53 @@ export interface Post {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * Real team members only. Each blog post links to one author; the bio and photo appear under the post and on the About page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors".
+ */
+export interface Author {
+  id: number;
+  name: string;
+  /**
+   * e.g. Owner, Service Manager, Lead Technician
+   */
+  role?: string | null;
+  /**
+   * Two to four sentences in the third person: background, years with the equipment, what they do at the dealership.
+   */
+  bio: string;
+  /**
+   * Square headshot or a photo at work. Optional but recommended; search engines and readers trust a face.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * Certifications or training, e.g. 'RIPPA factory service training'. Only list what is real.
+   */
+  credentials?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  email?: string | null;
+  /**
+   * Profile URL
+   */
+  linkedin?: string | null;
+  /**
+   * e.g. https://gjequip.ca
+   */
+  website?: string | null;
+  sortOrder?: number | null;
+  /**
+   * URL path segment, e.g. r15-5-eco. Auto-filled from the name when empty.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Real customer quotes only, with their permission. Published entries appear on the home page and the related machine page.
@@ -1028,6 +1084,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'authors';
+        value: number | Author;
       } | null)
     | ({
         relationTo: 'testimonials';
@@ -1354,11 +1414,35 @@ export interface PostsSelect<T extends boolean = true> {
       };
   readMinutes?: T;
   featured?: T;
+  writer?: T;
   author?: T;
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors_select".
+ */
+export interface AuthorsSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  bio?: T;
+  photo?: T;
+  credentials?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  email?: T;
+  linkedin?: T;
+  website?: T;
+  sortOrder?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

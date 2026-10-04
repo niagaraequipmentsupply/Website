@@ -139,7 +139,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
         <section id="compare" className="section scroll-mt-28">
           <Container>
             <SectionHeading eyebrow="Buying guide" title={`Compare RIPPA ${cat.name}`} subtitle="Side-by-side specs, who each model is for, how well it handles common jobs and what safety and comfort equipment is included." rule={false} />
-            <ComparisonChart machines={items} categoryName={cat.name} />
+            <ComparisonChart machines={items.map(({ id, slug, modelName, series, category, images, specs, targetUsers, checklist, applicationFit, warranty, showPrice, basePrice, promoPrice, configurations, indoorUse, noiseLevel }) => ({ id, slug, modelName, series, category, images: images.slice(0, 1), specs, targetUsers, checklist, applicationFit, warranty, showPrice, basePrice, promoPrice, configurations, indoorUse, noiseLevel }))} categoryName={cat.name} />
             {items.length >= 2 && <p className="mt-4 text-sm"><Link href={compareHref(items.slice(0, 3).map((m) => m.slug))} className="inline-flex items-center gap-1 font-semibold text-navy hover:text-electric">Open the full spec-by-spec comparison <ArrowRight className="size-3.5" aria-hidden /></Link></p>}
             <p className="mt-4 text-[12px] text-grey">Ratings and required attachments follow the RIPPA buying guide. Specifications are manufacturer figures and may vary by configuration. Confirm fitment with our team before ordering attachments.</p>
           </Container>

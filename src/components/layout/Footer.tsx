@@ -47,8 +47,12 @@ export function Footer({ site }: { site: SiteContent["site"] }) {
             </ul>
           </div>
           <div>
-            <h3 className="mb-3 text-sm font-bold text-charcoal">Follow Us</h3>
-            {!Object.values(site.social).some((u) => typeof u === "string" && /^https?:\/\//.test(u)) && <p className="text-sm text-grey">Social channels coming soon.</p>}
+            <h3 className="mb-3 text-sm font-bold text-charcoal">{Object.values(site.social).some((u) => typeof u === "string" && /^https?:\/\//.test(u)) ? "Follow Us" : "Hours"}</h3>
+            {!Object.values(site.social).some((u) => typeof u === "string" && /^https?:\/\//.test(u)) && (
+              <ul className="space-y-1 text-sm text-grey" aria-label="Store hours">
+                {site.hoursList.map((h) => <li key={h.day} className="flex justify-between gap-3"><span>{h.day}</span><span className="font-semibold text-charcoal">{h.time}</span></li>)}
+              </ul>
+            )}
             <ul className="flex gap-2">
               {[
                 { href: site.social.facebook, label: "Facebook", Icon: Facebook },

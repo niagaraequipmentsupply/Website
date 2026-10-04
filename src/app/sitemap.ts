@@ -8,7 +8,7 @@ import { compareHref } from "@/lib/compare";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = site.url;
   const { categories, attachmentCategories, posts, parts, catalogue: { machines, attachments } } = await getSiteContent();
-  const statics = ["", "/inventory", "/attachments", "/builder/excavator", "/builder/skid-steer", "/parts", "/financing", "/service", "/service/parts", "/lubricants", "/blog", "/about", "/contact", "/quote"];
+  const statics = ["", "/inventory", "/attachments", "/builder/excavator", "/builder/skid-steer", "/parts", "/financing", "/service", "/service/parts", "/lubricants", "/blog", "/about", "/contact"];
   return [
     ...statics.map((p) => ({ url: `${base}${p}`, changeFrequency: "weekly" as const, priority: p === "" ? 1 : 0.7 })),
     ...["/service-area", "/compare", "/privacy", "/terms", "/accessibility"].map((p) => ({ url: `${base}${p}`, changeFrequency: "monthly" as const, priority: p === "/service-area" || p === "/compare" ? 0.7 : 0.3 })),

@@ -28,7 +28,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 20 minutes east on Highway 20 / Lundy's Lane",
     distanceKm: 18,
     headline: "RIPPA mini excavators and compact equipment in Niagara Falls",
-    metaDescription: "RIPPA mini excavator and skid steer dealer serving Niagara Falls, Chippawa and Stamford. Local delivery from Thorold, demos, financing and the RIPPA Service Centre 20 minutes away.",
+    metaDescription: "RIPPA mini excavators and skid steers for Niagara Falls, Chippawa and Stamford. Delivery, demos and financing from the Thorold dealer, 20 minutes away.",
     intro: [
       "Niagara Falls is twenty minutes from our Thorold yard, which makes it the easiest place in the region for us to deliver, demo and service RIPPA equipment. Most of the machines we send into the city go to residential lots in Chippawa, Stamford, Mount Carmel and the older streets between Lundy's Lane and the river, where side yards are narrow and the work is pools, patios, drainage and fence lines.",
       "The lots here are mostly heavy Niagara clay. A 1-ton R10 ECO or 1.3-ton R13 PRO with retractable tracks fits through a standard gate and still has the breakout force to dig footings and trench weeping tile, while a 3.2-ton R32 PRO handles the full pool digs and retaining walls that hospitality properties and larger homes need.",
@@ -55,7 +55,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 15 minutes north on Highway 406",
     distanceKm: 10,
     headline: "RIPPA excavators, skid steers and loaders for St. Catharines",
-    metaDescription: "RIPPA dealer 15 minutes from St. Catharines. Mini excavators from 0.6 to 23 tons, stand-on loaders and skid steers for Port Dalhousie, Glenridge, Merritton and north-end lots. Demos, financing and service in Thorold.",
+    metaDescription: "RIPPA dealer 15 minutes from St. Catharines: mini excavators, stand-on loaders and skid steers for tight city lots. Demos, financing and service in Thorold.",
     intro: [
       "St. Catharines is the largest city in Niagara and the one we see most often, fifteen minutes up the 406 from our yard. The housing stock runs from century homes near downtown and Port Dalhousie to 1960s bungalows in Glenridge and the north end, and nearly all of it shares the same problem for contractors: tight side yards, mature trees and no room for a full-size machine.",
       "That is where micro and mini excavators earn their keep. The R06 ECO fits through a 30-inch gap, the R10 ECO and R13 PRO through a standard gate, and the RS04 and RS06 stand-on loaders move spoil and stone out through the same opening. For builders on infill lots and the subdivisions around Brock University, the R18 PRO and R22 PRO give full-size digging power on a machine that still tows behind a pickup.",
@@ -82,7 +82,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 15 minutes south on Highway 406",
     distanceKm: 12,
     headline: "RIPPA compact equipment dealer for Welland",
-    metaDescription: "RIPPA mini excavators, track dumpers and skid steers for Welland, Dain City and Cooks Mills. Fifteen minutes from the Thorold yard, with delivery, financing and warranty service.",
+    metaDescription: "RIPPA mini excavators, track dumpers and skid steers for Welland, Dain City and Cooks Mills. 15 minutes from Thorold, with delivery and warranty service.",
     intro: [
       "Welland sits fifteen minutes south of us down the 406. It is a working city: canal-side industrial lots, post-war neighbourhoods with big backyards, Niagara College, and rural fringe out toward Cooks Mills and Dain City where small farms and large properties are the norm.",
       "That mix shows up in what Welland customers buy. Homeowners on quarter-acre lots take the R10 ECO or R15 ECO for drainage, ponds and fence lines. Contractors working the new subdivisions and canal-side redevelopment lean on the R22 PRO and R32 PRO, and the RD06 tracked dumper is popular for moving gravel and soil across soft ground that a wheelbarrow or pickup cannot cross.",
@@ -109,7 +109,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "our yard is at 16-2275 Highway 20, Thorold",
     distanceKm: 0,
     headline: "Your local RIPPA dealer in Thorold",
-    metaDescription: "Niagara Equipment Supply is the RIPPA dealer on Highway 20 in Thorold. Mini excavators, skid steers, loaders, parts and the RIPPA Service Centre, with demos in the yard and same-day pickup on stocked units.",
+    metaDescription: "The RIPPA dealer on Highway 20 in Thorold: mini excavators, skid steers, loaders, parts and the RIPPA Service Centre, with demos in the yard.",
     intro: [
       "Thorold is home. Our yard, showroom and the RIPPA Service Centre are on Highway 20 between the 406 and Allanburg, which puts us minutes from the new subdivisions in Rolling Meadows and Thorold South, the older streets downtown, and the rural lots along the canal and out to Port Robinson.",
       "Being local means you can drop in, run the machines, pick up parts the same day and bring a unit in for service without arranging transport. Stocked models can usually be collected the day you buy, or we deliver anywhere in the city at short notice.",
@@ -136,7 +136,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 15 minutes west on Highway 20",
     distanceKm: 11,
     headline: "RIPPA equipment for Pelham, Fonthill and Fenwick properties",
-    metaDescription: "RIPPA mini excavators, loaders and skid steers for estate lots, hobby farms and tender-fruit properties in Pelham, Fonthill, Fenwick and Ridgeville. Dealer and service centre 15 minutes away in Thorold.",
+    metaDescription: "RIPPA excavators, loaders and skid steers for estate lots, hobby farms and fruit properties in Pelham, Fonthill and Fenwick. Dealer 15 minutes away.",
     intro: [
       "Pelham is straight west of us on Highway 20. Fonthill, Fenwick and Ridgeville are full of estate lots, acreages and small farms on the Fonthill Kame, which means sandier, better-draining ground than most of Niagara and property owners who do a lot of their own work.",
       "That is the classic owner-operator market for RIPPA. A 2-ton R18 PRO or 2.5-ton R22 PRO with a thumb, auger and a set of buckets covers driveways, ponds, barn pads and fencing for years, and the RL06 loader or an RS07 skid steer keeps up with gravel, mulch and firewood.",
@@ -163,7 +163,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 35 minutes via the QEW",
     distanceKm: 38,
     headline: "RIPPA mini excavators and dumpers for Fort Erie, Ridgeway and Crystal Beach",
-    metaDescription: "RIPPA dealer serving Fort Erie, Ridgeway, Crystal Beach and Stevensville. Mini excavators and tracked dumpers for lakefront cottages, drainage and renovations, delivered from Thorold with financing and warranty service.",
+    metaDescription: "RIPPA dealer for Fort Erie, Ridgeway and Crystal Beach: mini excavators and tracked dumpers for cottages, drainage and renovations. Delivery and financing.",
     intro: [
       "Fort Erie is a thirty-five minute run down the QEW, and most of the equipment we send there goes to the lake. Crystal Beach, Ridgeway and the shoreline between them are cottage country turned year-round, with sandy ground, high water tables and lots that were never designed for construction access.",
       "Mini excavators are the only practical tool for a lot of that work. An R10 ECO or R15 ECO can get between cottages to dig drainage, replace septic lines or set deck footings, and the RD06 tracked dumper moves sand, gravel and demolition out over soft ground without tearing up what is left of the lawn. For bigger drainage and shoreline jobs, contractors run the R57 PRO.",
@@ -190,7 +190,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 30 minutes south via Highway 406 and Highway 140",
     distanceKm: 32,
     headline: "RIPPA equipment for Port Colborne, Wainfleet and the Lake Erie shore",
-    metaDescription: "RIPPA mini excavators and skid steers for Port Colborne, Wainfleet, Sherkston and Lowbanks. Farm drainage, septic, shoreline and marine work, delivered from Thorold with financing and the RIPPA Service Centre.",
+    metaDescription: "RIPPA mini excavators and skid steers for Port Colborne, Wainfleet and Lowbanks: farm drainage, septic and shoreline work, delivered with financing.",
     intro: [
       "Port Colborne sits at the south end of the Welland Canal, half an hour from our yard, with Wainfleet's farmland and lakeshore stretching west from it. The work down here is agricultural and marine: tile drainage, septic systems, shoreline protection, marina and cottage maintenance, and a lot of acreage that owners look after themselves.",
       "RIPPA's mid-size excavators fit that well. The R22 PRO and R32 PRO have the reach and dig depth for septic beds and drainage, the R57 PRO handles shoreline rock and larger farm work, and the RS07 and RS20 skid steers keep barns, laneways and yards in shape year-round, including snow.",
@@ -217,7 +217,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 30 minutes west on the QEW",
     distanceKm: 32,
     headline: "RIPPA equipment for Grimsby, Beamsville, Vineland and Jordan",
-    metaDescription: "RIPPA mini excavators, skid steers and loaders for vineyards, orchards, greenhouses and new homes in Grimsby, Beamsville, Vineland and Jordan. Dealer, financing and service 30 minutes away in Thorold.",
+    metaDescription: "RIPPA excavators, skid steers and loaders for vineyards, orchards and new homes in Grimsby, Beamsville, Vineland and Jordan. Dealer 30 minutes away.",
     intro: [
       "Grimsby and Lincoln run along the lake below the escarpment, half an hour west of us on the QEW. This is Niagara's fruit belt: vineyards, orchards and greenhouses from Grimsby through Beamsville, Vineland and Jordan, plus fast-growing subdivisions in Grimsby and Beamsville where new homeowners inherit bare lots.",
       "Growers buy RIPPA for the jobs that never stop: trellis and fence posts with an auger, irrigation trenching, drainage, grading between rows and moving bins and pallets with forks. The RS07 skid steer and RL06 loader are the workhorses, with the R13 PRO and R18 PRO for trenching and post holes. New homeowners usually start with an R10 ECO for drainage, fencing and patios.",
@@ -244,7 +244,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 30 minutes north via the 406 and Highway 55",
     distanceKm: 26,
     headline: "RIPPA compact equipment for Niagara-on-the-Lake, Virgil and St. Davids",
-    metaDescription: "RIPPA mini excavators, stand-on loaders and skid steers for wineries, estate properties and landscapers in Niagara-on-the-Lake, Virgil, St. Davids and Queenston. Dealer and service centre 30 minutes away in Thorold.",
+    metaDescription: "RIPPA excavators and stand-on loaders for wineries, estates and landscapers in Niagara-on-the-Lake, Virgil and St. Davids. Dealer 30 minutes away.",
     intro: [
       "Niagara-on-the-Lake is half an hour from our yard and one of the most equipment-dense places in the region once you look past Queen Street. Dozens of wineries, estate properties with serious landscaping, Virgil and St. Davids subdivisions, and the landscaping and maintenance companies that look after all of it.",
       "That work favours compact, clean machines. Landscapers run the R10 ECO and R15 ECO for drainage, lighting trenches and planting, with RS04 or RS06 stand-on loaders to move soil, mulch and stone across finished lawns. Wineries lean on the RS07 skid steer and R18 PRO for posts, irrigation and yard work around the crush pad.",
@@ -271,7 +271,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 50 minutes via the QEW and Red Hill Valley Parkway",
     distanceKm: 62,
     headline: "RIPPA mini excavators and skid steers for Hamilton contractors",
-    metaDescription: "RIPPA dealer serving Hamilton, Stoney Creek, Ancaster, Dundas and Binbrook. Mini excavators from 1 to 23 tons and skid steers for renovation, demolition and landscaping contractors, with financing and in-house warranty service.",
+    metaDescription: "RIPPA dealer for Hamilton, Stoney Creek, Ancaster and Binbrook: mini excavators and skid steers for contractors, with financing and in-house warranty.",
     intro: [
       "Hamilton is the biggest market west of us, under an hour from the yard via the QEW and the Red Hill. Between the Mountain, the lower city, Stoney Creek, Ancaster, Dundas and the new neighbourhoods in Binbrook and Waterdown, there is more renovation, demolition and landscaping work than almost anywhere in Southern Ontario, and most of it happens on lots with no room for a full-size excavator.",
       "Hamilton contractors tend to buy the PRO series. The R32 PRO and R57 PRO give real production digging on a machine that moves on a tag trailer, and the RS20 compact track loader is a true replacement for a full-size skid steer on demolition and grading jobs. Renovators and landscapers working the lower city take the R13 PRO and R18 PRO for access.",
@@ -298,7 +298,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 55 minutes via the QEW",
     distanceKm: 72,
     headline: "RIPPA compact equipment for Burlington and Oakville",
-    metaDescription: "RIPPA mini excavators and stand-on loaders for Burlington and Oakville landscapers, pool builders and homeowners. Delivered from the Niagara dealer with financing and warranty service.",
+    metaDescription: "RIPPA mini excavators and stand-on loaders for Burlington and Oakville landscapers, pool builders and homeowners. Delivered from Niagara with financing.",
     intro: [
       "Burlington and Oakville are about an hour up the QEW. The work there is suburban and high-end: pools, outdoor kitchens, retaining walls, drainage and full backyard rebuilds on lots where the only access is a side yard, plus steady renovation work in older neighbourhoods like Aldershot, Roseland and Bronte.",
       "That makes Halton the natural home for RIPPA's smallest machines. The R06 ECO and R10 ECO fit where a rental mini will not, the R13 PRO and R15 ECO give pool builders and landscapers a pilot-control machine that fits through a gate, and the RS06 stand-on loader moves stone and spoil through the same opening.",
@@ -325,7 +325,7 @@ export const serviceAreas: ServiceArea[] = [
     drive: "about 45 minutes west via Highway 3",
     distanceKm: 50,
     headline: "RIPPA excavators, loaders and skid steers for Haldimand County farms",
-    metaDescription: "RIPPA dealer serving Dunnville, Caledonia, Cayuga, Hagersville and Jarvis. Mini excavators, loaders and skid steers for farms, drainage and rural properties, delivered from Thorold with financing and warranty service.",
+    metaDescription: "RIPPA dealer for Dunnville, Caledonia, Cayuga and Hagersville: excavators, loaders and skid steers for farms and rural properties, delivered with financing.",
     intro: [
       "Haldimand is farm country forty-five minutes west of us along Highway 3: cash crops and livestock around Cayuga and Hagersville, the Grand River through Caledonia and Dunnville, and a lot of rural properties whose owners want a machine they can run themselves rather than hire out.",
       "RIPPA's loaders and mid-size excavators are built for that. The RL06 compact loader and RB06 backhoe loader cover feeding, bedding, fencing and small digging jobs on one machine, the R22 PRO and R32 PRO handle drainage and ponds, and the RS07 and RS20 skid steers keep barns and laneways clear in every season.",

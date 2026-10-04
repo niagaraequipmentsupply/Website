@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/Button";
 import { EquipmentImage } from "@/components/ui/EquipmentImage";
 import { ProductGallery } from "@/components/equipment/ProductGallery";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { AddToQuoteButton } from "@/components/equipment/AddToQuoteButton";
 import { ConfigurationTable } from "@/components/equipment/ConfigurationTable";
 import { SpecTable } from "@/components/equipment/SpecTable";
 import { ProductSubnav } from "@/components/equipment/ProductSubnav";
@@ -25,7 +24,7 @@ import { MobileQuoteBar } from "@/components/equipment/MobileQuoteBar";
 import { getCategory, getMachine, getSiteContent, getAttachments } from "@/lib/catalogue";
 import { compatibleAttachments } from "@/lib/compatibility";
 import { machinePrice, machineHasMultiplePrices } from "@/lib/pricing";
-import { formatPrice } from "@/lib/format";
+import { formatPrice, metaDescription } from "@/lib/format";
 import { plateLabels } from "@/lib/plates";
 import { isThin } from "@/lib/machines";
 import { builderHref } from "@/lib/builders";
@@ -52,10 +51,10 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   return {
     ...(thin ? { robots: { index: false, follow: true } } : {}),
     title: `${m.brand} ${m.modelName} ${kind} for Sale in Ontario`.replace(/\s+/g, " "),
-    description: `${m.shortDescription.replace(/\s+$/, "")} Written quotes, dealer PDI and delivery across Ontario from ${site.name}, ${site.address.city}.`.slice(0, 160),
+    description: metaDescription(`${m.shortDescription.replace(/\s+$/, "")} Written quotes and delivery across Ontario from ${site.name}.`),
     alternates: { canonical: `/inventory/${m.category}/${m.slug}` },
     keywords: [`RIPPA ${m.modelName}`, `${m.modelName} ${kind.toLowerCase()}`, `RIPPA ${kind.toLowerCase()} Ontario`, `RIPPA dealer Niagara`, `${kind.toLowerCase()} for sale Ontario`],
-    openGraph: m.images[0] ? { images: [{ url: m.images[0].src, alt: m.images[0].alt }] } : undefined,
+    ...(m.images[0] ? { openGraph: { images: [{ url: m.images[0].src, alt: m.images[0].alt }] } } : {}),
   };
 }
 
@@ -72,6 +71,9 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
   const brochure = m.documents.find((d) => d.kind === "brochure") ?? m.documents[0];
   const related = catalogue.machines.filter((x) => x.category === m.category && x.id !== m.id).slice(0, 4);
   const partCount = parts.filter((p) => p.compatibleModelIds.includes(m.id)).length;
+  const pageUrl = `${site.url}/inventory/${m.category}/${m.slug}`;
+  const absolute = (src: string) => (src.startsWith("http") ? src : `${site.url}${src}`);
+  const weightKg = Number((m.specs.find((s) => /operating weight/i.test(s.label))?.value ?? "").match(/([\d,.]+)\s*kg/i)?.[1]?.replace(/,/g, "")) || undefined;
 
   const sections = [
     { id: "overview", label: "Overview", show: true },
@@ -88,19 +90,23 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
+    "@id": pageUrl,
+    mainEntityOfPage: pageUrl,
     name: `${m.brand} ${m.modelName}`,
     brand: { "@type": "Brand", name: m.brand },
     description: m.shortDescription,
     category: cat.name,
-    image: m.images.map((i) => i.src),
-    sku: m.slug, mpn: m.modelName, model: m.modelName, url: `${site.url}/inventory/${m.category}/${m.slug}`,
+    image: m.images.map((i) => absolute(i.src)),
+    sku: m.slug, mpn: m.modelName, model: m.modelName, url: pageUrl,
+    ...(weightKg ? { weight: { "@type": "QuantitativeValue", value: weightKg, unitCode: "KGM" } } : {}),
     itemCondition: "https://schema.org/NewCondition",
     manufacturer: { "@type": "Organization", name: "Shandong Rippa Machinery Group" },
-    additionalProperty: heroStats.map((s) => ({ "@type": "PropertyValue", name: s.label, value: s.value })),
+    // Every published spec row, so answer engines can quote dig depth, flow, dimensions etc. straight from the page.
+    additionalProperty: m.specs.map((s) => ({ "@type": "PropertyValue", name: s.label, value: s.value })),
     ...(m.configurations.length > 1 ? { hasVariant: m.configurations.map((c) => ({ "@type": "Product", name: `${m.brand} ${m.modelName} · ${c.label}`, sku: c.sku ?? `${m.slug}-${c.id}`, mpn: m.modelName })) } : {}),
     ...(m.showPrice && price !== undefined ? { offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: price, offerCount: Math.max(1, m.configurations.length), itemCondition: "https://schema.org/NewCondition", availability: m.inStock ? "https://schema.org/InStock" : "https://schema.org/PreOrder", areaServed: "Ontario, Canada", seller: { "@type": "LocalBusiness", name: site.name, telephone: site.phone, address: { "@type": "PostalAddress", addressLocality: site.address.city, addressRegion: "ON", addressCountry: "CA" } } } } : {}),
-    ...(m.faqs.length ? { subjectOf: { "@type": "FAQPage", mainEntity: m.faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })) } } : {}),
   };
+  const faqLd = m.faqs.length ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: m.faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })) } : null;
 
   return (
     <>
@@ -346,6 +352,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
         </section>
       )}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
       <MobileQuoteBar label={`Quote the ${m.modelName}`} phone={site.phone} phoneHref={site.phoneHref} />
     </>
   );

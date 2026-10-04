@@ -26,7 +26,7 @@ export const PILLARS: { icon: LucideIcon; title: string; text: string; href: str
 export function ServiceCentreStrip({ phone, phoneHref, className = "" }: { phone: string; phoneHref: string; className?: string }) {
   return (
     <aside className={`relative overflow-hidden rounded-card border border-navy/15 bg-navy p-5 text-white ${className}`} aria-label={SERVICE_CENTRE.name}>
-      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/service-bay.jpg')] bg-cover bg-center opacity-40" />
+      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/service-bay.webp')] bg-cover bg-center opacity-40" />
       <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-navy/60" />
       <div className="relative flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">

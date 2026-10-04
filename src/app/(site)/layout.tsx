@@ -9,6 +9,7 @@ import { Analytics } from "@/components/layout/Analytics";
 import { ConsentBanner } from "@/components/layout/ConsentBanner";
 import { CatalogueProvider } from "@/components/CatalogueProvider";
 import { getSiteContent } from "@/lib/catalogue";
+import { clientCatalogue } from "@/lib/client-catalogue";
 import { site as siteDefaults } from "@/data/site";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton", display: "swap" });
@@ -20,6 +21,11 @@ export const metadata: Metadata = {
   description: siteDefaults.description,
   openGraph: { siteName: siteDefaults.name, type: "website", locale: "en_CA" },
   robots: { index: true, follow: true },
+  // Search Console / Bing Webmaster ownership tags, set from env so the values never live in the repo.
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION } : {}),
+    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION ? { other: { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } } : {}),
+  },
 };
 
 /**
@@ -36,7 +42,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:px-3 focus:py-2 focus:rounded-btn focus:shadow-card">
           Skip to content
         </a>
-        <CatalogueProvider value={{ catalogue, financing, taxRate: site.tax.rate, taxLabel: site.tax.label, phone: site.phone, phoneHref: site.phoneHref }}>
+        <CatalogueProvider value={{ catalogue: clientCatalogue(catalogue), financing, taxRate: site.tax.rate, taxLabel: site.tax.label, phone: site.phone, phoneHref: site.phoneHref }}>
           <AnnouncementBar left={site.announcement.left} right={site.announcement.right} />
           <Header nav={nav} contact={{ phone: site.phone, phoneHref: site.phoneHref, address: [site.address.street, site.address.city, site.address.region, site.address.postal].filter(Boolean).join(", "), hours: site.hoursList, mapEmbedUrl: site.mapEmbedUrl }} />
           <main id="main" className="flex-1">{children}</main>

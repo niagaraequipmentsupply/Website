@@ -37,7 +37,7 @@ export default async function PartsPage({ searchParams }: { searchParams: Promis
             <ul className="mt-3 space-y-2 text-sm text-charcoal">{["Model and serial number (photo of the data plate is perfect)", "Hour reading", "Part name or a photo of the part / failure", "Quantity and shipping address"].map((t) => <li key={t} className="flex gap-2"><Check className="mt-0.5 size-4 shrink-0 text-navy" aria-hidden />{t}</li>)}</ul>
             <dl className="mt-6 divide-y divide-line rounded-card border border-line">{faqs.map((f) => <div key={f.q} className="p-4"><dt className="font-bold text-charcoal">{f.q}</dt><dd className="mt-1 text-sm text-grey">{f.a}</dd></div>)}</dl>
           </div>
-          <LeadForm source="parts" title="Parts request" submitLabel="Request Parts Quote" messageLabel="Model, serial number, hours, and the parts you need" defaultMessage={`${sku ? `Part number: ${sku}\n` : ""}${machine ? `Model: RIPPA ${machine.modelName}\nSerial #: \nHours: \nParts needed: ` : undefined}`} />
+          <LeadForm source="parts" title="Parts request" submitLabel="Request Parts Quote" messageLabel="Model, serial number, hours, and the parts you need" defaultMessage={`${sku ? `Part number: ${sku}\n` : ""}${machine ? `Model: RIPPA ${machine.modelName}\nSerial #: \nHours: \nParts needed: ` : ""}`} />
         </Container>
       </section>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }) }} />

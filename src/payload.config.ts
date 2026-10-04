@@ -18,6 +18,7 @@ import { Lubricants } from "./collections/Lubricants";
 import { Parts } from "./collections/Parts";
 import { Leads } from "./collections/Leads";
 import { Testimonials } from "./collections/Testimonials";
+import { Authors } from "./collections/Authors";
 import { resendAdapter } from "@payloadcms/email-resend";
 import { SiteSettings } from "./globals/SiteSettings";
 import { Financing } from "./globals/Financing";
@@ -35,12 +36,13 @@ export default buildConfig({
     meta: { titleSuffix: " · Niagara Equipment Supply Admin" },
     importMap: { baseDir: path.resolve(dirname) },
   },
-  collections: [Machines, Attachments, Lubricants, Parts, Posts, Testimonials, Addons, Warranties, FinancePromos, Categories, Media, Documents, Leads, Users],
+  collections: [Machines, Attachments, Lubricants, Parts, Posts, Authors, Testimonials, Addons, Warranties, FinancePromos, Categories, Media, Documents, Leads, Users],
   globals: [SiteSettings, Financing],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "dev-only-secret-change-me",
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
-  db: sqliteAdapter({ client: { url: process.env.DATABASE_URI || "file:./payload.db" } }),
+  // PAYLOAD_PUSH=false skips the dev schema push (scripts against a DB whose schema is managed by hand / already current).
+  db: sqliteAdapter({ client: { url: process.env.DATABASE_URI || "file:./payload.db" }, push: process.env.PAYLOAD_PUSH !== "false" }),
   sharp,
   upload: { limits: { fileSize: 25 * 1024 * 1024 } },
   // Outbound email (lead alerts, customer confirmations, admin password resets). Set RESEND_API_KEY + EMAIL_FROM on a verified domain.

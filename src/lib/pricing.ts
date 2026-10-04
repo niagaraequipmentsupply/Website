@@ -24,7 +24,8 @@ export function attachmentUnitPrice(att: Attachment, variantId?: string): number
 }
 
 /** Lowest published price across configurations ("Starting from"), else base/promo price. */
-export function machinePrice(m: Machine): number | undefined {
+type Priced = Pick<Machine, "showPrice" | "basePrice" | "promoPrice" | "configurations">;
+export function machinePrice(m: Priced): number | undefined {
   if (!PRICES_ENABLED || !m.showPrice) return undefined;
   const cfgPrices = (m.configurations ?? []).map((c) => c.price).filter((p): p is number => typeof p === "number");
   if (cfgPrices.length) return Math.min(...cfgPrices);
@@ -38,7 +39,7 @@ export function machineConfigPrice(m: Machine, configurationId?: string): number
   return c?.price ?? machinePrice(m);
 }
 
-export const machineHasMultiplePrices = (m: Machine) => PRICES_ENABLED && new Set((m.configurations ?? []).map((c) => c.price).filter((p) => p !== undefined)).size > 1;
+export const machineHasMultiplePrices = (m: Priced) => PRICES_ENABLED && new Set((m.configurations ?? []).map((c) => c.price).filter((p) => p !== undefined)).size > 1;
 
 export function buildLines(config: BuilderConfiguration, cat: Catalogue): PricedLine[] {
   const lines: PricedLine[] = [];

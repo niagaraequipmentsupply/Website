@@ -13,7 +13,7 @@ import { systemLabel, systemOrder } from "@/lib/parts";
 
 export const metadata: Metadata = {
   title: "Genuine RIPPA Parts Catalogue by Model",
-  description: "Genuine RIPPA parts by model and system: filters, hydraulics, undercarriage, electrical and engine parts for R06 to R230, RS03 to RS20 and RL06. Shipped across Canada.",
+  description: "Genuine RIPPA parts by model and system: filters, hydraulics, undercarriage, electrical and engine parts for every RIPPA model. Shipped across Canada.",
   alternates: { canonical: "/parts" },
 };
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { metaDescription } from "@/lib/format";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -10,28 +11,36 @@ import { Button } from "@/components/ui/Button";
 import { PostCard, postCategoryLabels, fmtDate } from "@/components/content/PostCard";
 import { SocialStrip } from "@/components/content/SocialStrip";
 import { ContentRequest } from "@/components/content/ContentRequest";
+import { AuthorCard, personSchema } from "@/components/content/AuthorCard";
 import { getSiteContent } from "@/lib/catalogue";
 
 type Params = { slug: string };
 export async function generateStaticParams() { const { posts } = await getSiteContent(); return posts.map((p) => ({ slug: p.slug })); }
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
-  const { posts } = await getSiteContent(); const post = posts.find((p) => p.slug === slug);
+  const { posts, authors } = await getSiteContent(); const post = posts.find((p) => p.slug === slug);
   if (!post) return {};
-  return { title: post.title, description: post.excerpt, alternates: { canonical: `/blog/${post.slug}` }, openGraph: { type: "article", publishedTime: post.publishedAt, images: post.cover ? [{ url: post.cover.src, alt: post.cover.alt }] : undefined } };
+  const writer = authors.find((a) => a.id === post.authorId);
+  return {
+    title: post.title, description: metaDescription(post.excerpt), alternates: { canonical: `/blog/${post.slug}` },
+    ...(writer ? { authors: [{ name: writer.name, url: "/about#team" }] } : {}),
+    openGraph: { type: "article", publishedTime: post.publishedAt, modifiedTime: post.updatedAt, authors: writer ? [writer.name] : undefined, images: post.cover ? [{ url: post.cover.src, alt: post.cover.alt }] : undefined },
+  };
 }
 
 const ytId = (url: string) => url.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/)?.[1];
 
 export default async function PostPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
-  const { posts, catalogue, site } = await getSiteContent();
+  const { posts, catalogue, site, authors } = await getSiteContent();
   const post = posts.find((p) => p.slug === slug);
   if (!post) notFound();
+  const writer = authors.find((a) => a.id === post.authorId);
+  const pageUrl = `${site.url}/blog/${post.slug}`;
   const related = catalogue.machines.filter((m) => post.relatedMachineIds.includes(m.id));
   const more = posts.filter((p) => p.id !== post.id && (p.category === post.category || p.relatedMachineIds.some((id) => post.relatedMachineIds.includes(id)))).slice(0, 3);
   const video = post.videoUrl ? ytId(post.videoUrl) : undefined;
-  const jsonLd = { "@context": "https://schema.org", "@type": post.category === "guide" || post.category === "maintenance" ? "HowTo" : "Article", headline: post.title, description: post.excerpt, datePublished: post.publishedAt, author: { "@type": "Organization", name: site.name }, publisher: { "@type": "Organization", name: site.name }, image: post.cover?.src, ...(video ? { video: { "@type": "VideoObject", name: post.title, description: post.excerpt, embedUrl: `https://www.youtube.com/embed/${video}`, uploadDate: post.publishedAt } } : {}) };
+  const jsonLd = { "@context": "https://schema.org", "@type": post.category === "guide" || post.category === "maintenance" ? "HowTo" : "Article", headline: post.title, description: post.excerpt, datePublished: post.publishedAt, author: writer ? personSchema(writer, site.url) : { "@type": "Organization", name: site.name }, publisher: { "@type": "Organization", name: site.name, url: site.url, logo: { "@type": "ImageObject", url: `${site.url}/brand/logo-light.png` } }, dateModified: post.updatedAt ?? post.publishedAt, mainEntityOfPage: pageUrl, url: pageUrl, image: post.cover ? [post.cover.src.startsWith("http") ? post.cover.src : `${site.url}${post.cover.src}`] : undefined, ...(video ? { video: { "@type": "VideoObject", name: post.title, description: post.excerpt, embedUrl: `https://www.youtube.com/embed/${video}`, uploadDate: post.publishedAt } } : {}) };
 
   return (
     <>
@@ -42,7 +51,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
             <Badge>{postCategoryLabels[post.category] ?? post.category}</Badge>
             <time dateTime={post.publishedAt}>{fmtDate(post.publishedAt)}</time>
             {post.readMinutes && <span className="inline-flex items-center gap-1"><Clock className="size-3.5" aria-hidden />{post.readMinutes} min read</span>}
-            {post.author && <span>· {post.author}</span>}
+            {(writer?.name ?? post.author) && <span>· By {writer?.name ?? post.author}</span>}
           </div>
           <h1 className="display mt-3 text-charcoal">{post.title}</h1>
           <p className="mt-3 text-[17px] leading-relaxed text-charcoal/85">{post.excerpt}</p>
@@ -56,7 +65,8 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           ) : null}
           <div className="prose-nes mt-8" dangerouslySetInnerHTML={{ __html: post.contentHtml ?? "" }} />
           {post.tags.length > 0 && <ul className="mt-8 flex flex-wrap gap-2">{post.tags.map((t) => <li key={t} className="rounded-full border border-line px-3 py-1 text-[12px] font-semibold text-grey">#{t}</li>)}</ul>}
-          <div className="mt-10 rounded-card border border-line bg-light/60 p-5 md:flex md:items-center md:justify-between md:gap-6">
+          {writer && <AuthorCard author={writer} eyebrow="Written by" showTeamLink className="mt-10" />}
+          <div className="mt-6 rounded-card border border-line bg-light/60 p-5 md:flex md:items-center md:justify-between md:gap-6">
             <div>
               <p className="font-bold text-charcoal">Rather have a certified technician do it?</p>
               <p className="text-sm text-grey">We service RIPPA machines in our shop in {site.address.city} and on site across Niagara. Parts ship Canada-wide.</p>

@@ -8,11 +8,11 @@ import { LogoMark } from "@/components/layout/Logo";
 interface Benefit { icon?: LucideIcon; mark?: boolean; title: string; text: string; href: string }
 
 const benefits: Benefit[] = [
-  { icon: DollarSign, title: "Financing Available", text: "Flexible solutions to get you working.", href: "/financing" },
-  { icon: Settings, title: "RIPPA Service Centre", text: "Warranty, repairs and training. You run it, we back it.", href: "/service" },
-  { icon: Cog, title: "Parts", text: "Genuine parts, ready when you need them.", href: "/service/parts" },
-  { mark: true, title: "Official RIPPA Dealer", text: "Trusted. Proven. Authorized.", href: "/about" },
-  { icon: Truck, title: "Ontario Delivery", text: "Equipment where you need it.", href: "/contact" },
+  { icon: DollarSign, title: "Financing & Leasing", text: "Loans and lease-to-own on approved credit, with decisions in about a business day.", href: "/financing" },
+  { icon: Settings, title: "RIPPA Service Centre", text: "Warranty claims filed for you, repairs in our shop or on site, owner training.", href: "/service" },
+  { icon: Cog, title: "Genuine Parts", text: "RIPPA and Kubota parts by serial number, shipped across Canada.", href: "/parts" },
+  { mark: true, title: "Official RIPPA Dealer", text: "Factory-backed warranty, dealer setup and inspection on every machine.", href: "/about" },
+  { icon: Truck, title: "Ontario-Wide Delivery", text: "Flatbed delivery from Thorold to your yard or job site anywhere in Ontario.", href: "/service-area" },
 ];
 
 export function WhyChoose() {

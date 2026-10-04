@@ -4,8 +4,8 @@ import type { LineupModel } from "@/data/lineup";
 /**
  * RIPPA loaders and the RD06 track dumper — specs transcribed from the RIPPA RL06, RB06 and RD06 brochures
  * (rippagroup.ca product documents, 2025/26). Metric values with the brochure's imperial figures.
- * The RL06-T (telescopic boom) shares the RL06 brochure, so it is offered as a configuration of the RL06.
- * The RD06-E (lifting body) shares the RD06 brochure and is a configuration of the RD06.
+ * The RL06-T (telescopic boom) is a rippagroup.ca catalogue listing (LP02280049) not covered by the RL06 brochure, so it is offered as a configuration of the RL06 with no separate figures claimed.
+ * The RD06-E (lifting body) is a rippagroup.ca catalogue listing (LP02280061); the RD06 brochure only notes an optional lifting device, so no separate figures are claimed.
  */
 type SG = SpecValue["group"];
 const s = (label: string, value: string, imperial: string, group: SG, icon?: SpecValue["icon"], highlight = false): SpecValue => ({ label, value, imperial, group, icon: icon ?? "generic", highlight });
@@ -14,7 +14,7 @@ const loaderFaqs = (m: string, weight: string, width: string): { question: strin
   { question: `Can I tow the ${m} behind a pickup?`, answer: `Operating weight is ${weight} before attachments. A tandem-axle equipment trailer with brakes and a half-ton or larger truck handles it comfortably. We also deliver anywhere in Ontario.` },
   { question: `Will the ${m} fit through a gate or barn door?`, answer: `Transport width is ${width}. Articulated steering with a 94.5" turning radius lets it work in tight yards, barns and between buildings.` },
   { question: "What attachments does it run?", answer: "A quick-attach plate and auxiliary hydraulics are standard, so buckets, pallet forks, 4-in-1 buckets, augers, sweepers, snow blades and more swap in under a minute. See the attachments listed for this model below." },
-  { question: "What engine is in it?", answer: "A three-cylinder, water-cooled Kubota D1105 diesel rated 24.4 hp (18.2 kW) at 3,000 rpm, meeting EU Stage V / US Tier 4 emissions. Parts and service support through our RIPPA Service Centre." },
+  { question: "What engine is in it?", answer: "A three-cylinder, water-cooled Kubota D1105 diesel rated 24.4 hp (18.2 kW) at 3,000 rpm. Parts and service support through our RIPPA Service Centre." },
   { question: "What warranty and support do I get?", answer: "Two-year warranty backed by the RIPPA Service Centre, genuine RIPPA and Kubota parts, dealer pre-delivery inspection and an owner walk-through at delivery." },
 ];
 
@@ -27,7 +27,7 @@ export const loaders: LineupModel[] = [
     certifications: ["CE", "EPA", "EU Stage V"], warranty: "2 year warranty",
     configurations: [
       { id: "rl06-std", label: "Kubota D1105 · Standard boom · Open canopy", engine: "Kubota D1105 diesel", horsepower: "24.4 hp (18.2 kW)", operatingWeight: "1,725 kg" },
-      { id: "rl06-t", label: "Kubota D1105 · Telescopic boom (RL06-T) · Open canopy", engine: "Kubota D1105 diesel", horsepower: "24.4 hp (18.2 kW)", operatingWeight: "1,725 kg" },
+      { id: "rl06-t", label: "Kubota D1105 · Telescopic boom (RL06-T) · Open canopy", engine: "Kubota D1105 diesel", horsepower: "24.4 hp (18.2 kW)" },
     ],
     specs: [
       s("Operating weight", "1,725 kg", "3,802 lb", "general", "weight", true), s("Engine", "Kubota D1105", "Kubota D1105", "engine", "engine", true),
@@ -35,8 +35,8 @@ export const loaders: LineupModel[] = [
       s("Bucket capacity", "0.23 m³", "8.1 ft³", "general", "capacity"), s("Rated load", "300 kg", "661 lb", "general"), s("Max load", "600 kg", "1,322 lb", "general"),
       s("Travel speed", "0–8 km/h", "0–5 mph", "general"), s("Gradeability", "25%", "25%", "general"), s("Ground pressure", "73.7 kPa", "10.6 psi", "general"),
       s("Max dump height", "2,060 mm", "81.1 in", "performance"), s("Max dump reach", "650 mm", "25.6 in", "performance"), s("Turning radius", "2,400 mm", "94.5 in", "performance"),
-      s("Wheelbase", "840 / 1,250 mm", "33 / 49 in", "performance"), s("Ground clearance", "155 mm", "6.1 in", "performance"),
-      s("Engine model", "Kubota D1105", "Kubota D1105", "engine"), s("Rated speed", "3,000 rpm", "3,000 rpm", "engine"), s("Displacement", "1.123 L", "1.123 L", "engine"), s("Cylinders", "3, water-cooled", "3, water-cooled", "engine"),
+      s("Track width / wheelbase", "840 / 1,250 mm", "33 / 49 in", "performance"), s("Ground clearance", "155 mm", "6.1 in", "performance"),
+      s("Engine model", "Kubota D1105", "Kubota D1105", "engine"), s("Max engine speed", "3,000 rpm", "3,000 rpm", "engine"), s("Displacement", "1.123 L", "1.123 L", "engine"), s("Cylinders", "3, water-cooled", "3, water-cooled", "engine"),
       s("Fuel", "Diesel", "Diesel", "engine"), s("Fuel consumption", "1.3–1.5 L/h", "1.3–1.5 L/h", "engine"), s("Fuel tank", "15 L", "4 gal", "engine"), s("Hydraulic tank", "28 L", "7.4 gal", "engine"),
       s("Travel pump flow", "96 L/min", "25.4 gal/min", "engine"), s("Work pump flow", "42 L/min", "11.1 gal/min", "engine"), s("Relief pressure", "20 MPa", "2,900 psi", "engine"),
       s("Transport length (with bucket)", "3,650 mm", "143.8 in", "dimensions"), s("Transport length (no bucket)", "3,120 mm", "122.9 in", "dimensions"), s("Transport height", "2,300 mm", "90.6 in", "dimensions"), s("Bucket width", "1,150 mm", "45.3 in", "dimensions"),
@@ -49,7 +49,7 @@ export const loaders: LineupModel[] = [
       { eyebrow: "Operator", title: "Suspension seat, joystick, LED lights, safety guard", text: "One-hand forward/reverse joystick, centralized switch panel, instrument display with oil level and temperature, fold-down guard, retractable seat belt and a warning beacon." },
       { eyebrow: "Service", title: "Tilt-forward seat, split radiator", text: "Open the seat for engine, filter and hydraulic checks in seconds. Split-type radiator dissipates heat and is easy to clean." },
     ],
-    standardEquipment: ["Kubota D1105 diesel", "Hydrostatic four-wheel drive", "Articulated steering", "General-purpose bucket 1,150 mm", "Quick-attach plate with auxiliary hydraulics", "Suspension seat with seat belt", "Four-post ROPS canopy with fold-down operator guard", "LED work lights and warning beacon", "Instrument display"],
+    standardEquipment: ["Kubota D1105 diesel", "Hydrostatic drive", "Articulated steering", "General-purpose bucket 1,150 mm", "Quick-attach plate with auxiliary hydraulics", "Suspension seat with seat belt", "Four-post ROPS canopy with fold-down operator guard", "LED work lights and warning beacon", "Instrument display"],
     applications: ["Farms and acreages", "Barn and feed handling", "Landscaping and hardscape", "Snow removal", "Yard and material handling", "Rental fleets"],
     faqs: loaderFaqs("RL06", "1,725 kg (3,802 lb)", "1,150 mm (45.3\")"),
     images: [{ key: "rl06-render", alt: "RIPPA RL06 compact wheel loader" }, { key: "rl06-action", alt: "RIPPA RL06 loading topsoil" }],
@@ -58,9 +58,9 @@ export const loaders: LineupModel[] = [
   // ============================================================ RB06
   {
     slug: "rb06", modelName: "RB06", category: "loaders", series: "Backhoe Loader", sortOrder: 2, builderEnabled: false, featured: true,
-    shortDescription: "Compact backhoe loader: RL06 loader up front, 2,500 mm (98\") dig-depth excavator arm at the back. One 24.4 hp Kubota machine that digs, loads and carries.",
-    longDescription: "The RB06 pairs the RL06 articulated loader with a rear excavator arm on a 119° swing, so one compact machine handles the whole job: dig the trench, backfill it, load the truck and grade the drive. The backhoe reaches 3,400 mm (134\"), digs 2,500 mm (98.5\") deep with 15.8 kN of breakout force, and the loader end lifts 600 kg (1,322 lb) to a 2,060 mm (81\") dump height.\n\nAt 1,150 mm (45.3\") wide and 2,325 kg (5,126 lb) it trailers behind a pickup and works between houses, in barns and on acreages where a full-size backhoe cannot go. The operator seat swivels to the excavator controls, stabilizer legs plant the machine for digging, and power steering, a suspension seat and a four-post TOPS/ROPS canopy come standard.\n\nQuick-attach connectors on both ends swap loader attachments and backhoe buckets in under a minute. Sold, set up and supported by the RIPPA Service Centre at Niagara Equipment Supply in Thorold, with delivery across Ontario.",
-    certifications: ["CE", "EPA", "EU Stage V"], warranty: "2 year warranty",
+    shortDescription: "Compact backhoe loader: articulated loader up front, 2,500 mm (98\") dig-depth excavator arm at the back. One 24.4 hp Kubota machine that digs, loads and carries.",
+    longDescription: "The RB06 pairs an articulated compact loader with a rear excavator arm on a 119° swing, so one compact machine handles the whole job: dig the trench, backfill it, load the truck and grade the drive. The backhoe reaches 3,400 mm (134\"), digs 2,500 mm (98.5\") deep with 15.8 kN of breakout force, and the loader end lifts 600 kg (1,322 lb) to a 2,060 mm (81\") dump height.\n\nAt 1,150 mm (45.3\") wide and 2,325 kg (5,126 lb) it trailers behind a pickup and works between houses, in barns and on acreages where a full-size backhoe cannot go. The operator seat swivels to the excavator controls, stabilizer legs plant the machine for digging, and power steering, a suspension seat and a four-post TOPS/ROPS canopy come standard.\n\nA quick-attach connector on the loader arm swaps attachments in under a minute. Sold, set up and supported by the RIPPA Service Centre at Niagara Equipment Supply in Thorold, with delivery across Ontario.",
+    certifications: ["CE"], warranty: "2 year warranty",
     configurations: [
       { id: "rb06-std", label: "Kubota D1105 · Open canopy", engine: "Kubota D1105 diesel", horsepower: "24.4 hp (18.2 kW)", operatingWeight: "2,325 kg" },
     ],
@@ -72,7 +72,7 @@ export const loaders: LineupModel[] = [
       s("Max dump height (loader)", "2,060 mm", "81.2 in", "performance"), s("Max lift height (loader)", "3,380 mm", "133.2 in", "performance"), s("Max dump reach (loader)", "650 mm", "25.6 in", "performance"),
       s("Max digging force", "15.8 kN", "3,552 lbf", "performance"), s("Max digging radius", "3,400 mm", "134 in", "performance"), s("Max digging height", "3,200 mm", "126.1 in", "performance"), s("Max dump height (backhoe)", "2,160 mm", "85.1 in", "performance"),
       s("Backhoe swing angle", "119°", "119°", "performance"), s("Turning radius", "2,400 mm", "94.6 in", "performance"), s("Track (tread) width", "840 mm", "33.1 in", "performance"), s("Wheelbase", "1,730 mm", "68.2 in", "performance"), s("Ground clearance", "155 mm", "6.1 in", "performance"),
-      s("Engine model", "Kubota D1105", "Kubota D1105", "engine"), s("Rated speed", "3,000 rpm", "3,000 rpm", "engine"), s("Displacement", "1.123 L", "1.123 L", "engine"), s("Cylinders", "3, water-cooled", "3, water-cooled", "engine"),
+      s("Engine model", "Kubota D1105", "Kubota D1105", "engine"), s("Max engine speed", "3,000 rpm", "3,000 rpm", "engine"), s("Displacement", "1.123 L", "1.123 L", "engine"), s("Cylinders", "3, water-cooled", "3, water-cooled", "engine"),
       s("Fuel", "Diesel", "Diesel", "engine"), s("Fuel consumption", "1.3–1.5 L/h", "1.3–1.5 L/h", "engine"), s("Travel pump flow", "96 L/min", "25.4 gal/min", "engine"), s("Work pump flow", "42 L/min", "11.1 gal/min", "engine"), s("Relief pressure", "18–20 MPa", "2,610–2,900 psi", "engine"),
       s("Transport length (with bucket)", "5,180 mm", "204.1 in", "dimensions"), s("Transport length (no bucket)", "4,590 mm", "180.8 in", "dimensions"), s("Transport height", "2,600 mm", "102.4 in", "dimensions"),
       s("Loader bucket width", "1,150 mm", "45.3 in", "dimensions"), s("Backhoe bucket width", "400 mm", "15.8 in", "dimensions"), s("Boom length", "1,780 mm", "70.1 in", "dimensions"), s("Arm length", "940 mm", "37 in", "dimensions"),
@@ -83,9 +83,9 @@ export const loaders: LineupModel[] = [
       { eyebrow: "Stability", title: "Stabilizer legs", text: "Outriggers extend and compact the ground before digging, so the machine does not rock or tip under load." },
       { eyebrow: "Comfort", title: "Suspension seat, power steering, pilot joystick", text: "The seat isolates up to 90% of vertical vibration and swivels front to back. Electric-assist steering and a single pilot handle for lift, tilt and drive shorten every cycle." },
       { eyebrow: "Safety", title: "Four-post TOPS / ROPS canopy", text: "Certified roll-over and tip-over protection, LED work lights, mirror, handrail, fire extinguisher and a rear tow hook that doubles as a recovery point." },
-      { eyebrow: "Uptime", title: "Quick-attach both ends, inspection port", text: "Change loader attachments or backhoe buckets in under a minute; a service port and gas-strut step give fast access for daily checks." },
+      { eyebrow: "Uptime", title: "Quick-attach loader coupler, inspection port", text: "Change loader attachments in under a minute; a service port and gas-strut step give fast access for daily checks." },
     ],
-    standardEquipment: ["Kubota D1105 diesel", "Hydrostatic four-wheel drive with articulated steering", "Loader bucket 1,150 mm", "Backhoe bucket 400 mm", "Stabilizer legs", "Swivel suspension seat", "Power steering", "Four-post TOPS / ROPS canopy", "LED work lights, beacon and mirror", "Quick-attach connectors front and rear"],
+    standardEquipment: ["Kubota D1105 diesel", "Hydrostatic drive with articulated steering", "Loader bucket 1,150 mm", "Backhoe bucket 400 mm", "Stabilizer legs", "Swivel suspension seat", "Power steering", "Four-post TOPS / ROPS canopy", "LED work lights, beacon and mirror", "Quick-attach connectors front and rear"],
     applications: ["Acreages and hobby farms", "Utility trenching and backfill", "Landscaping and drainage", "Municipal and grounds work", "Fence and post work", "Small contractors and rentals"],
     faqs: [
       { question: "Is the RB06 an excavator or a loader?", answer: "Both. The front is the RL06 articulated loader (600 kg / 1,322 lb max load); the rear is a hydraulic excavator arm with a 2,500 mm (98\") dig depth and 119° swing. The seat swivels between the two consoles." },
@@ -104,7 +104,7 @@ export const loaders: LineupModel[] = [
     certifications: ["CE", "EPA"], warranty: "2 year warranty",
     configurations: [
       { id: "rd06-std", label: "Briggs & Stratton XR2100 · Standard body", engine: "Briggs & Stratton XR2100 gasoline", horsepower: "13.4 hp (10 kW)", operatingWeight: "518 kg" },
-      { id: "rd06-e", label: "Briggs & Stratton XR2100 · Lifting body (RD06-E)", engine: "Briggs & Stratton XR2100 gasoline", horsepower: "13.4 hp (10 kW)", operatingWeight: "518 kg" },
+      { id: "rd06-e", label: "Briggs & Stratton XR2100 · Lifting body (RD06-E)", engine: "Briggs & Stratton XR2100 gasoline", horsepower: "13.4 hp (10 kW)" },
     ],
     specs: [
       s("Operating weight", "518 kg", "1,140 lb", "general", "weight", true), s("Engine", "Briggs & Stratton XR2100", "Briggs & Stratton XR2100", "engine", "engine", true),
@@ -112,19 +112,19 @@ export const loaders: LineupModel[] = [
       s("Dump body capacity", "0.27 m³", "9.5 ft³", "general"), s("Self-loading scoop capacity", "0.03 m³", "1.06 ft³", "general"), s("Travel speed (low / high)", "0–2 / 0–4 km/h", "0–1.24 / 0–2.48 mph", "general"),
       s("Gradeability", "30%", "30%", "general"), s("Ground pressure", "19.6 kPa", "2.8 psi", "general"),
       s("Max unloading height", "356 mm", "14 in", "performance"), s("Max unloading distance", "272 mm", "10.7 in", "performance"), s("Ground clearance", "70 mm", "2.8 in", "performance"),
-      s("Engine model", "Briggs & Stratton XR2100", "Briggs & Stratton XR2100", "engine"), s("Rated speed", "3,600 rpm", "3,600 rpm", "engine"), s("Displacement", "0.42 L", "0.42 L", "engine"), s("Cylinders", "1, air-cooled", "1, air-cooled", "engine"),
+      s("Engine model", "Briggs & Stratton XR2100", "Briggs & Stratton XR2100", "engine"), s("Max engine speed", "3,600 rpm", "3,600 rpm", "engine"), s("Displacement", "0.42 L", "0.42 L", "engine"), s("Cylinders", "1, air-cooled", "1, air-cooled", "engine"),
       s("Fuel", "Gasoline (92 octane)", "Gasoline (92 octane)", "engine"), s("Fuel consumption", "0.8–1.2 L/h", "0.8–1.2 L/h", "engine"), s("Pump flow", "14.4 + 14.4 L/min", "3.8 + 3.8 gal/min", "engine"), s("Relief pressure", "16–18 MPa", "2,320–2,610 psi", "engine"),
-      s("Transport length", "1,670 mm", "65.7 in", "dimensions"), s("Transport height", "1,200 mm", "47.2 in", "dimensions"), s("Body width", "700 mm", "27.6 in", "dimensions"),
+      s("Transport length", "1,670 mm", "65.7 in", "dimensions"), s("Transport height", "1,200 mm", "47.2 in", "dimensions"), s("Bucket width", "700 mm", "27.6 in", "dimensions"),
     ],
     features: [
       { eyebrow: "Access", title: "780 mm (31\") wide, tracks that tread lightly", text: "Passes a standard gate and side yard, crosses finished lawns at 2.8 psi and climbs 30% grades where wheelbarrows and wheeled carriers stall." },
       { eyebrow: "Self-loading", title: "Hydraulic scoop fills the body", text: "Scrape up soil, gravel or mulch and tip it into the body without a second machine or a shovel crew." },
       { eyebrow: "Payload", title: "350 kg (770 lb), 0.27 m³ (9.5 ft³) body", text: "Roughly six wheelbarrow loads per trip. Hydraulic tip for fast dumping." },
       { eyebrow: "Power", title: "Briggs & Stratton XR2100, 13.4 hp", text: "Air-cooled gasoline engine with two-speed hydrostatic drive: easy starting, easy fuel, easy service." },
-      { eyebrow: "Simple", title: "Stand-behind controls anyone can run", text: "Lever controls for drive, tip and scoop. Minimal training, ideal for rental fleets and crews." },
-      { eyebrow: "RD06-E", title: "Lifting body option", text: "The RD06-E raises the body to tip into trailers, skips and truck beds." },
+      { eyebrow: "Simple", title: "Simple lever controls anyone can run", text: "Fold-up operator platform with a single travel lever plus tip and scoop controls. Minimal training, ideal for rental fleets and crews." },
+      { eyebrow: "RD06-E", title: "Lifting body option", text: "The RD06-E listing adds a lifting device so the body can tip into trailers, skips and truck beds. Ask us for the current lift figures." },
     ],
-    standardEquipment: ["Briggs & Stratton XR2100 gasoline engine", "Two-speed hydrostatic rubber-track drive", "Hydraulic tipping body 0.27 m³", "Hydraulic self-loading scoop", "Stand-behind lever controls"],
+    standardEquipment: ["Briggs & Stratton XR2100 gasoline engine", "Two-speed hydrostatic rubber-track drive", "Hydraulic tipping body 0.27 m³", "Hydraulic self-loading scoop", "Fold-up operator platform with lever controls"],
     applications: ["Landscaping and hardscape", "Backyard and side-yard access", "Nurseries and tree care", "Demolition debris", "Farm chores", "Rental fleets"],
     faqs: [
       { question: "How much does the RD06 carry?", answer: "Rated payload is 350 kg (770 lb) in a 0.27 m³ (9.5 ft³) body, about six wheelbarrow loads per trip." },

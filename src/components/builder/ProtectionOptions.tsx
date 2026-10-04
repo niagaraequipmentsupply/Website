@@ -40,8 +40,8 @@ export function ProtectionOptions({ addons, warranties, selectedAddons, warranty
 
   return (
     <BuilderSection id="protection" step={3} title="Service & Protection" text="Pre-pay your first 50-hour service at package pricing, then add protection and delivery.">
-      {disabled && <p className="mb-4 rounded-card bg-light p-4 text-center text-sm text-grey">Choose a model to see service and protection packages.</p>}
-      <div className={disabled ? "pointer-events-none opacity-50" : ""}>
+      {disabled ? <p className="rounded-card bg-light p-6 text-center text-sm text-grey">Choose a model above to see the 50-hour service package, protection and delivery options.</p> : (
+      <div>
         {service.length > 0 && (
           <fieldset className="mb-6 rounded-card border border-line bg-light/50 p-4 md:p-5">
             <legend className="sr-only">50-hour service package</legend>
@@ -95,6 +95,7 @@ export function ProtectionOptions({ addons, warranties, selectedAddons, warranty
           </ul>
         )}
       </div>
+      )}
     </BuilderSection>
   );
 }

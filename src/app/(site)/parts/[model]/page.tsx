@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const n = parts.filter((p) => p.compatibleModelIds.includes(m.id)).length;
   return {
     title: `RIPPA ${m.modelName} Parts (${n} genuine parts)`,
-    description: `Genuine RIPPA ${m.modelName} parts: filters, hydraulic cylinders and hoses, undercarriage, electrical, engine and body parts with RIPPA part numbers. Shipped across Canada from Niagara Equipment Supply.`,
+    description: `Genuine RIPPA ${m.modelName} parts: filters, hydraulic cylinders, hoses, undercarriage, electrical and engine parts with RIPPA part numbers. Shipped across Canada.`,
     alternates: { canonical: `/parts/${m.slug}` },
   };
 }

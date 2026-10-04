@@ -10,7 +10,7 @@ import { serviceAreas } from "@/data/service-areas";
 
 export const metadata: Metadata = {
   title: "Areas We Serve: Niagara & Southern Ontario",
-  description: "RIPPA equipment sales, delivery, demos and service for Niagara Falls, St. Catharines, Welland, Thorold, Fort Erie, Grimsby, Hamilton, Burlington and across Ontario from Niagara Equipment Supply.",
+  description: "RIPPA equipment sales, delivery, demos and service for Niagara Falls, St. Catharines, Welland, Hamilton, Burlington and across Ontario from Thorold.",
   alternates: { canonical: "/service-area" },
 };
 

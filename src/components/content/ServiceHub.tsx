@@ -8,7 +8,9 @@ import { PostCard, postCategoryLabels } from "./PostCard";
 import { EquipmentImage } from "@/components/ui/EquipmentImage";
 import { Button } from "@/components/ui/Button";
 
-interface Props { machines: Machine[]; posts: Post[]; lubricants: Lubricant[] }
+/** The slice of a machine the hub needs; the service page maps full machines down to this to keep the page payload small. */
+export type ServiceHubMachine = Pick<Machine, "id" | "slug" | "modelName" | "brand" | "category" | "engine" | "operatingWeight" | "images" | "documents">;
+interface Props { machines: ServiceHubMachine[]; posts: Post[]; lubricants: Lubricant[] }
 type Kind = "all" | "video" | "guide" | "maintenance" | "field-call";
 
 /**
@@ -32,8 +34,8 @@ export function ServiceHub({ machines, posts, lubricants }: Props) {
     return l;
   }, [posts, selected, kind, q]);
   const oils = useMemo(() => (selected ? lubricants.filter((l) => l.rippaUse) : []).slice(0, 4), [lubricants, selected]);
-  const videoCount = (m: Machine) => posts.filter((p) => p.relatedMachineIds.includes(m.id) && p.videoUrl).length;
-  const guideCount = (m: Machine) => posts.filter((p) => p.relatedMachineIds.includes(m.id)).length;
+  const videoCount = (m: ServiceHubMachine) => posts.filter((p) => p.relatedMachineIds.includes(m.id) && p.videoUrl).length;
+  const guideCount = (m: ServiceHubMachine) => posts.filter((p) => p.relatedMachineIds.includes(m.id)).length;
 
   return (
     <div className="rounded-card border-2 border-navy bg-white">

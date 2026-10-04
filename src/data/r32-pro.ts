@@ -14,7 +14,7 @@ export const r32 = {
   longDescription:
     "The R32 PRO is RIPPA's semi-professional 3.5-tonne class mini excavator. A Kubota V1505 diesel drives a variable-displacement piston pump and a load-sensing 9-way multiplex valve, so the machine stays responsive when you dig, swing and travel at the same time. A tailless swing and a boom that offsets 47° right and 74° left let it work against walls and fences, while the tilting dozer blade handles levelling and slope trimming without repositioning. The enclosed cab comes with air conditioning, a fan heater, flip-up windshield and a mechanically suspended seat for full-day comfort.",
   warranty: "2 year warranty",
-  certifications: ["EPA Tier 4", "CE", "Euro V"],
+  certifications: [], // brochure shows no certification marks; add back when RIPPA confirms
   configurations: [
     { id: "r32-v1505-cabin", label: "Kubota V1505 · Enclosed cab", engine: "Kubota V1505 diesel", horsepower: "22.9 hp (17.1 kW)", operatingWeight: "3,623 kg", price: 44950 },
     { id: "r32-v1505-canopy", label: "Kubota V1505 · Open canopy", engine: "Kubota V1505 diesel", horsepower: "22.9 hp (17.1 kW)", operatingWeight: "3,510 kg", price: 55598 },

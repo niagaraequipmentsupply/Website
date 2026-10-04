@@ -45,11 +45,11 @@ export function ProductGallery({ images, alt, kind, priority }: Props) {
         type="button"
         onClick={() => openAt(index)}
         className="group relative block w-full cursor-zoom-in overflow-hidden rounded-lg border border-line bg-white aspect-[4/3] focus:outline-none focus-visible:ring-2 focus-visible:ring-electric"
-        aria-label={`Enlarge photo: ${label(index)}`}
       >
+        <span className="sr-only">Enlarge photo {index + 1} of {photos.length}: {label(index)}</span>
         <Image key={current.src} src={current.src} alt={label(index)} fill priority={priority} sizes="(max-width: 1024px) 100vw, 720px" className="object-contain p-3" />
-        <span className="chamfer absolute bottom-3 right-3 inline-flex items-center gap-1.5 bg-charcoal/85 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-white transition-colors group-hover:bg-navy">
-          <Maximize2 className="h-3.5 w-3.5" aria-hidden /> Enlarge
+        <span aria-hidden className="chamfer absolute bottom-3 right-3 inline-flex items-center gap-1.5 bg-charcoal/85 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-white transition-colors group-hover:bg-navy">
+          <Maximize2 className="h-3.5 w-3.5" /> Enlarge
         </span>
         {photos.length > 1 && (
           <span className="absolute bottom-3 left-3 rounded-sm bg-white/90 px-2 py-1 text-[11px] font-semibold tabular-nums text-charcoal" aria-hidden>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { metaDescription } from "@/lib/format";
 import Link from "next/link";
 import { RuggedChip } from "@/components/ui/RuggedChip";
 import { notFound } from "next/navigation";
@@ -26,8 +27,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   if (!p) return {};
   const fits = catalogue.machines.filter((m) => p.compatibleModelIds.includes(m.id)).map((m) => m.modelName).join(", ");
   return {
-    title: `${p.name} ${p.sku} | RIPPA Part`,
-    description: `Genuine RIPPA ${p.name} (part number ${p.sku})${fits ? ` for the ${fits}` : ""}. ${systemLabel(p.system)}. Request it from Niagara Equipment Supply; shipped across Canada.`,
+    title: `${p.name}${parts.some((x) => x.id !== p.id && x.name === p.name) ? ` ${p.sku}` : ""} | RIPPA Part`,
+    description: metaDescription(`Genuine RIPPA ${p.name} (${p.sku})${fits ? ` for the ${fits}` : ""}. ${systemLabel(p.system)}. Request it from Niagara Equipment Supply; shipped across Canada.`),
     alternates: { canonical: `/parts/item/${p.slug}` },
   };
 }

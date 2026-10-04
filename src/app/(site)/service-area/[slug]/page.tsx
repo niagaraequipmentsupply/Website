@@ -11,6 +11,7 @@ import { LeadForm } from "@/components/quote/LeadForm";
 import { ServiceCentreStrip } from "@/components/service/ServiceCentre";
 import { getSiteContent } from "@/lib/catalogue";
 import { serviceAreas, serviceAreaBySlug } from "@/data/service-areas";
+import { metaDescription } from "@/lib/format";
 
 type Params = Promise<{ slug: string }>;
 
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params;
   const area = serviceAreaBySlug(slug);
   if (!area) return {};
-  return { title: `RIPPA Dealer for ${area.name}`, description: area.metaDescription, alternates: { canonical: `/service-area/${area.slug}` } };
+  return { title: `RIPPA Dealer for ${area.name}`, description: metaDescription(area.metaDescription), alternates: { canonical: `/service-area/${area.slug}` } };
 }
 
 export default async function ServiceAreaPage({ params }: { params: Params }) {

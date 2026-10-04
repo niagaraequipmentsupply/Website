@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { preload } from "react-dom";
 import { Container } from "@/components/ui/Container";
 import { Breadcrumbs, type Crumb } from "@/components/ui/Breadcrumbs";
 
@@ -11,6 +12,8 @@ interface Props {
 }
 
 export function PageHero({ title, text, crumbs, children, aside }: Props) {
+  // The hero background is usually the LCP element on mobile; CSS backgrounds are discovered late, so preload it.
+  preload("/images/bg/light-angles.svg", { as: "image" });
   return (
     <section className="relative border-b border-line bg-light/60">
       <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/light-angles.svg')] bg-cover bg-right opacity-80" />

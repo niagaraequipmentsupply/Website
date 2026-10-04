@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { metaDescription } from "@/lib/format";
 import { RuggedChip } from "@/components/ui/RuggedChip";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
@@ -25,7 +25,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug, category } = await params;
   const a = await getAttachment(slug);
   if (!a || a.attachmentCategory !== category) return {};
-  return { openGraph: a.images[0] ? { images: [{ url: a.images[0].src, alt: a.images[0].alt }] } : undefined, title: `RIPPA ${a.name} | ${(await getAttachmentCategory(category))?.name ?? "Attachments"}`, description: `${(a.longDescription ?? a.description).split(/(?<=\.)\s/)[0]} Sizes and part numbers by model, fitment confirmed by Niagara Equipment Supply.`.slice(0, 160), alternates: { canonical: `/attachments/${category}/${a.slug}` } };
+  const noun = { "excavator-attachments": "Mini Excavators", "skid-steer-attachments": "Skid Steers", "loader-attachments": "Loaders" }[category] ?? "RIPPA Machines";
+  return {
+    ...(a.images[0] ? { openGraph: { images: [{ url: a.images[0].src, alt: a.images[0].alt }] } } : {}),
+    title: `RIPPA ${a.name} for ${noun}`,
+    description: metaDescription(((d) => (d.length < 100 ? `${d} Fitment confirmed and quoted in writing by Niagara Equipment Supply.` : d))(`${(a.longDescription ?? a.description).split(/(?<=\.)\s/)[0]} Fits RIPPA ${noun.toLowerCase()}, sized by model.`)),
+    alternates: { canonical: `/attachments/${category}/${a.slug}` },
+  };
 }
 
 export default async function AttachmentPage({ params }: { params: Promise<Params> }) {

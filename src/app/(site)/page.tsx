@@ -14,7 +14,7 @@ import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
   title: "Niagara Equipment Supply | Official RIPPA Dealer in Ontario",
-  description: "Official RIPPA dealer in Thorold, Ontario: mini excavators, skid steers, loaders, track dumpers and attachments, with the RIPPA Service Centre, parts and Ontario-wide delivery.",
+  description: "RIPPA dealer in Thorold, Ontario: mini excavators, skid steers, loaders, dumpers and attachments, with the RIPPA Service Centre and Ontario-wide delivery.",
   alternates: { canonical: "/" },
 };
 

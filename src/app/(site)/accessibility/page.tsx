@@ -5,7 +5,7 @@ import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
   title: "Accessibility Statement",
-  description: "Niagara Equipment Supply's commitment to an accessible website and showroom under the Accessibility for Ontarians with Disabilities Act (AODA), and how to request information in another format.",
+  description: "Niagara Equipment Supply's accessibility commitment under the AODA for our website and showroom, and how to request information in another format.",
   alternates: { canonical: "/accessibility" },
 };
 

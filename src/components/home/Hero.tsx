@@ -1,12 +1,15 @@
+import { preload } from "react-dom";
 import { ShieldCheck, Users, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { IconFeature } from "@/components/ui/IconFeature";
 
 export function Hero() {
+  // The hero background is the LCP element on mobile; a CSS background is only discovered after the stylesheet, so preload it.
+  preload("/images/bg/hero-shards.webp", { as: "image" });
   return (
     <section className="relative overflow-hidden bg-[#070d1a] text-white">
-      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/hero-shards.jpg')] bg-cover bg-[position:75%_50%]" />
+      <div aria-hidden className="absolute inset-0 bg-[url('/images/bg/hero-shards.webp')] bg-cover bg-[position:75%_50%]" />
       <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#070d1a] via-[#070d1a]/85 to-transparent" />
       <div aria-hidden className="absolute inset-x-0 bottom-0 h-1.5 bg-gradient-to-r from-electric via-navy to-transparent" />
       <Container className="relative py-14 lg:min-h-[600px] lg:py-24">

@@ -9,6 +9,7 @@ import { AddToQuoteButton } from "@/components/equipment/AddToQuoteButton";
 import { CompareSelector } from "@/components/equipment/CompareSelector";
 import { getSiteContent } from "@/lib/catalogue";
 import { isThin } from "@/lib/machines";
+import { metaDescription } from "@/lib/format";
 import { buildCompareRows, compareHref, DEFAULT_COMPARE, highlightLabels, parseModelsParam, resolveCompareModels } from "@/lib/compare";
 
 type SearchParams = Promise<{ models?: string | string[] }>;
@@ -24,11 +25,10 @@ async function load(searchParams: SearchParams) {
 
 export async function generateMetadata({ searchParams }: { searchParams: SearchParams }): Promise<Metadata> {
   const { machines, requested } = await load(searchParams);
-  const names = machines.map((m) => `${m.brand} ${m.modelName}`);
   const valid = machines.length >= 2;
   const title = valid ? `${machines.map((m) => m.modelName).join(" vs ")}: RIPPA Comparison` : "Compare RIPPA Models";
   const description = valid
-    ? `Side-by-side specs for the ${names.join(", ")}: weight, engine, dig depth, hydraulics, dimensions and what each is best for. Compare, then request a written quote from Niagara Equipment Supply.`
+    ? metaDescription(`Side-by-side specs for the RIPPA ${machines.map((m) => m.modelName).join(", ")}: weight, engine, dig depth, hydraulics and dimensions. Compare, then request a written quote.`)
     : "Compare RIPPA mini excavators, skid steers, loaders and dumpers side by side: weight, engine, dig depth, hydraulics and dimensions.";
   const canonicalSlugs = [...machines].sort((a, b) => a.sortOrder - b.sortOrder || a.modelName.localeCompare(b.modelName)).map((m) => m.slug);
   return {

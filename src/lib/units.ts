@@ -31,7 +31,7 @@ export function humanizeUnits(text: string): string {
   if (!text) return text;
   let t = text;
   // Strip imperial parentheticals that follow a metric value; the metric is converted below.
-  t = t.replace(/(\d[\d,]*(?:\.\d+)?\s*(?:mm|cm|kg|L\/min|km\/h|kPa|MPa|kN|m³|m))\s*\(\s*[\d,.]+(?:\s*[–-]\s*[\d,.]+)?\s*(?:in|ft|lb|gal\/min|gpm|mph|psi|lbf|ft³)[^)]*\)/g, "$1");
+  t = t.replace(/(\d[\d,]*(?:\.\d+)?\s*(?:mm|cm|kg|L\/min|km\/h|kPa|MPa|kN|m³|m))\s*\(\s*[\d,.]+(?:\s*[–-]\s*[\d,.]+)?\s*(?:in|ft|lb|gal\/min|gpm|mph|psi|lbf|ft³|"|'|″|′)[^)]*\)/g, "$1");
   // "35 cm (14")" → 14"
   t = t.replace(/\d[\d,]*(?:\.\d+)?\s*cm\s*\((\d[\d,]*(?:\.\d+)?)"\)/g, '$1"');
   t = t.replace(/\d[\d,]*(?:\.\d+)?\s*cm\s*\/\s*(\d[\d,]*(?:\.\d+)?)"/g, '$1"');

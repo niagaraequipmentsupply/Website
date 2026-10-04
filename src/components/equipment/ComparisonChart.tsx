@@ -12,16 +12,19 @@ import { machinePrice, machineHasMultiplePrices, PRICES_ENABLED } from "@/lib/pr
  * RIPPA-style buying-guide chart: photo row, key specs, target users, application fit (star ratings + required
  * attachments) and a safety/comfort checklist. Everything is driven by machine data; empty blocks are hidden.
  */
-export function ComparisonChart({ machines, categoryName }: { machines: Machine[]; categoryName: string }) {
+/** What the chart reads from each machine; category pages map full machines down to this to keep the page payload small. */
+export type ComparisonMachine = Pick<Machine, "id" | "slug" | "modelName" | "series" | "category" | "images" | "specs" | "targetUsers" | "checklist" | "applicationFit" | "warranty" | "showPrice" | "basePrice" | "promoPrice" | "configurations" | "indoorUse" | "noiseLevel">;
+
+export function ComparisonChart({ machines, categoryName }: { machines: ComparisonMachine[]; categoryName: string }) {
   const [showAttachments, setShowAttachments] = useState(false);
   if (machines.length < 2) return null;
 
-  const spec = (m: Machine, ...labels: string[]) => {
+  const spec = (m: ComparisonMachine, ...labels: string[]) => {
     const s = m.specs.find((x) => labels.some((l) => x.label.toLowerCase().includes(l)));
     return s ? s.value : "—";
   };
 
-  const allSpecRows: { label: string; get: (m: Machine) => string }[] = [
+  const allSpecRows: { label: string; get: (m: ComparisonMachine) => string }[] = [
     { label: "Engine", get: (m) => spec(m, "engine model", "engine") },
     { label: "Max power", get: (m) => spec(m, "max power", "rated power", "horsepower") },
     { label: "Operating weight", get: (m) => spec(m, "operating weight", "total weight") },
@@ -33,7 +36,7 @@ export function ComparisonChart({ machines, categoryName }: { machines: Machine[
     { label: "Warranty", get: (m) => m.warranty ?? spec(m, "warranty") },
     { label: "Noise level", get: (m) => m.noiseLevel ?? "—" },
     { label: "Indoor use", get: (m) => (m.indoorUse ? "Yes" : "—") },
-    ...(PRICES_ENABLED ? [{ label: "Starting price", get: (m: Machine) => (m.showPrice && machinePrice(m) !== undefined ? `${machineHasMultiplePrices(m) ? "From " : ""}${formatPrice(machinePrice(m))}` : "Request") }] : []),
+    ...(PRICES_ENABLED ? [{ label: "Starting price", get: (m: ComparisonMachine) => (m.showPrice && machinePrice(m) !== undefined ? `${machineHasMultiplePrices(m) ? "From " : ""}${formatPrice(machinePrice(m))}` : "Request") }] : []),
   ];
   const specRows = allSpecRows.filter((r) => machines.some((m) => r.get(m) !== "—"));
 
@@ -142,16 +145,16 @@ export function ComparisonChart({ machines, categoryName }: { machines: Machine[
 
 function Rating({ value }: { value: 0 | 1 | 2 | 3 | 4 }) {
   const labels = ["Not compatible", "Usable but not optimal", "Compatible", "Well suited", "Highly suited"];
-  if (value === 0) return <span className="inline-flex items-center justify-center text-grey" aria-label={labels[0]}><X className="size-4" aria-hidden /></span>;
-  if (value === 1) return <span className="inline-flex items-center justify-center text-navy" aria-label={labels[1]}><Star className="size-4" aria-hidden /></span>;
+  if (value === 0) return <span role="img" className="inline-flex items-center justify-center text-grey" aria-label={labels[0]}><X className="size-4" aria-hidden /></span>;
+  if (value === 1) return <span role="img" className="inline-flex items-center justify-center text-navy" aria-label={labels[1]}><Star className="size-4" aria-hidden /></span>;
   return (
-    <span className="inline-flex items-center justify-center gap-0.5 text-navy" aria-label={labels[value]}>
+    <span role="img" className="inline-flex items-center justify-center gap-0.5 text-navy" aria-label={labels[value]}>
       {Array.from({ length: value - 1 }).map((_, i) => <Star key={i} className="size-4 fill-current" aria-hidden />)}
     </span>
   );
 }
 
-function ChecklistRow({ feature, machines, group, th, td }: { feature: string; machines: Machine[]; group: "safety" | "comfort" | "other"; th: string; td: string }) {
+function ChecklistRow({ feature, machines, group, th, td }: { feature: string; machines: ComparisonMachine[]; group: "safety" | "comfort" | "other"; th: string; td: string }) {
   return (
     <tr>
       <th scope="row" className={th}>{feature}</th>
@@ -160,7 +163,7 @@ function ChecklistRow({ feature, machines, group, th, td }: { feature: string; m
         return (
           <td key={m.id} className={td}>
             {!c ? <span className="text-grey">—</span> : c.status === "standard" ? (
-              <span className="inline-flex flex-col items-center"><Check className="size-4 text-success" aria-label="Standard" />{c.note && <span className="text-[11px] text-grey">{c.note}</span>}</span>
+              <span className="inline-flex flex-col items-center"><Check className="size-4 text-success" role="img" aria-label="Standard" />{c.note && <span className="text-[11px] text-grey">{c.note}</span>}</span>
             ) : c.status === "optional" ? (
               <span className="inline-flex flex-col items-center"><Circle className="size-3.5 text-navy" aria-label="Optional" /><span className="text-[11px] text-grey">{c.note ?? "Optional"}</span></span>
             ) : (

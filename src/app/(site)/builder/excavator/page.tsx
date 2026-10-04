@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { preload } from "react-dom";
 import { ShieldCheck, Users, Truck } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BuilderPage() {
+  preload("/images/bg/light-grid.svg", { as: "image" });
   const { categories } = await getSiteContent();
   const cat = categories.find((c) => c.slug === builder.category);
   const other = builder.kind === "excavator" ? BUILDERS["skid-steer"] : BUILDERS.excavator;
@@ -40,7 +42,8 @@ export default async function BuilderPage() {
           <div className="hidden lg:block"><EquipmentImage image={cat?.image} kind={builder.category} alt={cat?.name ?? builder.label} ratio="aspect-[16/9]" className="bg-white" /></div>
         </Container>
       </section>
-      <Suspense>
+      {/* Reserve the builder's height while it streams in so the footer does not jump (CLS). */}
+      <Suspense fallback={<div className="min-h-[90vh]" aria-hidden />}>
         <MachineBuilder builder={builder} />
       </Suspense>
     </>

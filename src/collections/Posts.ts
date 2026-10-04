@@ -29,7 +29,8 @@ export const Posts: CollectionConfig = {
     { name: "tags", type: "array", fields: [{ name: "tag", type: "text", required: true }] },
     { name: "readMinutes", type: "number", admin: { position: "sidebar", description: "Estimated reading time." } },
     { name: "featured", type: "checkbox", defaultValue: false, admin: { position: "sidebar" } },
-    { name: "author", type: "text", defaultValue: "Niagara Equipment Supply service team", admin: { position: "sidebar" } },
+    { name: "writer", type: "relationship", relationTo: "authors", admin: { position: "sidebar", description: "Who wrote this. Their bio appears under the post and in the structured data." } },
+    { name: "author", type: "text", defaultValue: "Niagara Equipment Supply service team", admin: { position: "sidebar", hidden: true, description: "Legacy free-text byline; shown only when no writer is linked." } },
     slugField("title"),
   ],
 };

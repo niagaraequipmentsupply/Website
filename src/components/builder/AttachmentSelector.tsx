@@ -32,7 +32,7 @@ export function AttachmentSelector({ machine, attachments, selections, onAdd, on
   return (
     <BuilderSection id="add-attachments" step={2} title="Add Attachments" text={machine ? `Attachments RIPPA lists for the ${machine.modelName}, grouped by type. Pick a size, then add.${selectedCount ? ` ${selectedCount} added.` : ""}` : "Select a model to see compatible attachments."} link={{ href: browseHref, label: "Browse all attachments" }}>
       {!machine ? (
-        <p className="rounded-card bg-light p-6 text-center text-sm text-grey">Choose a model above to unlock compatible attachments.</p>
+        <p className="rounded-card bg-light p-6 text-center text-sm text-grey">Choose a model above to see the attachments that fit it.</p>
       ) : attachments.length === 0 ? (
         <p className="rounded-card bg-light p-6 text-center text-sm text-grey">No attachments have been configured for this model yet.</p>
       ) : (

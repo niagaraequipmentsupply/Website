@@ -56,13 +56,11 @@ export async function pushLeadToGhl(lead: LeadRecord): Promise<{ contactId?: str
     const c = lead.contact;
     const models = Array.from(new Set(lead.lines.map((l) => l.match(/\b(R\d{2,3} (?:ECO|PRO)|RS\d{2}|RL06|RB06|RD06)\b/)?.[1]).filter((x): x is string => !!x)));
     const financing = lead.lines.find((l) => /Payment method|Financing preference/.test(l))?.split(":")[1]?.trim();
-    const upsert = await api<{ contact: { id: string } }>("/contacts/upsert", {
+    const upsert = await api<{ new?: boolean; contact: { id: string } }>("/contacts/upsert", {
       locationId, ...splitName(c.name), email: c.email, phone: c.phone, companyName: c.company || undefined, city: c.location || undefined,
       source: `Website · ${SOURCE_NAMES[lead.source]}`, tags: [...(SOURCE_TAGS[lead.source] ?? ["website"]), ...(lead.marketingConsent ? ["casl-express-consent"] : ["casl-no-marketing-consent"])],
       customFields: [
         { key: "contact.lead_source", field_value: LEAD_SOURCE_VALUE[lead.source] },
-        { key: "contact.first_touchpoint_channel", field_value: "Website" },
-        { key: "contact.first_touchpoint_date", field_value: lead.receivedAt.slice(0, 10) },
         { key: "contact.website_page", field_value: lead.page ?? "" },
         ...(models.length ? [{ key: "contact.model_of_interest", field_value: models.join(", ") }] : []),
         ...(lead.lines.length ? [{ key: "contact.requested_items", field_value: lead.lines.join("\n").slice(0, 2000) }] : []),
@@ -70,6 +68,10 @@ export async function pushLeadToGhl(lead: LeadRecord): Promise<{ contactId?: str
       ],
     });
     out.contactId = upsert.contact.id;
+    // First-touch fields are set once: a returning customer keeps the date and channel of their first enquiry.
+    if (upsert.new !== false) {
+      await api(`/contacts/${out.contactId}`, { customFields: [{ key: "contact.first_touchpoint_channel", field_value: "Website" }, { key: "contact.first_touchpoint_date", field_value: lead.receivedAt.slice(0, 10) }] }, "PUT");
+    }
     await api(`/contacts/${out.contactId}/notes`, { userId: undefined, body: `${SOURCE_NAMES[lead.source]} from ${lead.page ?? "website"} (${lead.receivedAt})\n\n${lead.summary}${lead.lines.length ? `\n\n${lead.lines.map((l) => `• ${l}`).join("\n")}` : ""}` });
     const parts = PARTS_SOURCES.includes(lead.source);
     const pipelineId = parts ? process.env.GHL_PARTS_PIPELINE_ID : process.env.GHL_SALES_PIPELINE_ID;

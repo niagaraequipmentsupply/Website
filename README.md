@@ -138,8 +138,9 @@ GHL setup (Settings → Private Integrations → new token with contacts, opport
 |---|---|
 | `GHL_API_KEY` | Private integration token |
 | `GHL_LOCATION_ID` | Sub-account id |
-| `GHL_SALES_PIPELINE_ID` / `GHL_SALES_STAGE_ID` | Equipment Sales pipeline and its New Lead stage (quote, builder, contact, financing leads) |
-| `GHL_PARTS_PIPELINE_ID` / `GHL_PARTS_STAGE_ID` | Parts & Service pipeline and its New Request stage (parts, service, lubricants leads) |
+| `GHL_SALES_PIPELINE_ID` / `GHL_SALES_STAGE_ID` | Equipment Sales pipeline and its New Lead stage (quote, builder, financing leads; contact-form leads that name a machine or need triage) |
+| `GHL_SERVICE_PIPELINE_ID` / `GHL_SERVICE_STAGE_ID` | Service & Modifications pipeline and its New Request stage (service form; contact-form messages about repairs, modifications, installs, warranty) |
+| `GHL_PARTS_PIPELINE_ID` / `GHL_PARTS_STAGE_ID` | Parts & Lubricants pipeline and its New Request stage (parts and lubricants forms) |
 | `GHL_WEBHOOK_URL` | Alternative: a workflow Inbound Webhook URL (receives the full lead JSON) |
 
 Per lead we upsert the contact (tagged `website` + source), add a note with the message and every requested item or build line,

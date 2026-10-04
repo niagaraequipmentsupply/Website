@@ -48,3 +48,5 @@ payload.db*
 
 # local database/media backups (npm run backup:local)
 backups/
+audit-crawl.json
+audit-lighthouse/

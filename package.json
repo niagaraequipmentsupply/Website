@@ -23,7 +23,9 @@
     "seed:category-images": "payload run src/scripts/seed-category-images.ts",
     "seed:post-covers": "payload run src/scripts/seed-post-covers.ts",
     "import:parts": "payload run src/scripts/import-parts.ts",
-    "ghl:setup": "npx tsx src/scripts/ghl-setup.ts"
+    "ghl:setup": "npx tsx src/scripts/ghl-setup.ts",
+    "audit:crawl": "python3 scripts/audit-crawl.py http://localhost:3001 audit-crawl.json",
+    "audit:lighthouse": "bash scripts/audit-lighthouse.sh http://localhost:3001 audit-lighthouse"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.88.0",

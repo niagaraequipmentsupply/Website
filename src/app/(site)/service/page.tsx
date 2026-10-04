@@ -91,7 +91,7 @@ export default async function ServicePage() {
           <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {commitments.map((c, i) => (
               <li key={c.title} className="rounded-card border border-line bg-white p-5">
-                <span aria-hidden className="display text-3xl text-navy/30">{String(i + 1).padStart(2, "0")}</span>
+                <span aria-hidden className="display text-3xl text-navy/60">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className="mt-2 text-base font-bold text-charcoal">{c.title}</h3>
                 <p className="mt-1 text-sm text-grey">{c.text}</p>
               </li>

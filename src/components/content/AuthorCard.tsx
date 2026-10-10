@@ -1,11 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { Author } from "@/lib/types";
 
 const initials = (name: string) => name.split(/\s+/).map((p) => p[0]).filter(Boolean).slice(0, 2).join("").toUpperCase();
 
 /** Author / team-member card: photo (or initials), name, role, bio, credentials and links. Used under blog posts and on the About page. */
-export function AuthorCard({ author, eyebrow, showTeamLink, className = "" }: { author: Author; eyebrow?: string; showTeamLink?: boolean; className?: string }) {
+export function AuthorCard({ author, eyebrow, className = "" }: { author: Author; eyebrow?: string; className?: string }) {
   return (
     <div className={`flex gap-5 rounded-card border border-line bg-white p-5 ${className}`}>
       {author.photo ? (
@@ -23,7 +22,6 @@ export function AuthorCard({ author, eyebrow, showTeamLink, className = "" }: { 
           </ul>
         )}
         <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold text-navy">
-          {showTeamLink && <Link href="/about#team" className="hover:text-electric">Meet the team</Link>}
           {author.email && <a href={`mailto:${author.email}`} className="hover:text-electric">Email {author.name.split(" ")[0]}</a>}
           {author.linkedin && <a href={author.linkedin} rel="noopener" target="_blank" className="hover:text-electric">LinkedIn</a>}
           {author.website && <a href={author.website} rel="noopener" target="_blank" className="hover:text-electric">{author.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}</a>}
@@ -39,7 +37,7 @@ export const personSchema = (a: Author, siteUrl: string) => ({
   name: a.name,
   ...(a.role ? { jobTitle: a.role } : {}),
   description: a.bio,
-  url: `${siteUrl}/about#team`,
+  url: `${siteUrl}/about`,
   ...(a.photo ? { image: a.photo.src.startsWith("http") ? a.photo.src : `${siteUrl}${a.photo.src}` } : {}),
   ...(a.linkedin || a.website ? { sameAs: [a.linkedin, a.website].filter(Boolean) } : {}),
 });

@@ -1,6 +1,7 @@
 /**
  * Launch content clean-up for the blog:
- *  1. Create the real author profile and attach it to every post (author box + Person schema).
+ *  1. Clear any personal author profile from posts (the site bylines the service team, not an individual) and remove
+ *     the author records so no personal name or Person schema appears on the site.
  *  2. Retire the two fictional sample posts (the invented "field call" and the invented "RS06 recall") as drafts.
  *  3. Remove unverifiable claims from the remaining starter posts and fix a transport-width figure.
  * Re-runnable.   npx payload run src/scripts/seed-authors.ts
@@ -11,19 +12,9 @@ import config from "@payload-config";
 const payload = await getPayload({ config });
 const log = (m: string) => console.log(`[seed-authors] ${m}`);
 
-// ---- 1. Author -------------------------------------------------------------------------------------------------
-const AUTHOR = {
-  slug: "nick-macdonell",
-  name: "Nick MacDonell",
-  bio: "Nick runs Niagara Equipment Supply, the RIPPA dealer in Thorold, Ontario, and its sister dealership G&J Equipment. He works with contractors, landscapers, farms and municipalities across Ontario to choose, set up and support RIPPA mini excavators, skid steers, loaders and attachments.",
-  website: "https://gjequip.ca",
-  sortOrder: 1,
-};
-const existing = await payload.find({ collection: "authors", where: { slug: { equals: AUTHOR.slug } }, limit: 1 });
-const author = existing.docs[0]
-  ? await payload.update({ collection: "authors", id: existing.docs[0].id, data: { name: AUTHOR.name, website: AUTHOR.website, sortOrder: AUTHOR.sortOrder, ...(existing.docs[0].bio ? {} : { bio: AUTHOR.bio }) } })
-  : await payload.create({ collection: "authors", data: AUTHOR });
-log(`Author #${author.id} ${author.name}`);
+// ---- 1. No personal authors ------------------------------------------------------------------------------------
+const BYLINE = "Niagara Equipment Supply service team";
+const existingAuthors = await payload.find({ collection: "authors", limit: 50, depth: 0 });
 
 // ---- 2 + 3. Posts ---------------------------------------------------------------------------------------------
 const RETIRE = new Set(["field-call-r18-quick-coupler-leak", "rs06-overheating-fan-recall"]);
@@ -49,7 +40,7 @@ const replaceText = (node: Node, pairs: [string, string][]): number => {
 
 const posts = await payload.find({ collection: "posts", limit: 200, depth: 0, draft: true });
 for (const p of posts.docs) {
-  const data: Record<string, unknown> = { writer: author.id };
+  const data: Record<string, unknown> = { writer: null, author: BYLINE };
   const edits = EDITS[p.slug];
   if (edits) {
     const content = JSON.parse(JSON.stringify(p.content)) as { root: Node };
@@ -61,6 +52,7 @@ for (const p of posts.docs) {
   if (RETIRE.has(p.slug)) { data._status = "draft"; log(`${p.slug}: unpublished (draft)`); }
   await payload.update({ collection: "posts", id: p.id, data: data as never, ...(RETIRE.has(p.slug) ? {} : {}) });
 }
-log(`${posts.docs.length} posts updated with author`);
+log(`${posts.docs.length} posts updated with the team byline`);
+for (const a of existingAuthors.docs) { await payload.delete({ collection: "authors", id: a.id }); log(`removed author profile #${a.id}`); }
 
 process.exit(0);

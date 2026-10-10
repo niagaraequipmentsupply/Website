@@ -5,7 +5,6 @@ import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CtaBand } from "@/components/home/CtaBand";
-import { AuthorCard, personSchema } from "@/components/content/AuthorCard";
 import { getSiteContent } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const { site, authors, catalogue } = await getSiteContent();
+  const { site, catalogue } = await getSiteContent();
   const modelCount = catalogue.machines.filter((m) => m.specs.length > 0).length;
   const what = [
     { icon: Tractor, title: "Equipment sales", text: `${modelCount} RIPPA models from the 747 kg R06 ECO to full-size excavators, plus skid steers, loaders and track dumpers. Every quote is written, itemised and includes delivery.`, href: "/inventory", label: "Browse equipment" },
@@ -62,15 +61,6 @@ export default async function AboutPage() {
         </Container>
       </section>
 
-      {authors.length > 0 && (
-        <section id="team" className="section-tight scroll-mt-28">
-          <Container>
-            <SectionHeading title="Who you'll deal with" subtitle="The people who answer the phone, write the guides and stand behind the machines." rule={false} />
-            <ul className="grid gap-4 lg:grid-cols-2">{authors.map((a) => <li key={a.id}><AuthorCard author={a} className="h-full" /></li>)}</ul>
-          </Container>
-          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@graph": authors.map((a) => ({ ...personSchema(a, site.url), worksFor: { "@type": "Organization", name: site.name, url: site.url } })) }) }} />
-        </section>
-      )}
 
       <CtaBand title="Let's find the right machine" text="Call us or send a quote request. We'll help you build the right setup for your work." />
     </>

@@ -10,10 +10,13 @@
  *   GHL_SERVICE_PIPELINE_ID / GHL_SERVICE_STAGE_ID   Service & Modifications pipeline + "New Request" stage
  *   GHL_PARTS_PIPELINE_ID / GHL_PARTS_STAGE_ID       Parts & Lubricants pipeline + "New Request" stage
  *   GHL_WEBHOOK_URL           Optional: a workflow Inbound Webhook URL that also receives the lead JSON
- * Custom field unique keys expected on the contact (create them with these exact names, see README):
+ * Contact custom fields expected (unique keys as GHL lists them; the API is addressed with the part after "contact."):
  *   contact.lead_source, contact.model_of_interest, contact.requested_items, contact.first_touchpoint_date,
  *   contact.first_touchpoint_channel, contact.customer_segment, contact.financing_interest, contact.website_page
- * Run `npm run ghl:setup` to print pipeline / stage ids and check the fields exist.
+ * `npm run ghl:provision` creates the fields and tags; `npm run ghl:setup` prints pipeline / stage ids and checks them.
+ * API behaviour this code works around: contact upsert REPLACES the tag list (so tags go through the additive tags
+ * endpoint), custom-field keys are sent without the "contact." prefix (prefixed keys are silently ignored), and a
+ * contact may hold only one open opportunity per pipeline (a repeat enquiry updates it and re-raises `repeat-enquiry`).
  */
 import type { LeadPayload } from "@/lib/types";
 
@@ -72,6 +75,15 @@ async function api<T>(path: string, body: unknown, method = "POST"): Promise<T> 
   return (await res.json()) as T;
 }
 
+/** Custom field reference the contact API accepts: the unique key without its "contact." prefix. */
+const cf = (name: string, value: string) => ({ key: name, field_value: value });
+
+async function get<T>(path: string): Promise<T> {
+  const res = await fetch(`${API}${path}`, { headers: { Authorization: `Bearer ${process.env.GHL_API_KEY}`, Version: VERSION, Accept: "application/json" } });
+  if (!res.ok) throw new Error(`GHL GET ${path} → ${res.status}: ${(await res.text()).slice(0, 300)}`);
+  return (await res.json()) as T;
+}
+
 const splitName = (full: string) => { const parts = full.trim().split(/\s+/); return { firstName: parts[0] ?? "", lastName: parts.slice(1).join(" ") || undefined }; };
 
 /** Push one lead to GHL. Returns ids for the local record. */
@@ -83,43 +95,66 @@ export async function pushLeadToGhl(lead: LeadRecord): Promise<{ contactId?: str
     out.webhook = true;
   }
   const locationId = process.env.GHL_LOCATION_ID;
-  if (process.env.GHL_API_KEY && locationId) {
-    const c = lead.contact;
-    const models = modelsIn(lead);
-    const { route, triage } = routeLead(lead);
-    const kindName = lead.source === "contact" && route === "service" ? "Service enquiry" : triage ? "General enquiry" : SOURCE_NAMES[lead.source];
-    const routeTags = [...(lead.source === "contact" && route === "service" ? ["service-centre"] : []), ...(triage ? ["needs-triage"] : [])];
-    const financing = lead.lines.find((l) => /Payment method|Financing preference/.test(l))?.split(":")[1]?.trim();
-    const upsert = await api<{ new?: boolean; contact: { id: string } }>("/contacts/upsert", {
-      locationId, ...splitName(c.name), email: c.email, phone: c.phone, companyName: c.company || undefined, city: c.location || undefined,
-      source: `Website · ${kindName}`, tags: [...(SOURCE_TAGS[lead.source] ?? ["website"]), ...routeTags, ...(lead.marketingConsent ? ["casl-express-consent"] : ["casl-no-marketing-consent"])],
-      customFields: [
-        { key: "contact.lead_source", field_value: LEAD_SOURCE_VALUE[lead.source] },
-        { key: "contact.website_page", field_value: lead.page ?? "" },
-        ...(models.length ? [{ key: "contact.model_of_interest", field_value: models.join(", ") }] : []),
-        ...(lead.lines.length ? [{ key: "contact.requested_items", field_value: lead.lines.join("\n").slice(0, 2000) }] : []),
-        ...(financing ? [{ key: "contact.financing_interest", field_value: financing.charAt(0).toUpperCase() + financing.slice(1) }] : []),
-      ],
-    });
-    out.contactId = upsert.contact.id;
-    // First-touch fields are set once: a returning customer keeps the date and channel of their first enquiry.
-    if (upsert.new !== false) {
-      await api(`/contacts/${out.contactId}`, { customFields: [{ key: "contact.first_touchpoint_channel", field_value: "Website" }, { key: "contact.first_touchpoint_date", field_value: lead.receivedAt.slice(0, 10) }] }, "PUT");
-    }
-    await api(`/contacts/${out.contactId}/notes`, { userId: undefined, body: `${kindName} from ${lead.page ?? "website"} (${lead.receivedAt})\n\n${lead.summary}${lead.lines.length ? `\n\n${lead.lines.map((l) => `• ${l}`).join("\n")}` : ""}` });
-    const PIPELINES: Record<Exclude<LeadRoute, "none">, [string | undefined, string | undefined]> = {
-      sales: [process.env.GHL_SALES_PIPELINE_ID, process.env.GHL_SALES_STAGE_ID],
-      service: [process.env.GHL_SERVICE_PIPELINE_ID, process.env.GHL_SERVICE_STAGE_ID],
-      parts: [process.env.GHL_PARTS_PIPELINE_ID, process.env.GHL_PARTS_STAGE_ID],
-    };
-    const [pipelineId, stageId] = route === "none" ? [] : PIPELINES[route];
-    if (route !== "none" && !(pipelineId && stageId)) console.warn(`[lead] no GHL pipeline configured for route "${route}"; contact + note only`);
-    if (pipelineId && stageId) {
-      const opp = await api<{ opportunity: { id: string } }>("/opportunities/", {
-        locationId, pipelineId, pipelineStageId: stageId, contactId: out.contactId, status: "open",
-        name: `${c.name} · ${kindName}${models.length ? ` · ${models.join(" / ")}` : lead.lines[0] ? ` · ${lead.lines[0].slice(0, 60)}` : ""}`,
-        source: LEAD_SOURCE_VALUE[lead.source],
-      });
+  if (!process.env.GHL_API_KEY || !locationId) return out;
+
+  const c = lead.contact;
+  const models = modelsIn(lead);
+  const { route, triage } = routeLead(lead);
+  const kindName = lead.source === "contact" && route === "service" ? "Service enquiry" : triage ? "General enquiry" : SOURCE_NAMES[lead.source];
+  const routeTags = [...(lead.source === "contact" && route === "service" ? ["service-centre"] : []), ...(triage ? ["needs-triage"] : [])];
+  const financing = lead.lines.find((l) => /Payment method|Financing preference/.test(l))?.split(":")[1]?.trim();
+
+  // 1. Contact: upsert matches on email, then phone. No tags here (upsert replaces the whole list); latest-request fields refresh each time.
+  const upsert = await api<{ new?: boolean; contact: { id: string } }>("/contacts/upsert", {
+    locationId, ...splitName(c.name), email: c.email, phone: c.phone, companyName: c.company || undefined, city: c.location || undefined,
+    source: `Website · ${kindName}`,
+    customFields: [
+      cf("lead_source", LEAD_SOURCE_VALUE[lead.source]),
+      cf("website_page", lead.page ?? ""),
+      ...(models.length ? [cf("model_of_interest", models.join(", "))] : []),
+      ...(lead.lines.length ? [cf("requested_items", lead.lines.join("\n").slice(0, 2000))] : []),
+      ...(financing ? [cf("financing_interest", financing.charAt(0).toUpperCase() + financing.slice(1))] : []),
+    ],
+  });
+  const contactId = upsert.contact.id;
+  out.contactId = contactId;
+  // First-touch fields are set once: a returning customer keeps the date and channel of their first enquiry.
+  if (upsert.new !== false) await api(`/contacts/${contactId}`, { customFields: [cf("first_touchpoint_channel", "Website"), cf("first_touchpoint_date", lead.receivedAt.slice(0, 10))] }, "PUT");
+
+  // 2. Tags, additively. Express consent, once given, is never downgraded by a later form left unticked.
+  const added = await api<{ tags?: string[] }>(`/contacts/${contactId}/tags`, { tags: [...(SOURCE_TAGS[lead.source] ?? ["website"]), ...routeTags] });
+  const current = new Set((added.tags ?? []).map((t) => t.toLowerCase()));
+  if (lead.marketingConsent) {
+    if (!current.has("casl-express-consent")) await api(`/contacts/${contactId}/tags`, { tags: ["casl-express-consent"] });
+    if (current.has("casl-no-marketing-consent")) await api(`/contacts/${contactId}/tags`, { tags: ["casl-no-marketing-consent"] }, "DELETE");
+  } else if (!current.has("casl-express-consent") && !current.has("casl-no-marketing-consent")) {
+    await api(`/contacts/${contactId}/tags`, { tags: ["casl-no-marketing-consent"] });
+  }
+
+  // 3. Note with the full request.
+  await api(`/contacts/${contactId}/notes`, { body: `${kindName} from ${lead.page ?? "website"} (${lead.receivedAt})\n\n${lead.summary}${lead.lines.length ? `\n\n${lead.lines.map((l) => `• ${l}`).join("\n")}` : ""}` });
+
+  // 4. Opportunity: GHL allows one open opportunity per contact per pipeline, so a repeat enquiry updates the open one.
+  const PIPELINES: Record<Exclude<LeadRoute, "none">, [string | undefined, string | undefined]> = {
+    sales: [process.env.GHL_SALES_PIPELINE_ID, process.env.GHL_SALES_STAGE_ID],
+    service: [process.env.GHL_SERVICE_PIPELINE_ID, process.env.GHL_SERVICE_STAGE_ID],
+    parts: [process.env.GHL_PARTS_PIPELINE_ID, process.env.GHL_PARTS_STAGE_ID],
+  };
+  const [pipelineId, stageId] = route === "none" ? [] : PIPELINES[route];
+  if (route !== "none" && !(pipelineId && stageId)) console.warn(`[lead] no GHL pipeline configured for route "${route}"; contact + note only`);
+  if (pipelineId && stageId) {
+    const name = `${c.name} · ${kindName}${models.length ? ` · ${models.join(" / ")}` : lead.lines[0] ? ` · ${lead.lines[0].slice(0, 60)}` : ""}`;
+    const open = await get<{ opportunities?: { id: string }[] }>(`/opportunities/search?location_id=${locationId}&contact_id=${contactId}&pipeline_id=${pipelineId}&status=open`);
+    const existing = open.opportunities?.[0];
+    if (existing) {
+      // Keep the more specific name: a later general enquiry never overwrites "Quote request · R18 PRO".
+      if (!triage) await api(`/opportunities/${existing.id}`, { name }, "PUT");
+      // Re-raise the flag so a "tag added" workflow can notify the owner about the new request (remove first so it fires again).
+      await api(`/contacts/${contactId}/tags`, { tags: ["repeat-enquiry"] }, "DELETE").catch(() => undefined);
+      await api(`/contacts/${contactId}/tags`, { tags: ["repeat-enquiry"] });
+      out.opportunityId = existing.id;
+    } else {
+      const opp = await api<{ opportunity: { id: string } }>("/opportunities/", { locationId, pipelineId, pipelineStageId: stageId, contactId, status: "open", name, source: LEAD_SOURCE_VALUE[lead.source] });
       out.opportunityId = opp.opportunity.id;
     }
   }

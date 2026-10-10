@@ -41,7 +41,7 @@ for (const f of FIELDS) {
 }
 
 // ---- Tags ---------------------------------------------------------------------------------------------------------
-const TAGS = ["website", "quote-request", "builder-build", "contact", "financing", "service-centre", "parts-request", "lubricants-b2b", "content-request", "needs-triage", "casl-express-consent", "casl-no-marketing-consent"];
+const TAGS = ["website", "quote-request", "builder-build", "contact", "financing", "service-centre", "parts-request", "lubricants-b2b", "content-request", "needs-triage", "repeat-enquiry", "casl-express-consent", "casl-no-marketing-consent"];
 const tags = (await call("GET", `/locations/${loc}/tags`)) as { tags: { id: string; name: string }[] };
 const haveTags = new Set(tags.tags.map((t) => t.name.toLowerCase()));
 console.log("\nTags:");

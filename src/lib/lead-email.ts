@@ -2,8 +2,9 @@ import type { BasePayload } from "payload";
 import type { LeadRecord } from "@/lib/ghl";
 
 /**
- * Lead notifications. Active when RESEND_API_KEY is set (see payload.config.ts). Two messages per lead:
- * an internal alert to LEAD_NOTIFY_EMAIL (defaults to the site email) and a confirmation to the customer.
+ * Internal lead alert, active when RESEND_API_KEY is set (see payload.config.ts): one email per lead to LEAD_NOTIFY_EMAIL
+ * (defaults to the site email). The customer's confirmation is sent by the CRM workflow in GoHighLevel so the whole
+ * conversation lives in one inbox; the website sends them nothing directly.
  */
 export const emailEnabled = () => !!process.env.RESEND_API_KEY;
 
@@ -39,20 +40,9 @@ export async function sendLeadEmails(payload: BasePayload, lead: LeadRecord, sit
     ${lines ? `<p style="margin:14px 0 4px;color:#6b7785;font-size:13px">Requested items</p>${lines}` : ""}
     <p style="margin-top:18px"><a href="${esc(adminUrl)}" style="background:#083d91;color:#fff;padding:10px 16px;text-decoration:none;font-weight:700;display:inline-block">Open in admin</a></p>`);
 
-  const customerHtml = wrap(site, "We received your request", `
-    <p>Hi ${esc(c.name.split(" ")[0] || c.name)},</p>
-    <p>Thanks for contacting ${esc(site.name)}. A specialist will reply within one business day, usually sooner. If it is urgent, call <a href="tel:${esc(site.phone.replace(/[^\d+]/g, ""))}" style="color:#083d91;font-weight:700">${esc(site.phone)}</a>.</p>
-    ${lead.summary ? `<p style="margin:14px 0 4px;color:#6b7785;font-size:13px">Your message</p><p style="white-space:pre-wrap;margin:0">${esc(lead.summary)}</p>` : ""}
-    ${lines ? `<p style="margin:14px 0 4px;color:#6b7785;font-size:13px">What you asked about</p>${lines}` : ""}
-    <p style="margin:18px 0 4px;color:#6b7785;font-size:13px">Hours</p>
-    <p style="margin:0">${site.hoursList.map((h) => `${esc(h.day)}: ${esc(h.time)}`).join("<br>")}</p>
-    <p style="margin-top:18px;font-size:13px;color:#6b7785">You are receiving this because you submitted a request on our website. This is a one-time confirmation, not a marketing message.</p>`);
-
   const text = (html: string) => html.replace(/<style[\s\S]*?<\/style>/g, "").replace(/<br\s*\/?>/g, "\n").replace(/<\/(p|li|tr|h1)>/g, "\n").replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/\n{3,}/g, "\n\n").trim();
 
-  const results = await Promise.allSettled([
-    payload.sendEmail({ to: process.env.LEAD_NOTIFY_EMAIL || site.email, replyTo: c.email, subject: `New lead · ${label} · ${c.name}${lead.lines[0] ? ` · ${lead.lines[0].slice(0, 40)}` : ""}`, html: internalHtml, text: text(internalHtml) }),
-    payload.sendEmail({ to: c.email, replyTo: site.email, subject: `We received your request · ${site.name}`, html: customerHtml, text: text(customerHtml) }),
-  ]);
-  for (const r of results) if (r.status === "rejected") console.error("[lead] email failed", r.reason);
+  try {
+    await payload.sendEmail({ to: process.env.LEAD_NOTIFY_EMAIL || site.email, replyTo: c.email, subject: `New lead · ${label} · ${c.name}${lead.lines[0] ? ` · ${lead.lines[0].slice(0, 40)}` : ""}`, html: internalHtml, text: text(internalHtml) });
+  } catch (err) { console.error("[lead] email failed", err); }
 }

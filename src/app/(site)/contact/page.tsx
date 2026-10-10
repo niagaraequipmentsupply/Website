@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
 import { LeadForm } from "@/components/quote/LeadForm";
+import { CalendarEmbed } from "@/components/ghl/CalendarEmbed";
 import { getSiteContent } from "@/lib/catalogue";
 import { site as siteDefaults } from "@/data/site";
 
@@ -34,7 +35,16 @@ export default async function ContactPage() {
               </div>
             )}
           </div>
-          <LeadForm source="contact" title="Send a Message" submitLabel="Send Message" messageLabel="How can we help?" />
+          <div className="grid gap-6">
+            <LeadForm source="contact" title="Send a Message" submitLabel="Send Message" messageLabel="How can we help?" />
+            {process.env.NEXT_PUBLIC_GHL_DEMO_CALENDAR_URL && (
+              <div id="demo" className="scroll-mt-28">
+                <h2 className="display mb-2 text-2xl text-charcoal">Book a demo or site visit</h2>
+                <p className="mb-3 text-sm text-grey">Pick a time and we bring the machine to you or set it up here in {site.address.city}.</p>
+                <CalendarEmbed src={process.env.NEXT_PUBLIC_GHL_DEMO_CALENDAR_URL} title="Book a demo or site visit" />
+              </div>
+            )}
+          </div>
         </Container>
       </section>
     </>

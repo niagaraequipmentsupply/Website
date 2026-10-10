@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { LeadForm } from "@/components/quote/LeadForm";
+import { CalendarEmbed } from "@/components/ghl/CalendarEmbed";
 import { PostCard } from "@/components/content/PostCard";
 import { ContentRequest } from "@/components/content/ContentRequest";
 import { SocialStrip } from "@/components/content/SocialStrip";
@@ -184,7 +185,16 @@ export default async function ServicePage() {
             <p className="mt-5 flex items-center gap-2 text-sm text-grey"><Truck className="size-4 text-navy" aria-hidden />Machine down on a job? Call {site.phone} and ask for the Service Centre.</p>
             <p className="mt-2 flex items-center gap-2 text-sm text-grey"><Globe className="size-4 text-navy" aria-hidden />Outside Ontario? We still answer questions and ship parts. <Package className="ml-1 size-4 text-navy" aria-hidden /></p>
           </div>
-          <LeadForm source="service" title="Service Centre request" submitLabel="Send to the Service Centre" messageLabel="Model, serial / hours, and what's happening (mention if you think it's a warranty item)" />
+          <div className="grid gap-6">
+            {process.env.NEXT_PUBLIC_GHL_SERVICE_CALENDAR_URL && (
+              <div>
+                <h3 className="mb-2 text-lg font-bold text-charcoal">Book a shop or field appointment</h3>
+                <CalendarEmbed src={process.env.NEXT_PUBLIC_GHL_SERVICE_CALENDAR_URL} title="Book a service appointment" />
+                <p className="mt-3 text-sm text-grey">Prefer to describe the problem first? Use the form below and we will propose a time.</p>
+              </div>
+            )}
+            <LeadForm source="service" title="Service Centre request" submitLabel="Send to the Service Centre" messageLabel="Model, serial / hours, and what's happening (mention if you think it's a warranty item)" />
+          </div>
         </Container>
       </section>
     </>

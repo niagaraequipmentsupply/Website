@@ -12,18 +12,21 @@
  *   GHL_WEBHOOK_URL           Optional: a workflow Inbound Webhook URL that also receives the lead JSON
  * Contact custom fields expected (unique keys as GHL lists them; the API is addressed with the part after "contact."):
  *   contact.lead_source, contact.model_of_interest, contact.requested_items, contact.first_touchpoint_date,
- *   contact.first_touchpoint_channel, contact.customer_segment, contact.financing_interest, contact.website_page
+ *   contact.first_touchpoint_channel, contact.first_touchpoint_campaign, contact.landing_page, contact.last_touchpoint_channel,
+ *   contact.last_touchpoint_campaign, contact.google_click_id, contact.marketing_consent_date, contact.customer_segment,
+ *   contact.financing_interest, contact.website_page
  * `npm run ghl:provision` creates the fields and tags; `npm run ghl:setup` prints pipeline / stage ids and checks them.
  * API behaviour this code works around: contact upsert REPLACES the tag list (so tags go through the additive tags
  * endpoint), custom-field keys are sent without the "contact." prefix (prefixed keys are silently ignored), and a
  * contact may hold only one open opportunity per pipeline (a repeat enquiry updates it and re-raises `repeat-enquiry`).
  */
 import type { LeadPayload } from "@/lib/types";
+import { channelOf } from "@/lib/attribution";
 
 const API = "https://services.leadconnectorhq.com";
 const VERSION = "2021-07-28";
 
-export interface LeadRecord extends LeadPayload { receivedAt: string; summary: string; lines: string[] }
+export interface LeadRecord extends LeadPayload { receivedAt: string; summary: string; lines: string[]; /** Indicative deal value in CAD from stored prices. */ value?: number }
 
 export const ghlConfigured = () => !!(process.env.GHL_WEBHOOK_URL || (process.env.GHL_API_KEY && process.env.GHL_LOCATION_ID));
 const NO_OPPORTUNITY: LeadPayload["source"][] = ["content-request"];
@@ -103,6 +106,8 @@ export async function pushLeadToGhl(lead: LeadRecord): Promise<{ contactId?: str
   const kindName = lead.source === "contact" && route === "service" ? "Service enquiry" : triage ? "General enquiry" : SOURCE_NAMES[lead.source];
   const routeTags = [...(lead.source === "contact" && route === "service" ? ["service-centre"] : []), ...(triage ? ["needs-triage"] : [])];
   const financing = lead.lines.find((l) => /Payment method|Financing preference/.test(l))?.split(":")[1]?.trim();
+  const firstTouch = lead.attribution?.first, lastTouch = lead.attribution?.last ?? lead.attribution?.first;
+  const clickId = [lastTouch, firstTouch].map((t) => t?.clickId).find((c) => c && /^(gclid|gbraid|wbraid)=/.test(c))?.split("=")[1];
 
   // 1. Contact: upsert matches on email, then phone. No tags here (upsert replaces the whole list); latest-request fields refresh each time.
   const upsert = await api<{ new?: boolean; contact: { id: string } }>("/contacts/upsert", {
@@ -114,18 +119,30 @@ export async function pushLeadToGhl(lead: LeadRecord): Promise<{ contactId?: str
       ...(models.length ? [cf("model_of_interest", models.join(", "))] : []),
       ...(lead.lines.length ? [cf("requested_items", lead.lines.join("\n").slice(0, 2000))] : []),
       ...(financing ? [cf("financing_interest", financing.charAt(0).toUpperCase() + financing.slice(1))] : []),
+      cf("last_touchpoint_channel", channelOf(lastTouch)),
+      ...(lastTouch?.campaign ? [cf("last_touchpoint_campaign", lastTouch.campaign)] : []),
+      ...(clickId ? [cf("google_click_id", clickId)] : []),
     ],
   });
   const contactId = upsert.contact.id;
   out.contactId = contactId;
   // First-touch fields are set once: a returning customer keeps the date and channel of their first enquiry.
-  if (upsert.new !== false) await api(`/contacts/${contactId}`, { customFields: [cf("first_touchpoint_channel", "Website"), cf("first_touchpoint_date", lead.receivedAt.slice(0, 10))] }, "PUT");
+  if (upsert.new !== false) {
+    await api(`/contacts/${contactId}`, { customFields: [
+      cf("first_touchpoint_channel", channelOf(firstTouch)), cf("first_touchpoint_date", (firstTouch?.at ?? lead.receivedAt).slice(0, 10)),
+      ...(firstTouch?.campaign ? [cf("first_touchpoint_campaign", firstTouch.campaign)] : []),
+      ...(firstTouch?.landing ? [cf("landing_page", firstTouch.landing.slice(0, 250))] : []),
+    ] }, "PUT");
+  }
 
   // 2. Tags, additively. Express consent, once given, is never downgraded by a later form left unticked.
   const added = await api<{ tags?: string[] }>(`/contacts/${contactId}/tags`, { tags: [...(SOURCE_TAGS[lead.source] ?? ["website"]), ...routeTags] });
   const current = new Set((added.tags ?? []).map((t) => t.toLowerCase()));
   if (lead.marketingConsent) {
-    if (!current.has("casl-express-consent")) await api(`/contacts/${contactId}/tags`, { tags: ["casl-express-consent"] });
+    if (!current.has("casl-express-consent")) {
+      await api(`/contacts/${contactId}/tags`, { tags: ["casl-express-consent"] });
+      await api(`/contacts/${contactId}`, { customFields: [cf("marketing_consent_date", lead.receivedAt.slice(0, 10))] }, "PUT");
+    }
     if (current.has("casl-no-marketing-consent")) await api(`/contacts/${contactId}/tags`, { tags: ["casl-no-marketing-consent"] }, "DELETE");
   } else if (!current.has("casl-express-consent") && !current.has("casl-no-marketing-consent")) {
     await api(`/contacts/${contactId}/tags`, { tags: ["casl-no-marketing-consent"] });
@@ -148,13 +165,14 @@ export async function pushLeadToGhl(lead: LeadRecord): Promise<{ contactId?: str
     const existing = open.opportunities?.[0];
     if (existing) {
       // Keep the more specific name: a later general enquiry never overwrites "Quote request · R18 PRO".
-      if (!triage) await api(`/opportunities/${existing.id}`, { name }, "PUT");
+      const patch = { ...(!triage ? { name } : {}), ...(lead.value ? { monetaryValue: lead.value } : {}) };
+      if (Object.keys(patch).length) await api(`/opportunities/${existing.id}`, patch, "PUT");
       // Re-raise the flag so a "tag added" workflow can notify the owner about the new request (remove first so it fires again).
       await api(`/contacts/${contactId}/tags`, { tags: ["repeat-enquiry"] }, "DELETE").catch(() => undefined);
       await api(`/contacts/${contactId}/tags`, { tags: ["repeat-enquiry"] });
       out.opportunityId = existing.id;
     } else {
-      const opp = await api<{ opportunity: { id: string } }>("/opportunities/", { locationId, pipelineId, pipelineStageId: stageId, contactId, status: "open", name, source: LEAD_SOURCE_VALUE[lead.source] });
+      const opp = await api<{ opportunity: { id: string } }>("/opportunities/", { locationId, pipelineId, pipelineStageId: stageId, contactId, status: "open", name, source: LEAD_SOURCE_VALUE[lead.source], ...(lead.value ? { monetaryValue: lead.value } : {}) });
       out.opportunityId = opp.opportunity.id;
     }
   }

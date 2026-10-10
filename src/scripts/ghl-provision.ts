@@ -27,6 +27,12 @@ const FIELDS: FieldSpec[] = [
   { name: "Customer Segment", key: "contact.customer_segment", dataType: "SINGLE_OPTIONS", options: ["Contractor", "Landscaper", "Farm", "Municipality", "Homeowner", "Rental", "Other"] },
   { name: "Machine Owned", key: "contact.machine_owned", dataType: "TEXT", placeholder: "R18 PRO" },
   { name: "Serial Number", key: "contact.serial_number", dataType: "TEXT" },
+  { name: "First Touchpoint Campaign", key: "contact.first_touchpoint_campaign", dataType: "TEXT", placeholder: "utm_campaign of the first visit" },
+  { name: "Landing Page", key: "contact.landing_page", dataType: "TEXT", placeholder: "/inventory/excavators/r18-pro?utm_source=google" },
+  { name: "Last Touchpoint Channel", key: "contact.last_touchpoint_channel", dataType: "TEXT", placeholder: "Google Ads" },
+  { name: "Last Touchpoint Campaign", key: "contact.last_touchpoint_campaign", dataType: "TEXT" },
+  { name: "Google Click ID", key: "contact.google_click_id", dataType: "TEXT", placeholder: "gclid, for offline conversion uploads" },
+  { name: "Marketing Consent Date", key: "contact.marketing_consent_date", dataType: "DATE" },
 ];
 const existing = (await call("GET", `/locations/${loc}/customFields?model=contact`)) as { customFields: { id: string; fieldKey: string; name: string; dataType: string }[] };
 console.log("\nCustom fields:");

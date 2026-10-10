@@ -344,6 +344,12 @@ export interface Lubricant {
   packaging: string[]; approvals?: string; rippaUse?: string; images: ImageAsset[]; documents: DocumentAsset[]; featured: boolean; sortOrder: number;
 }
 
+/** One visit's origin: campaign tags, a click id (`gclid=…`) and the outside referrer, if any. */
+export interface Touch {
+  at: string; landing?: string; referrer?: string; source?: string; medium?: string; campaign?: string; term?: string; content?: string; clickId?: string;
+}
+export interface Attribution { first?: Touch; last?: Touch }
+
 export interface LeadPayload {
   source: "quote" | "builder" | "contact" | "financing" | "service" | "parts" | "lubricants" | "content-request";
   contact: { name: string; company?: string; email: string; phone: string; location?: string; message?: string };
@@ -357,6 +363,8 @@ export interface LeadPayload {
   turnstileToken?: string;
   /** When the form was first rendered; very fast submissions are treated as bots. */
   startedAt?: string;
+  /** Where the visitor came from (captured in the browser, see src/lib/attribution.ts). */
+  attribution?: Attribution;
 }
 
 export interface Testimonial {

@@ -142,6 +142,11 @@ GHL setup (Settings → Private Integrations → new token with contacts, opport
 | `GHL_SERVICE_PIPELINE_ID` / `GHL_SERVICE_STAGE_ID` | Service & Modifications pipeline and its New Request stage (service form; contact-form messages about repairs, modifications, installs, warranty) |
 | `GHL_PARTS_PIPELINE_ID` / `GHL_PARTS_STAGE_ID` | Parts & Lubricants pipeline and its New Request stage (parts and lubricants forms) |
 | `GHL_WEBHOOK_URL` | Alternative: a workflow Inbound Webhook URL (receives the full lead JSON) |
+| `NEXT_PUBLIC_GHL_TRACKING_ID` | GHL visitor tracking script id (consent-gated) |
+| `NEXT_PUBLIC_GHL_CHAT_WIDGET_ID` | GHL web chat widget id; `NEXT_PUBLIC_GHL_WIDGET_HOST` for a white-label host |
+| `NEXT_PUBLIC_GHL_SERVICE_CALENDAR_URL` / `NEXT_PUBLIC_GHL_DEMO_CALENDAR_URL` | Booking calendar embeds on /service#book and /contact#demo |
+
+Every form also carries first- and last-touch attribution (UTM tags, click ids, referrer captured in the browser by `src/lib/attribution.ts`) and the phone number in +1 format, the opportunity gets an indicative value from stored prices, and `npm run ghl:resync` re-sends any lead marked "CRM sync failed" from its stored submission (`POST /api/leads/resync`, Bearer `BACKUP_TOKEN`).
 
 Per lead we upsert the contact (tagged `website` + source), add a note with the message and every requested item or build line,
 and open an opportunity named `Name · Quote request · R18 PRO`. Content requests are stored and tagged but do not open opportunities.

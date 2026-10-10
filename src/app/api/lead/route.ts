@@ -8,6 +8,7 @@ import { rateLimit, clientIp } from "@/lib/rate-limit";
 import { verifyTurnstile, turnstileEnabled } from "@/lib/turnstile";
 import { sendLeadEmails } from "@/lib/lead-email";
 import { includedWith } from "@/lib/included";
+import { normalizePhone } from "@/lib/phone";
 
 const PAYMENT_LABEL: Record<string, string> = { cash: "Pay in full", finance: "Finance / leasing", lease: "Finance / leasing" };
 
@@ -24,12 +25,15 @@ export async function POST(req: Request) {
   try { body = (await req.json()) as LeadPayload; } catch { return NextResponse.json({ error: "Invalid JSON" }, { status: 400 }); }
   const c = body?.contact;
   if (!c?.name || !c?.email || !c?.phone || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.email)) return NextResponse.json({ error: "Name, email and phone are required." }, { status: 400 });
+  const phone = normalizePhone(c.phone);
+  if (!phone) return NextResponse.json({ error: "Please enter a phone number with the area code, e.g. 905-555-0123." }, { status: 400 });
+  c.phone = phone; // stored and sent to the CRM in +1 format so texting works
   if (typeof (body as { website?: unknown }).website === "string" && (body as { website?: string }).website) return NextResponse.json({ ok: true }); // honeypot
   // Bots fill forms in milliseconds; a person needs at least a couple of seconds. Silently accept so the bot learns nothing.
   if (body.startedAt && Date.now() - Date.parse(body.startedAt) < 1500 && Date.now() - Date.parse(body.startedAt) >= 0) return NextResponse.json({ ok: true });
   if (turnstileEnabled() && !(await verifyTurnstile(body.turnstileToken, ip))) return NextResponse.json({ error: "We couldn't verify your browser. Please try again or call us." }, { status: 400 });
 
-  const lead: LeadRecord = { ...body, receivedAt: new Date().toISOString(), summary: c.message?.trim() || "", lines: await describeItems(body) };
+  const lead: LeadRecord = { ...body, receivedAt: new Date().toISOString(), summary: c.message?.trim() || "", lines: await describeItems(body), value: await estimateValue(body) };
   const title = `${c.name} · ${lead.source}${lead.lines[0] ? ` · ${lead.lines[0].slice(0, 50)}` : ""}`;
 
   let payload: Awaited<ReturnType<typeof getPayload>> | undefined; let leadId: number | undefined;
@@ -60,6 +64,35 @@ export async function POST(req: Request) {
   }
   if (!leadId && errors.length) return NextResponse.json({ error: "We couldn't send your request. Please call us." }, { status: 502 });
   return NextResponse.json({ ok: true });
+}
+
+/**
+ * Indicative deal value from the prices stored in the CMS (machine configuration, attachments, add-ons, warranty), whether or
+ * not prices are shown on the site. Used as the opportunity's monetary value so pipeline reports have a figure; undefined when
+ * nothing in the request carries a price.
+ */
+async function estimateValue(body: LeadPayload): Promise<number | undefined> {
+  try {
+    const { catalogue } = await getSiteContent();
+    const machine = (id?: string) => catalogue.machines.find((m) => m.id === id);
+    const att = (id?: string) => catalogue.attachments.find((a) => a.id === id);
+    const machinePrice = (id?: string, cfgId?: string) => { const m = machine(id); const cfg = m?.configurations.find((x) => x.id === cfgId); return cfg?.price ?? m?.promoPrice ?? m?.basePrice; };
+    const attPrice = (id?: string, variantId?: string) => { const a = att(id); const v = a?.variants.find((x) => x.id === variantId) ?? a?.variants[0]; return v?.price ?? a?.basePrice; };
+    let total = 0, priced = false;
+    const add = (p?: number, qty = 1) => { if (typeof p === "number" && p > 0) { total += p * qty; priced = true; } };
+    for (const it of body.items ?? []) {
+      if (it.kind === "machine") add(machinePrice(it.machineId, it.configurationId), it.quantity);
+      else if (it.kind === "attachment") add(attPrice(it.attachmentId, it.variantId), it.quantity);
+    }
+    for (const b of body.builds ?? []) {
+      const cfg = b.configuration;
+      add(machinePrice(cfg.selectedModelId, cfg.selectedConfigurationId));
+      for (const s of cfg.attachmentSelections) add(attPrice(s.attachmentId, s.variantId), s.quantity);
+      for (const id of cfg.addonSelections) add(catalogue.addons.find((a) => a.id === id)?.price);
+      if (cfg.warrantySelectionId) add(catalogue.warranties.find((w) => w.id === cfg.warrantySelectionId)?.price);
+    }
+    return priced ? Math.round(total) : undefined;
+  } catch (err) { console.error("[lead] estimateValue", err); return undefined; }
 }
 
 /** Human-readable lines for quote items and builds, resolved against the catalogue. */

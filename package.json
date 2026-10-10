@@ -26,7 +26,8 @@
     "ghl:setup": "npx tsx src/scripts/ghl-setup.ts",
     "audit:crawl": "python3 scripts/audit-crawl.py http://localhost:3001 audit-crawl.json",
     "audit:lighthouse": "bash scripts/audit-lighthouse.sh http://localhost:3001 audit-lighthouse",
-    "ghl:provision": "npx tsx src/scripts/ghl-provision.ts"
+    "ghl:provision": "npx tsx src/scripts/ghl-provision.ts",
+    "ghl:resync": "bash scripts/ghl-resync.sh"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.88.0",

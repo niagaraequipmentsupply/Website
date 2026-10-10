@@ -7,6 +7,7 @@ import { useQuote } from "@/store/quote";
 import { calculateTotals } from "@/lib/pricing";
 import { useCatalogue } from "@/components/CatalogueProvider";
 import { track } from "@/lib/analytics";
+import { readAttribution } from "@/lib/attribution";
 import type { LeadPayload } from "@/lib/types";
 import { Turnstile } from "./Turnstile";
 
@@ -52,6 +53,7 @@ export function LeadForm({ source, title, includeItems = false, submitLabel = "S
       startedAt,
       marketingConsent: fd.get("marketingConsent") === "on",
       turnstileToken: String(fd.get("cf-turnstile-response") ?? "") || undefined,
+      attribution: readAttribution(),
     };
     try {
       const res = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
@@ -82,7 +84,7 @@ export function LeadForm({ source, title, includeItems = false, submitLabel = "S
         <label className="text-sm font-semibold text-charcoal">Name *<input name="name" required autoComplete="name" className={`${field} mt-1`} /></label>
         <label className="text-sm font-semibold text-charcoal">Company<input name="company" autoComplete="organization" className={`${field} mt-1`} /></label>
         <label className="text-sm font-semibold text-charcoal">Email *<input name="email" type="email" required autoComplete="email" className={`${field} mt-1`} /></label>
-        <label className="text-sm font-semibold text-charcoal">Phone *<input name="phone" type="tel" required autoComplete="tel" className={`${field} mt-1`} /></label>
+        <label className="text-sm font-semibold text-charcoal">Phone *<input name="phone" type="tel" required autoComplete="tel" inputMode="tel" placeholder="905-555-0123" className={`${field} mt-1`} /></label>
         <label className="text-sm font-semibold text-charcoal sm:col-span-2">City / job site location<input name="location" autoComplete="address-level2" className={`${field} mt-1`} placeholder="e.g. Niagara Falls, ON" /></label>
         <label className="text-sm font-semibold text-charcoal sm:col-span-2">{messageLabel}<textarea name="message" rows={compact ? 3 : 4} defaultValue={defaultMessage} className={`${field} mt-1 h-auto py-2`} placeholder="Machine, attachments, timeline, financing needs…" /></label>
         <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />

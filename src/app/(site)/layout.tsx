@@ -7,6 +7,8 @@ import { Footer } from "@/components/layout/Footer";
 import { OrganizationSchema } from "@/components/layout/OrganizationSchema";
 import { Analytics } from "@/components/layout/Analytics";
 import { ConsentBanner } from "@/components/layout/ConsentBanner";
+import { Attribution } from "@/components/layout/Attribution";
+import { ChatWidget } from "@/components/ghl/ChatWidget";
 import { CatalogueProvider } from "@/components/CatalogueProvider";
 import { getSiteContent } from "@/lib/catalogue";
 import { clientCatalogue } from "@/lib/client-catalogue";
@@ -51,6 +53,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         <OrganizationSchema site={site} />
         <Analytics />
         <ConsentBanner gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        <Attribution />
+        <ChatWidget />
       </body>
     </html>
   );

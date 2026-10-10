@@ -19,7 +19,7 @@ if (sales) console.log(`GHL_SALES_PIPELINE_ID=${sales.id}\nGHL_SALES_STAGE_ID=${
 if (service) console.log(`GHL_SERVICE_PIPELINE_ID=${service.id}\nGHL_SERVICE_STAGE_ID=${first(service)}`); else console.log("  ✗ no pipeline named like \"Service & Modifications\"");
 if (parts) console.log(`GHL_PARTS_PIPELINE_ID=${parts.id}\nGHL_PARTS_STAGE_ID=${first(parts)}`); else console.log("  ✗ no pipeline named like \"Parts & Lubricants\"");
 const fields = (await get(`/locations/${loc}/customFields?model=contact`)) as { customFields: { fieldKey: string; name: string; dataType: string }[] };
-const need = ["contact.lead_source", "contact.model_of_interest", "contact.requested_items", "contact.first_touchpoint_date", "contact.first_touchpoint_channel", "contact.customer_segment", "contact.financing_interest", "contact.website_page", "contact.machine_owned", "contact.serial_number"];
+const need = ["contact.lead_source", "contact.model_of_interest", "contact.requested_items", "contact.first_touchpoint_date", "contact.first_touchpoint_channel", "contact.customer_segment", "contact.financing_interest", "contact.website_page", "contact.machine_owned", "contact.serial_number", "contact.first_touchpoint_campaign", "contact.landing_page", "contact.last_touchpoint_channel", "contact.last_touchpoint_campaign", "contact.google_click_id", "contact.marketing_consent_date"];
 console.log("\nCustom fields:");
 for (const k of need) { const f = fields.customFields.find((x) => x.fieldKey === k); console.log(`  ${f ? "✓" : "✗"} ${k}${f ? `  (${f.name}, ${f.dataType})` : "  MISSING"}`); }
 process.exit(0);

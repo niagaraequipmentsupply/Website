@@ -3,19 +3,32 @@ import { site } from "@/data/site";
 import { getSiteContent } from "@/lib/catalogue";
 import { isThin } from "@/lib/machines";
 import { serviceAreas } from "@/data/service-areas";
-import { compareHref } from "@/lib/compare";
+import { canonicalCompareHref, relatedCompareHref } from "@/lib/compare";
+
+/**
+ * Rendered on every request, never at build time: Railway builds without the data volume, so a static sitemap
+ * would list the seed catalogue (old attachment slugs that 404) and miss every CMS-managed page.
+ */
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = site.url;
   const { categories, attachmentCategories, posts, parts, catalogue: { machines, attachments } } = await getSiteContent();
   const statics = ["", "/inventory", "/attachments", "/builder/excavator", "/builder/skid-steer", "/parts", "/financing", "/service", "/service/parts", "/lubricants", "/blog", "/about", "/contact"];
+  const live = machines.filter((m) => !isThin(m));
+  // Every comparison the site links to: one per category (its first three listed models) and each machine page's
+  // "compare side by side" trio. The default trio is /compare itself, already listed.
+  const compares = [
+    ...categories.map((c) => canonicalCompareHref(live.filter((m) => m.category === c.slug).slice(0, 3))),
+    ...live.map((m) => relatedCompareHref(m, machines)),
+  ].filter((href, i, all) => href !== "/compare" && href.split(",").length >= 2 && all.indexOf(href) === i);
   return [
-    ...statics.map((p) => ({ url: `${base}${p}`, changeFrequency: "weekly" as const, priority: p === "" ? 1 : 0.7 })),
+    ...statics.map((p) => ({ url: `${base}${p || "/"}`, changeFrequency: "weekly" as const, priority: p === "" ? 1 : 0.7 })),
     ...["/service-area", "/compare", "/privacy", "/terms", "/accessibility"].map((p) => ({ url: `${base}${p}`, changeFrequency: "monthly" as const, priority: p === "/service-area" || p === "/compare" ? 0.7 : 0.3 })),
     ...serviceAreas.map((a) => ({ url: `${base}/service-area/${a.slug}`, changeFrequency: "monthly" as const, priority: 0.7 })),
-    ...categories.map((c) => { const slugs = machines.filter((m) => m.category === c.slug && !isThin(m)).slice(0, 3).map((m) => m.slug); return slugs.length >= 2 ? [{ url: `${base}${compareHref(slugs)}`, changeFrequency: "monthly" as const, priority: 0.5 }] : []; }).flat(),
+    ...compares.map((href) => ({ url: `${base}${href}`, changeFrequency: "monthly" as const, priority: 0.5 })),
     ...categories.map((c) => ({ url: `${base}/inventory/${c.slug}`, changeFrequency: "weekly" as const, priority: 0.8 })),
-    ...machines.filter((m) => !isThin(m)).map((m) => ({ url: `${base}/inventory/${m.category}/${m.slug}`, changeFrequency: "weekly" as const, priority: 0.8 })),
+    ...live.map((m) => ({ url: `${base}/inventory/${m.category}/${m.slug}`, changeFrequency: "weekly" as const, priority: 0.8 })),
     ...attachmentCategories.map((c) => ({ url: `${base}/attachments/${c.slug}`, changeFrequency: "weekly" as const, priority: 0.7 })),
     ...attachments.map((a) => ({ url: `${base}/attachments/${a.attachmentCategory}/${a.slug}`, changeFrequency: "monthly" as const, priority: 0.6 })),
     ...posts.map((p) => ({ url: `${base}/blog/${p.slug}`, lastModified: p.publishedAt, changeFrequency: "monthly" as const, priority: 0.6 })),

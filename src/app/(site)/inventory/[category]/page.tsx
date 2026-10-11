@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMeta, describe, CLOSERS } from "@/lib/seo";
+import { isThin } from "@/lib/machines";
 import Link from "next/link";
 import { RuggedChip } from "@/components/ui/RuggedChip";
 import { notFound } from "next/navigation";
@@ -6,7 +8,7 @@ import { Check, ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { compareHref } from "@/lib/compare";
+import { canonicalCompareHref } from "@/lib/compare";
 import { ProductCard } from "@/components/equipment/ProductCard";
 import { CtaBand } from "@/components/home/CtaBand";
 import { Button } from "@/components/ui/Button";
@@ -26,7 +28,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const cat = await getCategory((await params).category);
   if (!cat) return {};
-  return { title: `RIPPA ${cat.name} for Sale in Ontario`, description: cat.description, alternates: { canonical: `/inventory/${cat.slug}` } };
+  return pageMeta({ titles: [`RIPPA ${cat.name} for Sale in Ontario`, `${cat.name} for Sale in Ontario`, `RIPPA ${cat.name} for Sale`], description: describe(cat.description, CLOSERS.sales), path: `/inventory/${cat.slug}` });
 }
 
 export default async function CategoryPage({ params }: { params: Promise<Params> }) {
@@ -140,7 +142,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
           <Container>
             <SectionHeading eyebrow="Buying guide" title={`Compare RIPPA ${cat.name}`} subtitle="Side-by-side specs, who each model is for, how well it handles common jobs and what safety and comfort equipment is included." rule={false} />
             <ComparisonChart machines={items.map(({ id, slug, modelName, series, category, images, specs, targetUsers, checklist, applicationFit, warranty, showPrice, basePrice, promoPrice, configurations, indoorUse, noiseLevel }) => ({ id, slug, modelName, series, category, images: images.slice(0, 1), specs, targetUsers, checklist, applicationFit, warranty, showPrice, basePrice, promoPrice, configurations, indoorUse, noiseLevel }))} categoryName={cat.name} />
-            {items.length >= 2 && <p className="mt-4 text-sm"><Link href={compareHref(items.slice(0, 3).map((m) => m.slug))} className="inline-flex items-center gap-1 font-semibold text-navy hover:text-electric">Open the full spec-by-spec comparison <ArrowRight className="size-3.5" aria-hidden /></Link></p>}
+            {items.length >= 2 && <p className="mt-4 text-sm"><Link href={canonicalCompareHref(items.filter((m) => !isThin(m)).slice(0, 3))} className="inline-flex items-center gap-1 font-semibold text-navy hover:text-electric">Open the full spec-by-spec comparison <ArrowRight className="size-3.5" aria-hidden /></Link></p>}
             <p className="mt-4 text-[12px] text-grey">Ratings and required attachments follow the RIPPA buying guide. Specifications are manufacturer figures and may vary by configuration. Confirm fitment with our team before ordering attachments.</p>
           </Container>
         </section>

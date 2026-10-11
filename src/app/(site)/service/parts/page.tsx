@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Package, Globe, Truck, Check, Phone } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
@@ -6,11 +7,11 @@ import { Button } from "@/components/ui/Button";
 import { LeadForm } from "@/components/quote/LeadForm";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "Order RIPPA Parts, Shipped Across Canada",
+export const metadata: Metadata = pageMeta({
+  titles: ["Order RIPPA Parts Across Canada"],
   description: "Order genuine RIPPA parts by part number or photo: filters, tracks, hoses, couplers and teeth shipped across Canada, with sourcing help for US owners.",
-  alternates: { canonical: "/service/parts" },
-};
+  path: "/service/parts",
+});
 
 const faqs = [
   { q: "How do I find my model and serial number?", a: "The data plate is on the frame near the operator station on excavators and inside the cab door or on the rear frame on skid steers. Send a photo of the plate and we'll identify the machine." },

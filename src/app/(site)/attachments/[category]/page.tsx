@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta, describe } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
@@ -25,7 +26,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const cat = await getAttachmentCategory((await params).category);
   if (!cat) return {};
-  return { title: `RIPPA ${cat.name} in Ontario`, description: `${cat.description} Sized by model, with plate and coupler fitment confirmed by Niagara Equipment Supply, Thorold.`.slice(0, 160), alternates: { canonical: `/attachments/${cat.slug}` } };
+  return pageMeta({ titles: [`RIPPA ${cat.name} in Ontario`, `RIPPA ${cat.name}`], description: describe(cat.description, ["Sized by model, with plate and coupler fitment confirmed by Niagara Equipment Supply, Thorold.", "Sized by model, fitment confirmed by Niagara Equipment Supply.", "Sized by model, fitment confirmed."]), path: `/attachments/${cat.slug}` });
 }
 
 export default async function AttachmentCategoryPage({ params, searchParams }: { params: Promise<Params>; searchParams: Promise<{ model?: string; plate?: string }> }) {

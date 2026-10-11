@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { metaDescription } from "@/lib/format";
+import { pageMeta, describe, CLOSERS } from "@/lib/seo";
+import { PRICES_ENABLED, attachmentUnitPrice } from "@/lib/pricing";
 import { RuggedChip } from "@/components/ui/RuggedChip";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
@@ -26,12 +27,12 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const a = await getAttachment(slug);
   if (!a || a.attachmentCategory !== category) return {};
   const noun = { "excavator-attachments": "Mini Excavators", "skid-steer-attachments": "Skid Steers", "loader-attachments": "Loaders" }[category] ?? "RIPPA Machines";
-  return {
-    ...(a.images[0] ? { openGraph: { images: [{ url: a.images[0].src, alt: a.images[0].alt }] } } : {}),
-    title: `RIPPA ${a.name} for ${noun}`,
-    description: metaDescription(((d) => (d.length < 100 ? `${d} Fitment confirmed and quoted in writing by Niagara Equipment Supply.` : d))(`${(a.longDescription ?? a.description).split(/(?<=\.)\s/)[0]} Fits RIPPA ${noun.toLowerCase()}, sized by model.`)),
-    alternates: { canonical: `/attachments/${category}/${a.slug}` },
-  };
+  return pageMeta({
+    titles: [`RIPPA ${a.name} for ${noun}`, `RIPPA ${a.name}`, a.name],
+    description: describe(`${(a.longDescription ?? a.description).split(/(?<=\.)\s/)[0]} Fits RIPPA ${noun.toLowerCase()}, sized by model.`, CLOSERS.attachments),
+    path: `/attachments/${category}/${a.slug}`,
+    image: a.images[0],
+  });
 }
 
 export default async function AttachmentPage({ params }: { params: Promise<Params> }) {
@@ -41,6 +42,11 @@ export default async function AttachmentPage({ params }: { params: Promise<Param
   const cat = (await getAttachmentCategory(category))!;
   const { catalogue } = await getSiteContent();
   const fits = catalogue.machines.filter((m) => isAttachmentCompatible(a, m));
+  // Product markup only once prices are shown: Google rejects an Offer without a real price, and a $0 placeholder is worse.
+  const prices = PRICES_ENABLED ? a.variants.map((v) => attachmentUnitPrice(a, v.id)).filter((p): p is number => typeof p === "number") : [];
+  const productLd = prices.length
+    ? { "@context": "https://schema.org", "@type": "Product", name: `RIPPA ${a.name}`, brand: { "@type": "Brand", name: "RIPPA" }, category: a.attachmentType, image: a.images.map((i) => i.src), description: a.description, ...(a.variants.length ? { model: a.variants.map((v) => v.sku).filter(Boolean).slice(0, 20).join(", ") } : {}), offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: Math.min(...prices), highPrice: Math.max(...prices), offerCount: prices.length, availability: "https://schema.org/InStock", seller: { "@type": "Organization", name: "Niagara Equipment Supply" } } }
+    : null;
 
   return (
     <>
@@ -89,7 +95,7 @@ export default async function AttachmentPage({ params }: { params: Promise<Param
         </Container>
       </section>
       <CtaBand title="Ready to add it to your setup?" text="Add this attachment to your quote list or configure it inside the Excavator Builder." primary={{ href: "/builder/excavator", label: "Open Builder" }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Product", name: `RIPPA ${a.name}`, brand: { "@type": "Brand", name: "RIPPA" }, category: a.attachmentType, image: a.images.map((i) => i.src), description: a.description, ...(a.variants.length ? { model: a.variants.map((v) => v.sku).filter(Boolean).slice(0, 20).join(", ") } : {}), offers: { "@type": "Offer", availability: "https://schema.org/InStock", priceCurrency: "CAD", price: 0, priceSpecification: { "@type": "PriceSpecification", priceCurrency: "CAD", valueAddedTaxIncluded: false }, seller: { "@type": "Organization", name: "Niagara Equipment Supply" } } }) }} />
+      {productLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }} />}
     </>
   );
 }

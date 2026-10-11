@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { metaDescription } from "@/lib/format";
+import { pageMeta, describe, CLOSERS } from "@/lib/seo";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -20,9 +20,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { posts, site } = await getSiteContent(); const post = posts.find((p) => p.slug === slug);
   if (!post) return {};
   return {
-    title: post.title, description: metaDescription(post.excerpt), alternates: { canonical: `/blog/${post.slug}` },
+    ...pageMeta({ titles: [post.title], description: describe(post.excerpt, CLOSERS.guides), path: `/blog/${post.slug}`, image: post.cover, article: { publishedTime: post.publishedAt, modifiedTime: post.updatedAt } }),
     authors: [{ name: site.name, url: "/about" }],
-    openGraph: { type: "article", publishedTime: post.publishedAt, modifiedTime: post.updatedAt, authors: [site.name], images: post.cover ? [{ url: post.cover.src, alt: post.cover.alt }] : undefined },
   };
 }
 

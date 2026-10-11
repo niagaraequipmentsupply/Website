@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { Tractor, Wrench, Package, Handshake, ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
@@ -7,11 +8,11 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CtaBand } from "@/components/home/CtaBand";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "About Us · RIPPA Dealer in Niagara",
+export const metadata: Metadata = pageMeta({
+  titles: ["About Us · RIPPA Dealer in Niagara"],
   description: "Niagara Equipment Supply is the RIPPA dealer in Thorold, Ontario: mini excavators, skid steers, loaders and attachments, backed by the RIPPA Service Centre.",
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
 
 export default async function AboutPage() {
   const { site, catalogue } = await getSiteContent();

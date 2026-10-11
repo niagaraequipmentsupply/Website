@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
@@ -8,11 +9,11 @@ import { SocialStrip } from "@/components/content/SocialStrip";
 import { ContentRequest } from "@/components/content/ContentRequest";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "RIPPA Guides, Field Calls & How-To Videos",
+export const metadata: Metadata = pageMeta({
+  titles: ["RIPPA Guides & How-To Videos"],
   description: "Maintenance guides, field-call write-ups and how-to videos for RIPPA mini excavators and skid steers, written by certified technicians in Niagara, Ontario.",
-  alternates: { canonical: "/blog" },
-};
+  path: "/blog",
+});
 
 export default async function BlogPage({ searchParams }: { searchParams: Promise<{ category?: string; model?: string }> }) {
   const { category, model } = await searchParams;

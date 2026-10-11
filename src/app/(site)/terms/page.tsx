@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/layout/PageHero";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "Terms of Use",
+export const metadata: Metadata = pageMeta({
+  titles: ["Terms of Use"],
   description: "Terms for using the Niagara Equipment Supply website, including how quotes, pricing, specifications, builder estimates and financing information should be read.",
-  alternates: { canonical: "/terms" },
-};
+  path: "/terms",
+});
 
 const UPDATED = "September 30, 2026";
 

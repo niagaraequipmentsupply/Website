@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
@@ -7,11 +8,11 @@ import { CalendarEmbed } from "@/components/ghl/CalendarEmbed";
 import { getSiteContent } from "@/lib/catalogue";
 import { site as siteDefaults } from "@/data/site";
 
-export const metadata: Metadata = {
-  title: "Contact Us in Thorold, Ontario",
+export const metadata: Metadata = pageMeta({
+  titles: ["Contact Us in Thorold, Ontario"],
   description: `Call, email or visit Niagara Equipment Supply at 16-2275 Hwy 20, ${siteDefaults.address.city}, Ontario for RIPPA equipment sales, parts, the RIPPA Service Centre and written quotes.`,
-  alternates: { canonical: "/contact" },
-};
+  path: "/contact",
+});
 
 export default async function ContactPage() {
   const { site } = await getSiteContent();

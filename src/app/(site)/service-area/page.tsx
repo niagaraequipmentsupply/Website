@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight, Truck, Wrench, MapPin } from "lucide-react";
 import { Container } from "@/components/ui/Container";
@@ -8,11 +9,11 @@ import { Button } from "@/components/ui/Button";
 import { getSiteContent } from "@/lib/catalogue";
 import { serviceAreas } from "@/data/service-areas";
 
-export const metadata: Metadata = {
-  title: "Areas We Serve: Niagara & Southern Ontario",
+export const metadata: Metadata = pageMeta({
+  titles: ["Areas We Serve in Southern Ontario"],
   description: "RIPPA equipment sales, delivery, demos and service for Niagara Falls, St. Catharines, Welland, Hamilton, Burlington and across Ontario from Thorold.",
-  alternates: { canonical: "/service-area" },
-};
+  path: "/service-area",
+});
 
 export default async function ServiceAreasPage() {
   const { site } = await getSiteContent();

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { RuggedChip } from "@/components/ui/RuggedChip";
 import { notFound } from "next/navigation";
@@ -26,11 +27,11 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   if (!m) return {};
   const { parts } = await getSiteContent();
   const n = parts.filter((p) => p.compatibleModelIds.includes(m.id)).length;
-  return {
-    title: `RIPPA ${m.modelName} Parts (${n} genuine parts)`,
+  return pageMeta({
+    titles: [`Genuine RIPPA ${m.modelName} Parts (${n} parts)`, `Genuine RIPPA ${m.modelName} Parts`],
     description: `Genuine RIPPA ${m.modelName} parts: filters, hydraulic cylinders, hoses, undercarriage, electrical and engine parts with RIPPA part numbers. Shipped across Canada.`,
-    alternates: { canonical: `/parts/${m.slug}` },
-  };
+    path: `/parts/${m.slug}`,
+  });
 }
 
 export default async function ModelPartsPage({ params }: { params: Promise<Params> }) {

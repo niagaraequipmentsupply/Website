@@ -7,7 +7,7 @@ import { Logo } from "./Logo";
 import { serviceAreas } from "@/data/service-areas";
 
 const quick = [
-  [{ href: "/", label: "Home" }, { href: "/inventory", label: "Equipment" }, { href: "/attachments", label: "Attachments" }, { href: "/financing", label: "Financing" }],
+  [{ href: "/", label: "Home" }, { href: "/inventory", label: "Equipment" }, { href: "/attachments", label: "Attachments" }, { href: "/compare", label: "Compare Models" }, { href: "/financing", label: "Financing" }],
   [{ href: "/service", label: "RIPPA Service Centre" }, { href: "/parts", label: "RIPPA Parts Catalogue" }, { href: "/lubricants", label: "Oil & Lubricants" }, { href: "/blog", label: "Blog" }, { href: "/about", label: "About" }, { href: "/contact", label: "Contact" }],
 ];
 

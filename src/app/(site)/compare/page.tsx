@@ -9,8 +9,8 @@ import { AddToQuoteButton } from "@/components/equipment/AddToQuoteButton";
 import { CompareSelector } from "@/components/equipment/CompareSelector";
 import { getSiteContent } from "@/lib/catalogue";
 import { isThin } from "@/lib/machines";
-import { metaDescription } from "@/lib/format";
-import { buildCompareRows, compareHref, DEFAULT_COMPARE, highlightLabels, parseModelsParam, resolveCompareModels } from "@/lib/compare";
+import { pageMeta, describe } from "@/lib/seo";
+import { buildCompareRows, canonicalCompareHref, DEFAULT_COMPARE, highlightLabels, parseModelsParam, resolveCompareModels, sortForCompare } from "@/lib/compare";
 
 type SearchParams = Promise<{ models?: string | string[] }>;
 
@@ -19,24 +19,23 @@ async function load(searchParams: SearchParams) {
   const content = await getSiteContent();
   const requested = parseModelsParam(models);
   const slugs = requested.length ? requested : DEFAULT_COMPARE;
-  const machines = resolveCompareModels(content.catalogue.machines, slugs);
+  const machines = sortForCompare(resolveCompareModels(content.catalogue.machines, slugs));
   return { content, machines, requested };
 }
 
 export async function generateMetadata({ searchParams }: { searchParams: SearchParams }): Promise<Metadata> {
   const { machines, requested } = await load(searchParams);
   const valid = machines.length >= 2;
-  const title = valid ? `${machines.map((m) => m.modelName).join(" vs ")}: RIPPA Comparison` : "Compare RIPPA Models";
-  const description = valid
-    ? metaDescription(`Side-by-side specs for the RIPPA ${machines.map((m) => m.modelName).join(", ")}: weight, engine, dig depth, hydraulics and dimensions. Compare, then request a written quote.`)
-    : "Compare RIPPA mini excavators, skid steers, loaders and dumpers side by side: weight, engine, dig depth, hydraulics and dimensions.";
-  const canonicalSlugs = [...machines].sort((a, b) => a.sortOrder - b.sortOrder || a.modelName.localeCompare(b.modelName)).map((m) => m.slug);
-  return {
-    title,
-    description,
-    alternates: { canonical: valid ? compareHref(canonicalSlugs) : "/compare" },
-    robots: { index: valid || requested.length === 0, follow: true },
-  };
+  const names = machines.map((m) => m.modelName);
+  return pageMeta({
+    titles: valid ? [`${names.join(" vs ")}: RIPPA Comparison`, names.join(" vs "), `Compare ${names.join(", ")}`] : ["Compare RIPPA Models"],
+    description: valid
+      ? describe(`Side-by-side specs for the RIPPA ${names.join(", ")}: weight, engine, dig depth, hydraulics and dimensions.`, ["Compare, then request a written quote from Niagara Equipment Supply.", "Compare, then request a written quote."])
+      : "Compare RIPPA mini excavators, skid steers, loaders and dumpers side by side: weight, engine, dig depth, hydraulics and dimensions, then request a written quote.",
+    // The default trio is /compare itself; any other set canonicalises to its catalogue-ordered URL, which is also how it is linked.
+    path: valid ? canonicalCompareHref(machines) : "/compare",
+    noindex: !(valid || requested.length === 0),
+  });
 }
 
 export default async function ComparePage({ searchParams }: { searchParams: SearchParams }) {
@@ -60,7 +59,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Sear
       </section>
 
       <Container className="py-8">
-        <CompareSelector groups={groups} selected={selected} />
+        <CompareSelector groups={groups} selected={selected} order={sortForCompare(catalogue.machines).map((m) => m.slug)} />
 
         {machines.length === 0 ? (
           <p className="mt-8 rounded-card border border-line bg-white p-6 text-sm text-grey">Pick two or more models above to start a comparison.</p>

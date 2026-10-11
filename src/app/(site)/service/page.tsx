@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Wrench, Cog, ShieldCheck, Truck, MapPin, Package, Globe, Check, ClipboardCheck, Snowflake, Droplets, Video, Phone, Sprout, Trees, HardHat, Home, Tractor, GraduationCap } from "lucide-react";
@@ -15,12 +16,12 @@ import { ServiceHub } from "@/components/content/ServiceHub";
 import { SERVICE_CENTRE, PILLARS } from "@/components/service/ServiceCentre";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "RIPPA Service Centre in Thorold, Ontario",
+export const metadata: Metadata = pageMeta({
+  titles: ["RIPPA Service Centre in Thorold, ON"],
   description: "Certified RIPPA technicians in Thorold, Ontario. Warranty claims handled for you, in-shop and field repairs, genuine parts. Every RIPPA owner welcome.",
-  alternates: { canonical: "/service" },
+  path: "/service",
   keywords: ["RIPPA service", "RIPPA warranty", "RIPPA repair Ontario", "RIPPA parts Canada", "RIPPA dealer service Niagara", "mini excavator service Thorold"],
-};
+});
 
 const owners = [
   { icon: Home, title: "First machine", text: "Never owned an excavator or skid steer? Your delivery includes a hands-on walk-through, and we check in at your first service so nothing gets missed." },

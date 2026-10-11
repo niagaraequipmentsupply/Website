@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
@@ -8,11 +9,11 @@ import { AttachmentCard } from "@/components/equipment/AttachmentCard";
 import { CtaBand } from "@/components/home/CtaBand";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "RIPPA Attachments for Sale in Ontario",
+export const metadata: Metadata = pageMeta({
+  titles: ["RIPPA Attachments for Sale in Ontario"],
   description: "Buckets, thumbs, augers, rakes, forks, cutters and more for RIPPA excavators and skid steers. Add attachments to your quote.",
-  alternates: { canonical: "/attachments" },
-};
+  path: "/attachments",
+});
 
 export default async function AttachmentsPage() {
   const { attachmentCategories, catalogue } = await getSiteContent();

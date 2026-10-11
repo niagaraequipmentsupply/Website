@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { Fragment } from "react";
+import { site } from "@/data/site";
 
 export interface Crumb { href?: string; label: string }
 
 export function Breadcrumbs({ items, className = "", light }: { items: Crumb[]; className?: string; light?: boolean }) {
   const all = [{ href: "/", label: "Home" }, ...items];
+  const absolute = (href: string) => (href.startsWith("http") ? href : `${site.url}${href === "/" ? "" : href}`);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: all.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.label, ...(c.href ? { item: c.href } : {}) })),
+    itemListElement: all.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.label, ...(c.href ? { item: absolute(c.href) } : {}) })),
   };
   return (
     <nav aria-label="Breadcrumb" className={`text-[13px] ${light ? "text-white/80" : "text-grey"} ${className}`}>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Droplets, Truck, FlaskConical, Warehouse, Tractor, Building2, Store, Wrench, Check, Phone, Leaf } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
@@ -10,11 +11,11 @@ import { EquipmentImage } from "@/components/ui/EquipmentImage";
 import { getSiteContent } from "@/lib/catalogue";
 import { lubricantCategories } from "@/collections/Lubricants";
 
-export const metadata: Metadata = {
-  title: "Chevron Oil & Lubricants Dealer in Niagara",
+export const metadata: Metadata = pageMeta({
+  titles: ["Chevron Lubricants Dealer in Niagara"],
   description: "Chevron Delo and Catalys engine oil, hydraulic fluid, gear oil, grease, coolant and DEF in Thorold, with bulk programs for farms, shops and fleets.",
-  alternates: { canonical: "/lubricants" },
-};
+  path: "/lubricants",
+});
 
 const packLabels: Record<string, string> = { "1l": "1 L", "4l": "4 L", "20l": "20 L pail", drum: "205 L drum", tote: "1,000 L tote", bulk: "Bulk", cartridge: "Cartridge" };
 

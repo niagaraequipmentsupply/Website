@@ -11,7 +11,7 @@ import { LeadForm } from "@/components/quote/LeadForm";
 import { ServiceCentreStrip } from "@/components/service/ServiceCentre";
 import { getSiteContent } from "@/lib/catalogue";
 import { serviceAreas, serviceAreaBySlug } from "@/data/service-areas";
-import { metaDescription } from "@/lib/format";
+import { pageMeta, describe, CLOSERS } from "@/lib/seo";
 
 type Params = Promise<{ slug: string }>;
 
@@ -19,7 +19,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params;
   const area = serviceAreaBySlug(slug);
   if (!area) return {};
-  return { title: `RIPPA Dealer for ${area.name}`, description: metaDescription(area.metaDescription), alternates: { canonical: `/service-area/${area.slug}` } };
+  const first = area.name.split(/,| and /)[0].trim();
+  return pageMeta({ titles: [`RIPPA Dealer for ${area.name}`, `RIPPA Dealer for ${area.name.replace(/ and /g, " & ")}`, `RIPPA Dealer for ${first}`], description: describe(area.metaDescription, CLOSERS.sales), path: `/service-area/${area.slug}` });
 }
 
 export default async function ServiceAreaPage({ params }: { params: Params }) {
@@ -30,10 +31,10 @@ export default async function ServiceAreaPage({ params }: { params: Params }) {
   const models = area.popularModels.map((s) => catalogue.machines.find((m) => m.slug === s)).filter((m): m is NonNullable<typeof m> => !!m);
   const others = serviceAreas.filter((a) => a.slug !== area.slug);
 
+  // Breadcrumb markup comes from the PageHero's <Breadcrumbs>; listing it twice here just duplicated it.
   const schema = [
     { "@context": "https://schema.org", "@type": "Service", name: `RIPPA equipment sales, delivery and service in ${area.name}`, serviceType: "Compact construction equipment dealer", provider: { "@type": "LocalBusiness", name: site.name, telephone: site.phone, url: site.url }, areaServed: { "@type": "City", name: area.name, containedInPlace: { "@type": "AdministrativeArea", name: "Ontario" } }, url: `${site.url}/service-area/${area.slug}` },
     { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: area.faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })) },
-    { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: site.url }, { "@type": "ListItem", position: 2, name: "Areas we serve", item: `${site.url}/service-area` }, { "@type": "ListItem", position: 3, name: area.name, item: `${site.url}/service-area/${area.slug}` }] },
   ];
 
   return (

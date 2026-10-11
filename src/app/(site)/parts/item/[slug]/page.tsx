@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { metaDescription } from "@/lib/format";
+import { pageMeta, describe, CLOSERS } from "@/lib/seo";
 import Link from "next/link";
 import { RuggedChip } from "@/components/ui/RuggedChip";
 import { notFound } from "next/navigation";
@@ -26,11 +26,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const p = parts.find((x) => x.slug === slug);
   if (!p) return {};
   const fits = catalogue.machines.filter((m) => p.compatibleModelIds.includes(m.id)).map((m) => m.modelName).join(", ");
-  return {
-    title: `${p.name}${parts.some((x) => x.id !== p.id && x.name === p.name) ? ` ${p.sku}` : ""} | RIPPA Part`,
-    description: metaDescription(`Genuine RIPPA ${p.name} (${p.sku})${fits ? ` for the ${fits}` : ""}. ${systemLabel(p.system)}. Request it from Niagara Equipment Supply; shipped across Canada.`),
-    alternates: { canonical: `/parts/item/${p.slug}` },
-  };
+  const withSku = `${p.name} ${p.sku} | RIPPA Part`;
+  return pageMeta({
+    titles: withSku.length <= 70 ? [withSku] : [`${p.name} | RIPPA Part`, p.name],
+    description: describe(`Genuine RIPPA ${p.name} (${p.sku})${fits ? ` for the ${fits}` : ""}. ${systemLabel(p.system)}.`, CLOSERS.parts),
+    path: `/parts/item/${p.slug}`,
+    image: p.image,
+  });
 }
 
 export default async function PartPage({ params }: { params: Promise<Params> }) {
@@ -40,7 +42,7 @@ export default async function PartPage({ params }: { params: Promise<Params> }) 
   if (!p) notFound();
   const fits = catalogue.machines.filter((m) => p.compatibleModelIds.includes(m.id));
   const related = parts.filter((x) => x.id !== p.id && x.system === p.system && x.compatibleModelIds.some((id) => p.compatibleModelIds.includes(id))).slice(0, 5);
-  const jsonLd = { "@context": "https://schema.org", "@type": "Product", name: p.name, sku: p.sku, mpn: p.sku, brand: { "@type": "Brand", name: "RIPPA" }, category: systemLabel(p.system), image: p.image?.src, description: `Genuine RIPPA ${p.name}${fits.length ? ` for ${fits.map((m) => m.modelName).join(", ")}` : ""}.` };
+  // No Product markup for parts: they carry no price, and Google rejects a Product with no offer, review or rating.
   return (
     <>
       <section className="border-b border-line">
@@ -92,7 +94,6 @@ export default async function PartPage({ params }: { params: Promise<Params> }) 
           </Container>
         </section>
       )}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>
   );
 }

@@ -19,12 +19,13 @@ import { ProductCard } from "@/components/equipment/ProductCard";
 import { LeadForm } from "@/components/quote/LeadForm";
 import { ServiceCentreStrip } from "@/components/service/ServiceCentre";
 import { Testimonials } from "@/components/home/Testimonials";
-import { compareHref } from "@/lib/compare";
+import { relatedCompareHref } from "@/lib/compare";
 import { MobileQuoteBar } from "@/components/equipment/MobileQuoteBar";
 import { getCategory, getMachine, getSiteContent, getAttachments } from "@/lib/catalogue";
 import { compatibleAttachments } from "@/lib/compatibility";
-import { machinePrice, machineHasMultiplePrices } from "@/lib/pricing";
-import { formatPrice, metaDescription } from "@/lib/format";
+import { machinePrice, machineHasMultiplePrices, PRICES_ENABLED } from "@/lib/pricing";
+import { formatPrice } from "@/lib/format";
+import { pageMeta, describe, CLOSERS } from "@/lib/seo";
 import { plateLabels } from "@/lib/plates";
 import { isThin } from "@/lib/machines";
 import { builderHref } from "@/lib/builders";
@@ -45,17 +46,16 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const m = await getMachine(slug);
   if (!m || m.category !== category) return {};
   const cat = await getCategory(m.category);
-  const { site } = await getSiteContent();
   const kind = kindOf(m.series, cat?.shortName);
-  const thin = isThin(m);
-  return {
-    ...(thin ? { robots: { index: false, follow: true } } : {}),
-    title: `${m.brand} ${m.modelName} ${kind} for Sale in Ontario`.replace(/\s+/g, " "),
-    description: metaDescription(`${m.shortDescription.replace(/\s+$/, "")} Written quotes and delivery across Ontario from ${site.name}.`),
-    alternates: { canonical: `/inventory/${m.category}/${m.slug}` },
+  const name = `${m.brand} ${m.modelName}`;
+  return pageMeta({
+    titles: [`${name} ${kind} for Sale in Ontario`, `${name} ${kind} for Sale`, `${name} ${kind}`, name],
+    description: describe(m.shortDescription || `The RIPPA ${m.modelName} ${kind.toLowerCase()} from Niagara Equipment Supply, the RIPPA dealer in Thorold, Ontario.`, CLOSERS.sales),
+    path: `/inventory/${m.category}/${m.slug}`,
+    image: m.images[0],
+    noindex: isThin(m),
     keywords: [`RIPPA ${m.modelName}`, `${m.modelName} ${kind.toLowerCase()}`, `RIPPA ${kind.toLowerCase()} Ontario`, `RIPPA dealer Niagara`, `${kind.toLowerCase()} for sale Ontario`],
-    ...(m.images[0] ? { openGraph: { images: [{ url: m.images[0].src, alt: m.images[0].alt }] } } : {}),
-  };
+  });
 }
 
 export default async function MachinePage({ params }: { params: Promise<Params> }) {
@@ -87,9 +87,12 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
     { id: "quote", label: "Get a Quote", show: true },
   ].filter((s) => s.show).map(({ id, label }) => ({ id, label }));
 
-  const jsonLd = {
+  // Product / ProductGroup markup only once prices are shown: Google rejects Product items with no offer, review or
+  // rating, and stored prices must not leak through markup while the site is quote-first.
+  const seller = { "@type": "LocalBusiness", name: site.name, telephone: site.phone, address: { "@type": "PostalAddress", addressLocality: site.address.city, addressRegion: "ON", addressCountry: "CA" } };
+  const availability = m.inStock ? "https://schema.org/InStock" : "https://schema.org/PreOrder";
+  const productBase = {
     "@context": "https://schema.org",
-    "@type": "Product",
     "@id": pageUrl,
     mainEntityOfPage: pageUrl,
     name: `${m.brand} ${m.modelName}`,
@@ -97,15 +100,29 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
     description: m.shortDescription,
     category: cat.name,
     image: m.images.map((i) => absolute(i.src)),
-    sku: m.slug, mpn: m.modelName, model: m.modelName, url: pageUrl,
+    url: pageUrl,
     ...(weightKg ? { weight: { "@type": "QuantitativeValue", value: weightKg, unitCode: "KGM" } } : {}),
     itemCondition: "https://schema.org/NewCondition",
     manufacturer: { "@type": "Organization", name: "Shandong Rippa Machinery Group" },
     // Every published spec row, so answer engines can quote dig depth, flow, dimensions etc. straight from the page.
     additionalProperty: m.specs.map((s) => ({ "@type": "PropertyValue", name: s.label, value: s.value })),
-    ...(m.configurations.length > 1 ? { hasVariant: m.configurations.map((c) => ({ "@type": "Product", name: `${m.brand} ${m.modelName} · ${c.label}`, sku: c.sku ?? `${m.slug}-${c.id}`, mpn: m.modelName })) } : {}),
-    ...(m.showPrice && price !== undefined ? { offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: price, offerCount: Math.max(1, m.configurations.length), itemCondition: "https://schema.org/NewCondition", availability: m.inStock ? "https://schema.org/InStock" : "https://schema.org/PreOrder", areaServed: "Ontario, Canada", seller: { "@type": "LocalBusiness", name: site.name, telephone: site.phone, address: { "@type": "PostalAddress", addressLocality: site.address.city, addressRegion: "ON", addressCountry: "CA" } } } } : {}),
   };
+  const priced = PRICES_ENABLED && m.showPrice && price !== undefined;
+  // Several configurations = a ProductGroup with one Product per variant (hasVariant is not valid on a plain Product).
+  const jsonLd = !priced ? null : m.configurations.length > 1
+    ? {
+        ...productBase,
+        "@type": "ProductGroup",
+        productGroupID: m.slug,
+        hasVariant: m.configurations.map((c) => ({ "@type": "Product", name: `${m.brand} ${m.modelName} · ${c.label}`, sku: c.sku ?? `${m.slug}-${c.id}`, mpn: m.modelName, ...(c.price !== undefined ? { offers: { "@type": "Offer", priceCurrency: "CAD", price: c.price, itemCondition: "https://schema.org/NewCondition", availability, seller } } : {}) })),
+        offers: { "@type": "AggregateOffer", priceCurrency: "CAD", lowPrice: price, offerCount: m.configurations.length, itemCondition: "https://schema.org/NewCondition", availability, areaServed: "Ontario, Canada", seller },
+      }
+    : {
+        ...productBase,
+        "@type": "Product",
+        sku: m.slug, mpn: m.modelName, model: m.modelName,
+        offers: { "@type": "Offer", priceCurrency: "CAD", price, itemCondition: "https://schema.org/NewCondition", availability, areaServed: "Ontario, Canada", seller },
+      };
   const faqLd = m.faqs.length ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: m.faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })) } : null;
 
   return (
@@ -114,11 +131,11 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
       <section id="overview" className="scroll-mt-32 border-b border-line bg-gradient-to-b from-white to-light/50">
         <Container className="py-6 lg:py-8">
           <Breadcrumbs items={[{ href: "/inventory", label: "Equipment" }, { href: `/inventory/${cat.slug}`, label: cat.name }, { label: m.modelName }]} />
-          <div className="mt-5 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
-            <div>
+          <div className="mt-5 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-12">
+            <div className="min-w-0">
               <ProductGallery images={m.images} alt={`${m.brand} ${m.modelName}`} kind={m.category} priority />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-[12px] font-semibold uppercase tracking-[0.3em] text-navy">{m.brand} {m.series ?? cat.shortName}</p>
                 {m.badge && <Badge>{m.badge}</Badge>}
@@ -344,14 +361,14 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
       {related.length > 0 && (
         <section className="section-tight border-t border-line">
           <Container>
-            <SectionHeading title={`Other ${cat.name}`} link={{ href: compareHref([m.slug, ...related.slice(0, 2).map((r) => r.slug)]), label: `Compare ${m.modelName} side by side` }} />
+            <SectionHeading title={`Other ${cat.name}`} link={{ href: relatedCompareHref(m, catalogue.machines), label: `Compare ${m.modelName} side by side` }} />
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {related.map((r) => <li key={r.id}><ProductCard machine={r} /></li>)}
             </ul>
           </Container>
         </section>
       )}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
       {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
       <MobileQuoteBar label={`Quote the ${m.modelName}`} phone={site.phone} phoneHref={site.phoneHref} />
     </>

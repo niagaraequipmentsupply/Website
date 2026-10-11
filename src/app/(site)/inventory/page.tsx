@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -7,11 +8,11 @@ import { ProductCard } from "@/components/equipment/ProductCard";
 import { CtaBand } from "@/components/home/CtaBand";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "RIPPA Equipment for Sale in Ontario",
+export const metadata: Metadata = pageMeta({
+  titles: ["RIPPA Equipment for Sale in Ontario"],
   description: "Browse RIPPA mini excavators, skid steers, loaders, backhoe loaders and track dumpers available from Niagara Equipment Supply across Ontario.",
-  alternates: { canonical: "/inventory" },
-};
+  path: "/inventory",
+});
 
 export default async function InventoryPage() {
   const { categories, catalogue: { machines } } = await getSiteContent();

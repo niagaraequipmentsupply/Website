@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Suspense } from "react";
 import { preload } from "react-dom";
 import { ShieldCheck, Users, Truck } from "lucide-react";
@@ -12,11 +13,11 @@ import { BUILDERS } from "@/lib/builders";
 
 const builder = BUILDERS["excavator"];
 
-export const metadata: Metadata = {
-  title: "RIPPA Excavator Builder",
+export const metadata: Metadata = pageMeta({
+  titles: ["RIPPA Excavator Builder"],
   description: "Pick a RIPPA excavator, choose engine and cab, add the attachments that fit, then send the build for a written quote from Niagara Equipment Supply.",
-  alternates: { canonical: builder.href },
-};
+  path: builder.href,
+});
 
 export default async function BuilderPage() {
   preload("/images/bg/light-grid.svg", { as: "image" });

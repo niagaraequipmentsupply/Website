@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/layout/PageHero";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
+export const metadata: Metadata = pageMeta({
+  titles: ["Privacy Policy"],
   description: "How Niagara Equipment Supply collects, uses and protects the personal information you share through our website, quote forms and service requests.",
-  alternates: { canonical: "/privacy" },
-};
+  path: "/privacy",
+});
 
 const UPDATED = "September 30, 2026";
 

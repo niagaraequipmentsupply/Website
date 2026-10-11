@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Hero } from "@/components/home/Hero";
 import { CategoryCarousel } from "@/components/home/CategoryCarousel";
 import { WhyChoose } from "@/components/home/WhyChoose";
@@ -12,11 +13,11 @@ import { ServiceAreas } from "@/components/home/ServiceAreas";
 import { Testimonials } from "@/components/home/Testimonials";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "Niagara Equipment Supply | Official RIPPA Dealer in Ontario",
+export const metadata: Metadata = pageMeta({
+  titles: ["Niagara Equipment Supply | Official RIPPA Dealer in Ontario"],
   description: "RIPPA dealer in Thorold, Ontario: mini excavators, skid steers, loaders, dumpers and attachments, with the RIPPA Service Centre and Ontario-wide delivery.",
-  alternates: { canonical: "/" },
-};
+  path: "/",
+});
 
 export default async function HomePage() {
   const { testimonials, catalogue } = await getSiteContent();

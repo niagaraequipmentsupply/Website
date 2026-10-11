@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/layout/PageHero";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "Accessibility Statement",
+export const metadata: Metadata = pageMeta({
+  titles: ["Accessibility Statement"],
   description: "Niagara Equipment Supply's accessibility commitment under the AODA for our website and showroom, and how to request information in another format.",
-  alternates: { canonical: "/accessibility" },
-};
+  path: "/accessibility",
+});
 
 export default async function AccessibilityPage() {
   const { site } = await getSiteContent();

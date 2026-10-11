@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
 import { Package, Truck, Globe, Search } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
@@ -11,11 +12,11 @@ import { getSiteContent } from "@/lib/catalogue";
 import { isThin } from "@/lib/machines";
 import { systemLabel, systemOrder } from "@/lib/parts";
 
-export const metadata: Metadata = {
-  title: "Genuine RIPPA Parts Catalogue by Model",
+export const metadata: Metadata = pageMeta({
+  titles: ["Genuine RIPPA Parts by Model"],
   description: "Genuine RIPPA parts by model and system: filters, hydraulics, undercarriage, electrical and engine parts for every RIPPA model. Shipped across Canada.",
-  alternates: { canonical: "/parts" },
-};
+  path: "/parts",
+});
 
 export default async function PartsIndexPage() {
   const { catalogue, categories, parts, site } = await getSiteContent();

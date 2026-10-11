@@ -2,15 +2,21 @@
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { RuggedChip } from "@/components/ui/RuggedChip";
-import { compareHref, DEFAULT_COMPARE, MAX_COMPARE } from "@/lib/compare";
+import { compareHref, DEFAULT_COMPARE, MAX_COMPARE, isDefaultCompare } from "@/lib/compare";
 
 interface Group { label: string; models: { slug: string; name: string }[] }
 
-/** Toggle models in and out of the comparison; the page re-renders server-side from the URL. */
-export function CompareSelector({ groups, selected }: { groups: Group[]; selected: string[] }) {
+/**
+ * Toggle models in and out of the comparison; the page re-renders server-side from the URL.
+ * `order` is the canonical catalogue order, so every URL this produces matches the page's canonical.
+ */
+export function CompareSelector({ groups, selected, order }: { groups: Group[]; selected: string[]; order: string[] }) {
   const router = useRouter();
   const [pending, start] = useTransition();
-  const go = (slugs: string[]) => start(() => router.push(compareHref(slugs), { scroll: false }));
+  const go = (slugs: string[]) => {
+    const sorted = [...slugs].sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    start(() => router.push(isDefaultCompare(sorted) ? "/compare" : compareHref(sorted), { scroll: false }));
+  };
   const toggle = (slug: string) => {
     if (selected.includes(slug)) return go(selected.filter((s) => s !== slug));
     if (selected.length >= MAX_COMPARE) return;

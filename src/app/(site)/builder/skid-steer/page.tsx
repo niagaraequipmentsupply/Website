@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Suspense } from "react";
 import { preload } from "react-dom";
 import { ShieldCheck, Users, Truck } from "lucide-react";
@@ -12,11 +13,11 @@ import { BUILDERS } from "@/lib/builders";
 
 const builder = BUILDERS["skid-steer"];
 
-export const metadata: Metadata = {
-  title: "RIPPA Skid Steer Builder",
+export const metadata: Metadata = pageMeta({
+  titles: ["RIPPA Skid Steer Builder"],
   description: "Pick a RIPPA skid steer from the RS03 to RS20, choose engine and tracks, add buckets, forks and augers that fit its plate, then request a written quote.",
-  alternates: { canonical: builder.href },
-};
+  path: builder.href,
+});
 
 export default async function BuilderPage() {
   preload("/images/bg/light-grid.svg", { as: "image" });

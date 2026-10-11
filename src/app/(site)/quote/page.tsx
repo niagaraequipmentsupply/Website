@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Phone } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
@@ -7,12 +8,12 @@ import { QuoteList } from "@/components/quote/QuoteList";
 import { LeadForm } from "@/components/quote/LeadForm";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "Request a Quote",
-  robots: { index: false, follow: true },
+export const metadata: Metadata = pageMeta({
+  titles: ["Request a Quote"],
   description: "Request a quote on RIPPA equipment, attachments or a configured excavator build from Niagara Equipment Supply.",
-  alternates: { canonical: "/quote" },
-};
+  path: "/quote",
+  noindex: true,
+});
 
 export default async function QuotePage() {
   const { site } = await getSiteContent();

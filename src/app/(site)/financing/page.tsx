@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Percent, Clock, FileText, Handshake, ShieldCheck, ArrowRight, Phone } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
@@ -10,11 +11,11 @@ import { ProductCard } from "@/components/equipment/ProductCard";
 import { Badge } from "@/components/ui/Badge";
 import { getSiteContent } from "@/lib/catalogue";
 
-export const metadata: Metadata = {
-  title: "Equipment Financing & Leasing",
+export const metadata: Metadata = pageMeta({
+  titles: ["Equipment Financing & Leasing"],
   description: "Finance or lease RIPPA equipment in Ontario through our partner LeaseLink: seasonal leasing, deferred payments and pre-approval in about one business day.",
-  alternates: { canonical: "/financing" },
-};
+  path: "/financing",
+});
 
 const steps = [
   { title: "Pick your machine", text: "Choose a model, or configure one in the Excavator Builder with attachments, warranty and delivery." },

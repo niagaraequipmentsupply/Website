@@ -17,6 +17,26 @@ export function resolveCompareModels(machines: Machine[], slugs: string[]): Mach
 
 export const compareHref = (slugs: string[]) => (slugs.length ? `/compare?models=${slugs.join(",")}` : "/compare");
 
+/** Canonical column order for a comparison: catalogue sort order, then model name. Links and canonicals must agree. */
+export function sortForCompare<T extends Pick<Machine, "sortOrder" | "modelName">>(machines: T[]): T[] {
+  return [...machines].sort((a, b) => a.sortOrder - b.sortOrder || a.modelName.localeCompare(b.modelName));
+}
+
+export const isDefaultCompare = (slugs: string[]) => slugs.length === DEFAULT_COMPARE.length && DEFAULT_COMPARE.every((s) => slugs.includes(s));
+
+/** The one URL a comparison of these machines should be linked and canonicalised to; the default trio lives at /compare itself. */
+export function canonicalCompareHref(machines: Pick<Machine, "slug" | "sortOrder" | "modelName">[]): string {
+  const slugs = sortForCompare(machines).map((m) => m.slug);
+  return isDefaultCompare(slugs) ? "/compare" : compareHref(slugs);
+}
+
+type CompareKey = Pick<Machine, "id" | "slug" | "sortOrder" | "modelName" | "category">;
+/** The "compare side by side" link on a machine page: the machine plus the next two in its category. The sitemap lists the same URLs. */
+export function relatedCompareHref(m: CompareKey, machines: CompareKey[]): string {
+  const related = machines.filter((x) => x.category === m.category && x.id !== m.id).slice(0, 2);
+  return canonicalCompareHref([m, ...related]);
+}
+
 export interface CompareRow { label: string; values: (string | undefined)[]; imperial: (string | undefined)[]; differs: boolean }
 export interface CompareGroup { group: SpecGroup; label: string; rows: CompareRow[] }
 

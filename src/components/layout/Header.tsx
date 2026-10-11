@@ -49,12 +49,13 @@ export function Header({ nav, contact }: Props) {
   const directions = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address || "Niagara Equipment Supply")}`;
 
   return (
-    <header className={`sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur transition-[height,box-shadow] duration-200 ${scrolled ? "shadow-card" : ""}`}>
+    <header className={`sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur transition-shadow duration-200 ${scrolled ? "shadow-card" : ""}`}>
       <StoreHydration />
-      <Container className={`flex items-center justify-between gap-4 transition-[height] duration-200 ${scrolled ? "h-16" : "h-[76px]"}`}>
-        <Logo compact={scrolled} />
-        <nav aria-label="Primary" className="hidden lg:block">
-          <ul className="flex items-center gap-4 xl:gap-6">
+      <Container className="flex h-[72px] items-center justify-between gap-4">
+        <Logo />
+        {/* Full nav from 1280px; below that the drawer menu carries it, so nothing ever runs off the right edge. */}
+        <nav aria-label="Primary" className="hidden xl:block">
+          <ul className="flex items-center gap-4 2xl:gap-6">
             {nav.map((n) => (
               <li key={n.href}>
                 {n.children?.length ? (
@@ -77,20 +78,21 @@ export function Header({ nav, contact }: Props) {
               {contact.phone}
             </Button>
           </div>
-          <div className="hidden sm:block">
+          {/* Map & Hours needs ~150px: shown with the drawer menu, hidden while the full nav first appears (1280–1439px), back from 1440px. */}
+          <div className="hidden sm:block xl:hidden min-[1440px]:block">
             <MapHours contact={contact} directions={directions} />
           </div>
-          <button type="button" onClick={() => setOpen(true)} aria-label="Open menu" aria-expanded={open} className="flex size-11 items-center justify-center rounded-btn text-navy hover:bg-tint lg:hidden">
+          <button type="button" onClick={() => setOpen(true)} aria-label="Open menu" aria-expanded={open} className="flex size-11 items-center justify-center rounded-btn text-navy hover:bg-tint xl:hidden">
             <Menu className="size-6" aria-hidden />
           </button>
         </div>
       </Container>
 
       {open && typeof document !== "undefined" && createPortal(
-        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Menu">
+        <div className="fixed inset-0 z-50 xl:hidden" role="dialog" aria-modal="true" aria-label="Menu">
           <button type="button" aria-label="Close menu" onClick={() => setOpen(false)} className="absolute inset-0 bg-charcoal/50" />
           <div className="slide-in absolute inset-y-0 right-0 flex w-[88%] max-w-sm flex-col bg-white shadow-lift">
-            <div className="flex h-[76px] items-center justify-between border-b border-line px-5">
+            <div className="flex h-[72px] items-center justify-between border-b border-line px-5">
               <Logo compact />
               <button type="button" onClick={() => setOpen(false)} aria-label="Close menu" className="flex size-11 items-center justify-center rounded-btn text-navy hover:bg-tint"><X className="size-6" aria-hidden /></button>
             </div>

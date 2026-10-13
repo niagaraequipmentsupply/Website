@@ -52,7 +52,7 @@ export const loaders: LineupModel[] = [
     standardEquipment: ["Kubota D1105 diesel", "Hydrostatic drive", "Articulated steering", "General-purpose bucket 1,150 mm", "Quick-attach plate with auxiliary hydraulics", "Suspension seat with seat belt", "Four-post ROPS canopy with fold-down operator guard", "LED work lights and warning beacon", "Instrument display"],
     applications: ["Farms and acreages", "Barn and feed handling", "Landscaping and hardscape", "Snow removal", "Yard and material handling", "Rental fleets"],
     faqs: loaderFaqs("RL06", "1,725 kg (3,802 lb)", "1,150 mm (45.3\")"),
-    images: [{ key: "rl06-render", alt: "RIPPA RL06 compact wheel loader" }, { key: "rl06-action", alt: "RIPPA RL06 loading topsoil" }],
+    images: [{ key: "rl06-render", alt: "RIPPA RL06 compact wheel loader" }, { key: "rl06-action", alt: "RIPPA RL06 compact wheel loader loading topsoil" }],
     brochure: "RIPPA-RL06-Spec-Sheet.pdf", targetUsers: "Farms, acreages, landscapers, small contractors and rental fleets that need a loader narrow enough for barns and yards.",
   },
   // ============================================================ RB06
@@ -93,7 +93,7 @@ export const loaders: LineupModel[] = [
       { question: "Which backhoe buckets fit?", answer: "The rear arm uses RIPPA's compact excavator buckets and attachments; the front runs loader attachments. Both ends have quick-attach connectors. Ask us to confirm sizes for your serial number." },
       { question: "What warranty and support do I get?", answer: "Two-year warranty backed by the RIPPA Service Centre, genuine RIPPA and Kubota parts, dealer pre-delivery inspection and an owner walk-through at delivery." },
     ],
-    images: [{ key: "rb06-render", alt: "RIPPA RB06 compact backhoe loader" }, { key: "rb06-action", alt: "RIPPA RB06 backhoe loader on a landscaping site" }],
+    images: [{ key: "rb06-render", alt: "RIPPA RB06 compact backhoe loader" }, { key: "rb06-action", alt: "RIPPA RB06 compact backhoe loader on a landscaping site" }],
     brochure: "RIPPA-RB06-Spec-Sheet.pdf", targetUsers: "Acreage owners, landscapers, small contractors and municipalities that want one compact machine to dig, load and carry.",
   },
   // ============================================================ RD06
@@ -133,7 +133,7 @@ export const loaders: LineupModel[] = [
       { question: "Can I fit it in a pickup or van?", answer: "It is 1,670 mm (65.7\") long, 780 mm (30.7\") wide, 1,200 mm (47.2\") tall and 518 kg (1,140 lb). It rides in a full-size pickup bed with ramps or on a small utility trailer." },
       { question: "What warranty and support do I get?", answer: "Two-year warranty backed by the RIPPA Service Centre, genuine RIPPA and Briggs & Stratton parts, and dealer pre-delivery inspection." },
     ],
-    images: [{ key: "rd06-render", alt: "RIPPA RD06 tracked mini dumper" }, { key: "rd06-photo", alt: "RIPPA RD06 mini dumper with self-loading scoop" }],
+    images: [{ key: "rd06-render", alt: "RIPPA RD06 tracked mini dumper" }, { key: "rd06-photo", alt: "RIPPA RD06 tracked mini dumper with self-loading scoop" }],
     brochure: "RIPPA-RD06-Spec-Sheet.pdf", targetUsers: "Landscapers, hardscape crews, nurseries, arborists, rental fleets and homeowners with big backyard projects.",
   },
 ];

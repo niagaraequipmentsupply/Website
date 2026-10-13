@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     titles: [`RIPPA ${a.name} for ${noun}`, `RIPPA ${a.name}`, a.name],
     description: describe(`${(a.longDescription ?? a.description).split(/(?<=\.)\s/)[0]} Fits RIPPA ${noun.toLowerCase()}, sized by model.`, CLOSERS.attachments),
     path: `/attachments/${category}/${a.slug}`,
-    image: a.images[0],
+    image: a.images[0] ? { src: a.images[0].full ?? a.images[0].src, alt: a.images[0].alt } : undefined,
   });
 }
 

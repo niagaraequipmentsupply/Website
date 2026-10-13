@@ -15,5 +15,5 @@ export const Media: CollectionConfig = {
     ],
     adminThumbnail: "thumbnail",
   },
-  fields: [{ name: "alt", type: "text", required: true, admin: { description: "Describe the product in the photo, e.g. 'RIPPA R15-5 ECO mini excavator, canopy'." } }],
+  fields: [{ name: "alt", type: "text", required: true, admin: { description: "Alt text = what is in the photo, in buyers' words: brand, model, machine type and what the shot shows, e.g. 'RIPPA R15 ECO 1.5-ton mini excavator with enclosed cab, front right view'. It is also shown as the photo caption. Name files descriptively before uploading (rippa-r15-eco-mini-excavator-cab-front.jpg), never IMG_1234.jpg." } }],
 };

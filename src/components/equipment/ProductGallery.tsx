@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import Image from "next/image";
+import { MediaImage } from "@/components/ui/MediaImage";
 import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
 import type { ImageAsset } from "@/lib/types";
 import { track } from "@/lib/analytics";
@@ -41,13 +41,15 @@ export function ProductGallery({ images, alt, kind, priority }: Props) {
 
   return (
     <div>
+      {/* figure + visible caption: the alt text doubles as on-page context for the photo (what Google Images reads around an image). */}
+      <figure className="min-w-0">
       <button
         type="button"
         onClick={() => openAt(index)}
         className="group relative block w-full cursor-zoom-in overflow-hidden rounded-lg border border-line bg-white aspect-[4/3] focus:outline-none focus-visible:ring-2 focus-visible:ring-electric"
       >
         <span className="sr-only">Enlarge photo {index + 1} of {photos.length}: {label(index)}</span>
-        <Image key={current.src} src={current.src} alt={label(index)} fill priority={priority} sizes="(max-width: 1024px) 100vw, 720px" className="object-contain p-3" />
+        <MediaImage key={current.src} image={current} alt={label(index)} priority={priority} sizes="(max-width: 1024px) 100vw, 720px" className="object-contain p-3" />
         <span aria-hidden className="chamfer absolute bottom-3 right-3 inline-flex items-center gap-1.5 bg-charcoal/85 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-white transition-colors group-hover:bg-navy">
           <Maximize2 className="h-3.5 w-3.5" /> Enlarge
         </span>
@@ -57,6 +59,8 @@ export function ProductGallery({ images, alt, kind, priority }: Props) {
           </span>
         )}
       </button>
+      <figcaption className="mt-2 text-[13px] leading-snug text-grey">{label(index)}</figcaption>
+      </figure>
 
       {photos.length > 1 && (
         <ul className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1" aria-label="Product photos">
@@ -70,7 +74,7 @@ export function ProductGallery({ images, alt, kind, priority }: Props) {
                 aria-current={i === index ? "true" : undefined}
                 className={`relative block aspect-[4/3] w-full overflow-hidden rounded-md border-2 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-electric ${i === index ? "border-navy" : "border-line hover:border-grey"}`}
               >
-                <Image src={img.src} alt="" fill sizes="120px" className="object-cover" />
+                <MediaImage image={img} alt={img.alt || alt} sizes="120px" maxWidth={800} className="object-cover" />
               </button>
             </li>
           ))}
@@ -148,7 +152,7 @@ function Lightbox({ photos, index, alt, onClose, onPrev, onNext, onSelect }: { p
           </button>
         )}
         <div className="relative h-full w-full max-w-6xl">
-          {photo && <Image key={photo.src} src={photo.src} alt={photo.alt || alt} fill sizes="100vw" className="object-contain" priority />}
+          {photo && <MediaImage key={photo.src} image={photo} alt={photo.alt || alt} sizes="100vw" className="object-contain" priority />}
         </div>
         {many && (
           <button type="button" onClick={onNext} className={`${navBtn} absolute right-2 top-1/2 -translate-y-1/2 sm:right-4`} aria-label="Next photo">
@@ -168,7 +172,7 @@ function Lightbox({ photos, index, alt, onClose, onPrev, onNext, onSelect }: { p
                 aria-current={i === index ? "true" : undefined}
                 className={`relative block h-14 w-[4.7rem] overflow-hidden rounded-sm border-2 bg-white transition-colors ${i === index ? "border-electric" : "border-transparent opacity-70 hover:opacity-100"}`}
               >
-                <Image src={img.src} alt="" fill sizes="80px" className="object-cover" />
+                <MediaImage image={img} alt={img.alt || alt} sizes="80px" maxWidth={400} className="object-cover" />
               </button>
             </li>
           ))}

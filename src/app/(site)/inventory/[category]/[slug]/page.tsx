@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Phone, Check, Download, Wrench, ShieldCheck, Truck, ArrowRight, Package } from "lucide-react";
 import { Container } from "@/components/ui/Container";
@@ -28,13 +27,12 @@ import { formatPrice } from "@/lib/format";
 import { pageMeta, describe, CLOSERS } from "@/lib/seo";
 import { plateLabels } from "@/lib/plates";
 import { isThin } from "@/lib/machines";
+import { machineKind } from "@/data/machine-kinds";
+import { MediaImage } from "@/components/ui/MediaImage";
+import type { ImageAsset } from "@/lib/types";
 import { builderHref } from "@/lib/builders";
 
 type Params = { category: string; slug: string };
-
-/** "Backhoe Loader", "Track Dumper" when the series names the machine type; otherwise the category singular ("Excavator"). */
-const kindOf = (series: string | undefined, shortName: string | undefined) => series && !/series$/i.test(series) ? series : (shortName ?? "").replace(/s$/, "");
-
 
 export async function generateStaticParams() {
   const { catalogue } = await getSiteContent();
@@ -46,13 +44,14 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const m = await getMachine(slug);
   if (!m || m.category !== category) return {};
   const cat = await getCategory(m.category);
-  const kind = kindOf(m.series, cat?.shortName);
+  const kind = machineKind(m.slug, m.series, cat?.shortName);
   const name = `${m.brand} ${m.modelName}`;
   return pageMeta({
     titles: [`${name} ${kind} for Sale in Ontario`, `${name} ${kind} for Sale`, `${name} ${kind}`, name],
     description: describe(m.shortDescription || `The RIPPA ${m.modelName} ${kind.toLowerCase()} from Niagara Equipment Supply, the RIPPA dealer in Thorold, Ontario.`, CLOSERS.sales),
     path: `/inventory/${m.category}/${m.slug}`,
-    image: m.images[0],
+    // Social image = the original upload (1600px renders), not the 800px card file.
+    image: m.images[0] ? { src: m.images[0].full ?? m.images[0].src, alt: m.images[0].alt } : undefined,
     noindex: isThin(m),
     keywords: [`RIPPA ${m.modelName}`, `${m.modelName} ${kind.toLowerCase()}`, `RIPPA ${kind.toLowerCase()} Ontario`, `RIPPA dealer Niagara`, `${kind.toLowerCase()} for sale Ontario`],
   });
@@ -63,6 +62,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
   const m = await getMachine(slug);
   if (!m || m.category !== category) notFound();
   const cat = (await getCategory(m.category))!;
+  const kind = machineKind(m.slug, m.series, cat.shortName);
   const { site, catalogue, parts, testimonials } = await getSiteContent();
   const ownerQuotes = testimonials.filter((t) => t.machineId === m.id).slice(0, 3);
   const compat = compatibleAttachments(await getAttachments(), m);
@@ -124,6 +124,12 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
         offers: { "@type": "Offer", priceCurrency: "CAD", price, itemCondition: "https://schema.org/NewCondition", availability, areaServed: "Ontario, Canada", seller },
       };
   const faqLd = m.faqs.length ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: m.faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })) } : null;
+  // Every gallery photo as an ImageObject (original file, caption = alt), so Google Images has the page, caption and
+  // full-size URL for each one; independent of the price-gated Product markup.
+  const imageObject = (i: ImageAsset, primary: boolean) => ({ "@type": "ImageObject", contentUrl: absolute(i.full ?? i.src), url: absolute(i.full ?? i.src), thumbnailUrl: absolute(i.src), name: i.alt, caption: i.alt, representativeOfPage: primary, creditText: site.name });
+  const imageLd = m.images.length
+    ? { "@context": "https://schema.org", "@type": "ItemPage", "@id": `${pageUrl}#page`, url: pageUrl, name: `${m.brand} ${m.modelName} ${kind}`, primaryImageOfPage: imageObject(m.images[0], true), image: m.images.map((i, idx) => imageObject(i, idx === 0)) }
+    : null;
 
   return (
     <>
@@ -142,7 +148,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
                 {m.inStock !== undefined && <Badge tone={m.inStock ? "success" : "grey"}>{m.inStock ? "In stock" : "Order"}</Badge>}
                 {m.isPlaceholder && <Badge tone="warning">Sample data</Badge>}
               </div>
-              <h1 className="display mt-2 text-charcoal">{m.brand} {m.modelName} <span className="text-navy">{kindOf(m.series, cat.shortName)}</span></h1>
+              <h1 className="display mt-2 text-charcoal">{m.brand} {m.modelName} <span className="text-navy">{kind}</span></h1>
               <p className="mt-3 text-[16px] leading-relaxed text-charcoal/85">{m.shortDescription || `The RIPPA ${m.modelName} is joining our lineup. Full specifications and photos are being prepared; ask us for the spec sheet, availability and a written quote.`}</p>
               <p className="mt-2 text-[13px] font-semibold text-navy">Sold, set up and serviced in {site.address.city}, Ontario · Delivery across Ontario</p>
               {m.certifications.length > 0 && (
@@ -224,7 +230,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
               {m.features.map((f, i) => (
                 <article key={f.title} className={`overflow-hidden rounded-card border border-line bg-white ${i === 0 ? "md:col-span-2 xl:col-span-3 md:grid md:grid-cols-[1.2fr_1fr] md:items-center" : ""}`}>
                   <div className={`relative bg-light ${i === 0 ? "aspect-[16/9] md:aspect-auto md:h-full md:min-h-[320px]" : "aspect-[4/3]"}`}>
-                    {f.image ? <Image src={f.image.src} alt={f.image.alt} fill sizes={i === 0 ? "(max-width: 768px) 100vw, 760px" : "(max-width: 768px) 100vw, 420px"} className="object-cover" /> : <EquipmentImage kind={m.category} alt={f.title} ratio="aspect-[4/3]" className="rounded-none" />}
+                    {f.image ? <MediaImage image={f.image} alt={f.title} sizes={i === 0 ? "(max-width: 768px) 100vw, 760px" : "(max-width: 768px) 100vw, 420px"} className="object-cover" /> : <EquipmentImage kind={m.category} alt={f.title} ratio="aspect-[4/3]" className="rounded-none" />}
                   </div>
                   <div className={i === 0 ? "p-6 md:p-10" : "p-5"}>
                     {f.eyebrow && <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-navy">{f.eyebrow}</p>}
@@ -370,6 +376,7 @@ export default async function MachinePage({ params }: { params: Promise<Params> 
       )}
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
       {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
+      {imageLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(imageLd) }} />}
       <MobileQuoteBar label={`Quote the ${m.modelName}`} phone={site.phone} phoneHref={site.phoneHref} />
     </>
   );

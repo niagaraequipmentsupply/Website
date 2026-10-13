@@ -12,6 +12,10 @@ export interface ImageAsset {
   alt: string;
   width?: number;
   height?: number;
+  /** Responsive candidates served straight from the media store (thumbnail/card/large/original), ascending width. */
+  sources?: { src: string; width: number }[];
+  /** The original upload (largest file): image sitemap and ImageObject markup point here. */
+  full?: string;
 }
 
 export interface Category {

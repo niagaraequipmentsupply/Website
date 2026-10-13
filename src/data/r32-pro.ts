@@ -87,15 +87,15 @@ export const r32 = {
   ] satisfies Faq[],
   /** Gallery order: first is the main image. */
   images: [
-    { key: "r32-pro-render", alt: "RIPPA R32 PRO mini excavator, enclosed cab, three-quarter view" },
-    { key: "r32-pro-canopy", alt: "RIPPA R32 PRO open canopy" },
-    { key: "r32-pro-cab-photo", alt: "RIPPA R32 PRO enclosed cab at the dealership" },
-    { key: "r32-pro-jobsite", alt: "RIPPA R32 PRO grading gravel on a residential driveway" },
-    { key: "r32-pro-stump", alt: "RIPPA R32 PRO lifting a tree stump with a hydraulic thumb" },
-    { key: "r32-pro-trenching", alt: "RIPPA R32 PRO digging a trench in a backyard" },
-    { key: "r32-pro-farm", alt: "RIPPA R32 PRO levelling with the dozer blade on a farm" },
-    { key: "r32-pro-auger", alt: "RIPPA R32 PRO drilling with an auger attachment" },
-    { key: "r32-pro-rear", alt: "RIPPA R32 PRO rear view showing tailless counterweight" },
+    { key: "r32-pro-render", alt: "RIPPA R32 PRO 3.5-ton mini excavator with enclosed cab, three-quarter view" },
+    { key: "r32-pro-canopy", alt: "RIPPA R32 PRO 3.5-ton mini excavator with open canopy" },
+    { key: "r32-pro-cab-photo", alt: "RIPPA R32 PRO 3.5-ton mini excavator with enclosed cab at the dealership" },
+    { key: "r32-pro-jobsite", alt: "RIPPA R32 PRO 3.5-ton mini excavator grading gravel on a residential driveway" },
+    { key: "r32-pro-stump", alt: "RIPPA R32 PRO 3.5-ton mini excavator lifting a tree stump with a hydraulic thumb" },
+    { key: "r32-pro-trenching", alt: "RIPPA R32 PRO 3.5-ton mini excavator digging a trench in a backyard" },
+    { key: "r32-pro-farm", alt: "RIPPA R32 PRO 3.5-ton mini excavator levelling with the dozer blade on a farm" },
+    { key: "r32-pro-auger", alt: "RIPPA R32 PRO 3.5-ton mini excavator drilling with an auger attachment" },
+    { key: "r32-pro-rear", alt: "RIPPA R32 PRO 3.5-ton mini excavator, rear view showing tailless counterweight" },
   ],
   /** Attachments from the brochure that fit the R32 PRO. Existing seed attachments are matched by slug and updated. */
   attachments: [

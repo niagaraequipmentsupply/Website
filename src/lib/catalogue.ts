@@ -32,7 +32,13 @@ function mapImage(m: number | Media | null | undefined, alt: string): ImageAsset
   if (typeof m === "number") m = mediaIndex.get(m);
   if (!m || !m.url) return undefined;
   const best = m.sizes?.card?.url ?? m.url;
-  return { src: best, alt: m.alt || alt, width: m.sizes?.card?.width ?? m.width ?? undefined, height: m.sizes?.card?.height ?? m.height ?? undefined };
+  // Every file Payload made for this upload, smallest first; sizes larger than the original are skipped (withoutEnlargement).
+  const sources = [m.sizes?.thumbnail, m.sizes?.card, m.sizes?.large, { url: m.url, width: m.width }]
+    .filter((s): s is { url: string; width: number } => !!s?.url && !!s?.width)
+    .sort((a, b) => a.width - b.width)
+    .filter((s, i, all) => all.findIndex((x) => x.width === s.width) === i)
+    .map((s) => ({ src: s.url, width: s.width }));
+  return { src: best, alt: m.alt || alt, width: m.sizes?.card?.width ?? m.width ?? undefined, height: m.sizes?.card?.height ?? m.height ?? undefined, sources, full: m.url };
 }
 function mapImages(arr: { image: number | Media }[] | null | undefined, alt: string): ImageAsset[] {
   return (arr ?? []).map((i) => mapImage(i.image, alt)).filter((x): x is ImageAsset => !!x);

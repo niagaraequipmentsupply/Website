@@ -1,5 +1,5 @@
-import Image from "next/image";
 import type { ImageAsset } from "@/lib/types";
+import { MediaImage } from "./MediaImage";
 import { PlaceholderArt, type PlaceholderKind } from "./PlaceholderArt";
 
 interface Props {
@@ -20,7 +20,7 @@ export function EquipmentImage({ image, kind, alt, priority, sizes = "(max-width
   return (
     <div className={`relative overflow-hidden rounded-lg bg-light/60 ${ratio} ${className}`}>
       {image?.src ? (
-        <Image src={image.src} alt={image.alt || alt} fill priority={priority} sizes={sizes} className={`object-contain ${compact ? "p-1" : "p-3"}`} />
+        <MediaImage image={image} alt={alt} priority={priority} sizes={sizes} maxWidth={compact ? 800 : undefined} className={`object-contain ${compact ? "p-1" : "p-3"}`} />
       ) : (
         <PlaceholderArt kind={kind} label={alt} compact={compact} />
       )}

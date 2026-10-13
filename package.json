@@ -23,6 +23,7 @@
     "seed:category-images": "payload run src/scripts/seed-category-images.ts",
     "seed:post-covers": "payload run src/scripts/seed-post-covers.ts",
     "import:parts": "payload run src/scripts/import-parts.ts",
+    "fix:image-alt": "payload run src/scripts/fix-image-alt.ts",
     "ghl:setup": "npx tsx src/scripts/ghl-setup.ts",
     "audit:crawl": "python3 scripts/audit-crawl.py http://localhost:3001 audit-crawl.json",
     "audit:lighthouse": "bash scripts/audit-lighthouse.sh http://localhost:3001 audit-lighthouse",

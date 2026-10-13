@@ -13,6 +13,8 @@ export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = site.url;
+  // Image sitemap entries point at the original uploads (largest file), the same URLs the pages and ImageObject markup use.
+  const img = (images: { src: string; full?: string }[]) => images.map((i) => `${base}${i.full ?? i.src}`).filter((u, k, all) => all.indexOf(u) === k);
   const { categories, attachmentCategories, posts, parts, catalogue: { machines, attachments } } = await getSiteContent();
   const statics = ["", "/inventory", "/attachments", "/builder/excavator", "/builder/skid-steer", "/parts", "/financing", "/service", "/service/parts", "/lubricants", "/blog", "/about", "/contact"];
   const live = machines.filter((m) => !isThin(m));
@@ -28,10 +30,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...serviceAreas.map((a) => ({ url: `${base}/service-area/${a.slug}`, changeFrequency: "monthly" as const, priority: 0.7 })),
     ...compares.map((href) => ({ url: `${base}${href}`, changeFrequency: "monthly" as const, priority: 0.5 })),
     ...categories.map((c) => ({ url: `${base}/inventory/${c.slug}`, changeFrequency: "weekly" as const, priority: 0.8 })),
-    ...live.map((m) => ({ url: `${base}/inventory/${m.category}/${m.slug}`, changeFrequency: "weekly" as const, priority: 0.8 })),
+    ...live.map((m) => ({ url: `${base}/inventory/${m.category}/${m.slug}`, changeFrequency: "weekly" as const, priority: 0.8, images: img([...m.images, ...m.features.flatMap((f) => (f.image ? [f.image] : []))]) })),
     ...attachmentCategories.map((c) => ({ url: `${base}/attachments/${c.slug}`, changeFrequency: "weekly" as const, priority: 0.7 })),
-    ...attachments.map((a) => ({ url: `${base}/attachments/${a.attachmentCategory}/${a.slug}`, changeFrequency: "monthly" as const, priority: 0.6 })),
-    ...posts.map((p) => ({ url: `${base}/blog/${p.slug}`, lastModified: p.publishedAt, changeFrequency: "monthly" as const, priority: 0.6 })),
+    ...attachments.map((a) => ({ url: `${base}/attachments/${a.attachmentCategory}/${a.slug}`, changeFrequency: "monthly" as const, priority: 0.6, images: img(a.images) })),
+    ...posts.map((p) => ({ url: `${base}/blog/${p.slug}`, lastModified: p.publishedAt, changeFrequency: "monthly" as const, priority: 0.6, images: img(p.cover ? [p.cover] : []) })),
     ...machines.filter((m) => parts.some((p) => p.compatibleModelIds.includes(m.id))).map((m) => ({ url: `${base}/parts/${m.slug}`, changeFrequency: "weekly" as const, priority: 0.7 })),
     ...parts.map((p) => ({ url: `${base}/parts/item/${p.slug}`, changeFrequency: "monthly" as const, priority: 0.4 })),
   ];

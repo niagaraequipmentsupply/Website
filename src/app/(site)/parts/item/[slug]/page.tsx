@@ -49,7 +49,7 @@ export default async function PartPage({ params }: { params: Promise<Params> }) 
         <Container className="py-8">
           <Breadcrumbs items={[{ href: "/parts", label: "Parts Catalogue" }, ...(fits[0] ? [{ href: `/parts/${fits[0].slug}`, label: `${fits[0].modelName} parts` }] : []), { label: p.name }]} />
           <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_1.2fr]">
-            <EquipmentImage image={p.image} kind="attachment" alt={p.name} priority sizes="(max-width: 1024px) 100vw, 560px" ratio="aspect-square" className="border border-line bg-white" />
+            <EquipmentImage image={p.image} kind="attachment" alt={p.name} priority direct sizes="(max-width: 1024px) 100vw, 560px" ratio="aspect-square" className="border border-line bg-white" />
             <div>
               <p className="text-[12px] font-semibold uppercase tracking-[0.3em] text-navy">{systemLabel(p.system)}{p.engineBrand ? ` · ${p.engineBrand === "kubota" ? "Kubota" : "Briggs & Stratton"}` : ""}</p>
               <h1 className="display mt-2 text-charcoal">{p.name}</h1>

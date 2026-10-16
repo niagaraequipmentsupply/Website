@@ -12,6 +12,8 @@ export interface SiteConfig {
   tax: { label: string; rate: number | undefined };
   mapEmbedUrl?: string;
   currency: string;
+  /** Yard coordinates for LocalBusiness markup (WGS84). */
+  geo?: { latitude: number; longitude: number };
 }
 
 export const site: SiteConfig = {
@@ -25,6 +27,7 @@ export const site: SiteConfig = {
   phoneHref: "tel:+12892716947",
   email: "niagaraequipmentsupply@gmail.com",
   address: { street: "16-2275 Hwy 20", city: "Thorold", region: "ON", postal: "L3B 5N5", country: "CA" },
+  geo: { latitude: 43.0620309, longitude: -79.2451611 },
   serviceArea: "Serving all of Ontario",
   // Showroom hours; outside these by appointment, phones monitored after hours. The CMS Site Settings rows override these.
   hours: [

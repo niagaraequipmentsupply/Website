@@ -28,7 +28,8 @@
     "audit:crawl": "python3 scripts/audit-crawl.py http://localhost:3001 audit-crawl.json",
     "audit:lighthouse": "bash scripts/audit-lighthouse.sh http://localhost:3001 audit-lighthouse",
     "ghl:provision": "npx tsx src/scripts/ghl-provision.ts",
-    "ghl:resync": "bash scripts/ghl-resync.sh"
+    "ghl:resync": "bash scripts/ghl-resync.sh",
+    "indexnow:all": "npx tsx src/scripts/indexnow-all.ts"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.88.0",

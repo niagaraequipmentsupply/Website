@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AttachmentCard } from "@/components/equipment/AttachmentCard";
 import { CtaBand } from "@/components/home/CtaBand";
 import { getSiteContent } from "@/lib/catalogue";
+import { itemListLd } from "@/lib/schema";
 
 export const metadata: Metadata = pageMeta({
   titles: ["RIPPA Attachments for Sale in Ontario"],
@@ -18,8 +19,10 @@ export const metadata: Metadata = pageMeta({
 export default async function AttachmentsPage() {
   const { attachmentCategories, catalogue } = await getSiteContent();
   const getAttachmentsByCategory = (slug: string) => catalogue.attachments.filter((a) => a.attachmentCategory === slug);
+  const listLd = itemListLd("RIPPA attachments from Niagara Equipment Supply", [...attachmentCategories].sort((a, b) => a.sortOrder - b.sortOrder).flatMap((c) => getAttachmentsByCategory(c.slug).map((a) => ({ url: `/attachments/${a.attachmentCategory}/${a.slug}`, name: `RIPPA ${a.name}`, image: a.images[0]?.full ?? a.images[0]?.src }))));
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(listLd) }} />
       <PageHero title="Attachments" text="Get more from every machine. Browse attachments by machine family, or use the Excavator Builder to see only what fits your model." crumbs={[{ label: "Attachments" }]} />
       {[...attachmentCategories].sort((a, b) => a.sortOrder - b.sortOrder).map((cat) => {
         const items = getAttachmentsByCategory(cat.slug);

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMeta, describe, CLOSERS } from "@/lib/seo";
 import { PRICES_ENABLED, attachmentUnitPrice } from "@/lib/pricing";
 import { RuggedChip } from "@/components/ui/RuggedChip";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Badge } from "@/components/ui/Badge";
@@ -35,10 +35,35 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   });
 }
 
+/** Slugs the first sitemap advertised before the catalogue import renamed the families; a few map to a different name entirely. */
+const LEGACY_SLUGS: Record<string, string> = {
+  "ditching-bucket": "ditching-clean-up-bucket-excavator",
+  "hydraulic-thumb": "thumb-excavator",
+  "loader-gp-bucket": "loader-bucket-loader",
+  "loader-pallet-forks": "pallet-forks-loader",
+  "loader-snow-pusher": "snow-plow-pusher-loader",
+  "snow-blower": "/attachments/skid-steer-attachments",
+};
+const CATEGORY_SUFFIX: Record<string, string> = { "excavator-attachments": "excavator", "skid-steer-attachments": "skid-steer", "loader-attachments": "loader" };
+
+/** Old or mis-categorised attachment URLs resolve to the live family (301) instead of a dead end. */
+async function legacyRedirect(category: string, slug: string): Promise<string | null> {
+  const mapped = LEGACY_SLUGS[slug];
+  if (mapped?.startsWith("/")) return mapped;
+  const { catalogue } = await getSiteContent();
+  const bySlug = (s: string | undefined) => (s ? catalogue.attachments.find((x) => x.slug === s) : undefined);
+  const hit = bySlug(mapped) ?? bySlug(`${slug}-${CATEGORY_SUFFIX[category] ?? ""}`) ?? bySlug(slug);
+  return hit ? `/attachments/${hit.attachmentCategory}/${hit.slug}` : null;
+}
+
 export default async function AttachmentPage({ params }: { params: Promise<Params> }) {
   const { slug, category } = await params;
   const a = await getAttachment(slug);
-  if (!a || a.attachmentCategory !== category) notFound();
+  if (!a || a.attachmentCategory !== category) {
+    const to = await legacyRedirect(category, slug);
+    if (to) permanentRedirect(to);
+    notFound();
+  }
   const cat = (await getAttachmentCategory(category))!;
   const { catalogue } = await getSiteContent();
   const fits = catalogue.machines.filter((m) => isAttachmentCompatible(a, m));

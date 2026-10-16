@@ -7,6 +7,7 @@ import { CategoryCard } from "@/components/equipment/CategoryCard";
 import { ProductCard } from "@/components/equipment/ProductCard";
 import { CtaBand } from "@/components/home/CtaBand";
 import { getSiteContent } from "@/lib/catalogue";
+import { itemListLd } from "@/lib/schema";
 
 export const metadata: Metadata = pageMeta({
   titles: ["RIPPA Equipment for Sale in Ontario"],
@@ -21,8 +22,10 @@ export default async function InventoryPage() {
     .filter((m) => m.featured)
     .sort((a, b) => (a.specs.length === 0 ? 1 : 0) - (b.specs.length === 0 ? 1 : 0) || (catRank.get(a.category) ?? 99) - (catRank.get(b.category) ?? 99) || a.sortOrder - b.sortOrder)
     .slice(0, 8);
+  const listLd = itemListLd("RIPPA equipment from Niagara Equipment Supply", [...machines].sort((a, b) => (catRank.get(a.category) ?? 99) - (catRank.get(b.category) ?? 99) || a.sortOrder - b.sortOrder).map((m) => ({ url: `/inventory/${m.category}/${m.slug}`, name: `${m.brand} ${m.modelName}`, image: m.images[0]?.full ?? m.images[0]?.src })));
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(listLd) }} />
       <PageHero title="Equipment" text="RIPPA compact machines for contractors, landscapers, farms and municipalities. Choose a category to see models, specs and pricing." crumbs={[{ label: "Equipment" }]} />
       <section className="section">
         <Container>

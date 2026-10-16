@@ -72,6 +72,7 @@ export function mapMachine(d: PMachine): Machine {
     configurations, basePrice: d.basePrice ?? undefined, promoPrice: d.promoPrice ?? undefined, showPrice: d.showPrice ?? true,
     warranty: d.warranty ?? undefined, engine: configurations[0]?.engine, operatingWeight: configurations[0]?.operatingWeight,
     featured: !!d.featured, inStock: stock(d.inStock), builderEnabled: !!d.builderEnabled, badge: d.badge ?? undefined, sortOrder: d.sortOrder ?? 100,
+    updatedAt: d.updatedAt ?? undefined,
   };
 }
 
@@ -82,6 +83,7 @@ export function mapAttachment(d: PAttachment): Attachment {
     compatibleModelIds: relIds(d.compatibleModels), compatibleCategories: d.compatibleCategories ?? [], plateType: d.plateType ?? undefined, sourceUrl: d.sourceUrl ?? undefined,
     variants: (d.variants ?? []).map((v, i) => ({ id: v.id ?? `${d.id}-v-${i}`, label: v.label, widthOrSize: v.widthOrSize ?? undefined, sku: v.sku ?? undefined, price: v.price ?? undefined, compatibleModelIds: relIds(v.compatibleModels), plateType: v.plateType ?? undefined })),
     basePrice: d.basePrice ?? undefined, showPrice: d.showPrice ?? true, supportsQuantity: !!d.supportsQuantity, featured: !!d.featured, inStock: stock(d.inStock), sortOrder: d.sortOrder ?? 100,
+    updatedAt: d.updatedAt ?? undefined,
   };
 }
 

@@ -166,6 +166,8 @@ export interface Machine {
   sortOrder: number;
   /** Placeholder records are sample content awaiting owner-supplied data. */
   isPlaceholder?: boolean;
+  /** CMS last-edit timestamp (ISO), used as the sitemap lastmod. */
+  updatedAt?: string;
 }
 
 export interface AttachmentVariant {
@@ -209,6 +211,8 @@ export interface Attachment {
   inStock?: boolean;
   sortOrder: number;
   isPlaceholder?: boolean;
+  /** CMS last-edit timestamp (ISO), used as the sitemap lastmod. */
+  updatedAt?: string;
 }
 
 export type AddonType = "protection" | "pdi" | "delivery" | "service";

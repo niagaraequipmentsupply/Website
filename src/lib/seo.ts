@@ -103,7 +103,7 @@ export function pageMeta(input: PageMetaInput): Metadata {
   return {
     title,
     description,
-    alternates: { canonical: input.path },
+    alternates: { canonical: input.path, types: { "application/rss+xml": `${site.url}/blog/feed.xml` } },
     ...(input.keywords?.length ? { keywords: input.keywords } : {}),
     ...(input.noindex ? { robots: { index: false, follow: true } } : {}),
     openGraph,

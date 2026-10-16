@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { pageMeta, describe, CLOSERS } from "@/lib/seo";
+import { itemListLd } from "@/lib/schema";
 import { isThin } from "@/lib/machines";
 import Link from "next/link";
 import { RuggedChip } from "@/components/ui/RuggedChip";
@@ -43,6 +44,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
   const hasChart = items.length > 1;
 
   const faqLd = cat.faqs.length ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: cat.faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })) } : null;
+  const listLd = itemListLd(`RIPPA ${cat.name}`, items.map((m) => ({ url: `/inventory/${m.category}/${m.slug}`, name: `${m.brand} ${m.modelName}`, image: m.images[0]?.full ?? m.images[0]?.src })));
 
   return (
     <>
@@ -171,6 +173,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
 
       <CtaBand title={`Get a quote on RIPPA ${cat.name.toLowerCase()}`} text="Add machines to your quote list or call our team for pricing, availability and financing." />
       {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(listLd) }} />
     </>
   );
 }

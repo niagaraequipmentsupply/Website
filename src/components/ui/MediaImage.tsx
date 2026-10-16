@@ -11,6 +11,8 @@ interface Props {
   className?: string;
   /** Skip candidates wider than this (thumbnails never need the 1600px file). */
   maxWidth?: number;
+  /** Serve through next/image (WebP, resized to `sizes`) instead of the direct media URL. Use for cards and tiles, not galleries. */
+  optimized?: boolean;
 }
 
 /**
@@ -20,8 +22,11 @@ interface Props {
  * a proxy URL on the page and a different file in the sitemap. Assets without size variants (static files) fall
  * back to next/image.
  */
-export function MediaImage({ image, alt, sizes = "100vw", priority, className = "", maxWidth }: Props) {
+export function MediaImage({ image, alt, sizes = "100vw", priority, className = "", maxWidth, optimized }: Props) {
   const label = image.alt || alt || "";
+  // Listing cards and thumbnails: the optimizer cuts the bytes by half or more; the product's own gallery keeps the
+  // descriptive direct URL, which is the copy Google indexes and the one listed in the image sitemap.
+  if (optimized) return <Image src={image.src} alt={label} fill priority={priority} sizes={sizes} className={className} />;
   const pool = image.sources ?? [];
   let sources = maxWidth ? pool.filter((s) => s.width <= maxWidth) : pool;
   if (!sources.length && pool.length) sources = [pool[0]];

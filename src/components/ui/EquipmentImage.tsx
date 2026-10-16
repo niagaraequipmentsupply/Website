@@ -13,14 +13,16 @@ interface Props {
   ratio?: string;
   /** Small thumbnail: hide the "image coming soon" caption. */
   compact?: boolean;
+  /** Direct media URL with Payload's own size variants (galleries); default is the next/image optimizer (cards, tiles). */
+  direct?: boolean;
 }
 
 /** Product image with explicit aspect ratio and object-contain so buckets/thumbs are never cropped. */
-export function EquipmentImage({ image, kind, alt, priority, sizes = "(max-width: 768px) 90vw, 320px", className = "", ratio = "aspect-[4/3]", compact }: Props) {
+export function EquipmentImage({ image, kind, alt, priority, sizes = "(max-width: 768px) 90vw, 320px", className = "", ratio = "aspect-[4/3]", compact, direct }: Props) {
   return (
     <div className={`relative overflow-hidden rounded-lg bg-light/60 ${ratio} ${className}`}>
       {image?.src ? (
-        <MediaImage image={image} alt={alt} priority={priority} sizes={sizes} maxWidth={compact ? 800 : undefined} className={`object-contain ${compact ? "p-1" : "p-3"}`} />
+        <MediaImage image={image} alt={alt} priority={priority} sizes={sizes} maxWidth={compact ? 800 : undefined} optimized={!direct} className={`object-contain ${compact ? "p-1" : "p-3"}`} />
       ) : (
         <PlaceholderArt kind={kind} label={alt} compact={compact} />
       )}

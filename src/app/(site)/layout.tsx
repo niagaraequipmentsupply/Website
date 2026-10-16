@@ -13,6 +13,7 @@ import { CatalogueProvider } from "@/components/CatalogueProvider";
 import { getSiteContent } from "@/lib/catalogue";
 import { clientCatalogue } from "@/lib/client-catalogue";
 import { site as siteDefaults } from "@/data/site";
+import { isThin } from "@/lib/machines";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton", display: "swap" });
 const raleway = Raleway({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-raleway", display: "swap" });
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
   title: { default: `${siteDefaults.name} | Official RIPPA Dealer in Ontario`, template: `%s | ${siteDefaults.name}` },
   description: siteDefaults.description,
   openGraph: { siteName: siteDefaults.name, type: "website", locale: "en_CA" },
+  alternates: { types: { "application/rss+xml": `${siteDefaults.url}/blog/feed.xml` } },
   robots: { index: true, follow: true },
   // Search Console / Bing Webmaster ownership tags, set from env so the values never live in the repo.
   verification: {
@@ -48,7 +50,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
           <AnnouncementBar left={site.announcement.left} right={site.announcement.right} />
           <Header nav={nav} contact={{ phone: site.phone, phoneHref: site.phoneHref, address: [site.address.street, site.address.city, site.address.region, site.address.postal].filter(Boolean).join(", "), hours: site.hoursList, mapEmbedUrl: site.mapEmbedUrl }} />
           <main id="main" className="flex-1">{children}</main>
-          <Footer site={site} />
+          <Footer site={site} models={catalogue.machines.filter((m) => m.featured && !isThin(m)).slice(0, 8).map((m) => ({ href: `/inventory/${m.category}/${m.slug}`, label: `${m.brand} ${m.modelName}` }))} />
         </CatalogueProvider>
         <OrganizationSchema site={site} />
         <Analytics />

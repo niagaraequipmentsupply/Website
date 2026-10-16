@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { pageMeta, describe } from "@/lib/seo";
+import { itemListLd } from "@/lib/schema";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/layout/PageHero";
 import { Container } from "@/components/ui/Container";
@@ -44,8 +45,10 @@ export default async function AttachmentCategoryPage({ params, searchParams }: {
   const qs = (m?: string, p?: string) => { const u = new URLSearchParams(); if (m) u.set("model", m); if (p) u.set("plate", p); const s = u.toString(); return s ? `?${s}` : ""; };
   const groups = groupAttachments(items);
   const types = groups.map(([g]) => g);
+  const listLd = itemListLd(`RIPPA ${cat.name}`, all.map((a) => ({ url: `/attachments/${a.attachmentCategory}/${a.slug}`, name: `RIPPA ${a.name}`, image: a.images[0]?.full ?? a.images[0]?.src })));
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(listLd) }} />
       <PageHero title={cat.name} text={cat.description} crumbs={[{ href: "/attachments", label: "Attachments" }, { label: cat.name }]}>
         {builderForAttachmentCategory(cat.slug) && <Button href={builderForAttachmentCategory(cat.slug)!.href} arrow>See What Fits Your {builderForAttachmentCategory(cat.slug)!.label}</Button>}
       </PageHero>

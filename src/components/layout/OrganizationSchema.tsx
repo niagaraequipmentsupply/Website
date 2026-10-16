@@ -33,23 +33,43 @@ export function OrganizationSchema({ site }: { site: SiteContent["site"] }) {
   const digits = site.phoneHref.replace(/\D/g, "");
   const telephone = digits.length === 11 ? `+${digits.slice(0, 1)}-${digits.slice(1, 4)}-${digits.slice(4, 7)}-${digits.slice(7)}` : site.phone;
   const hours = openingHours(site.hoursList);
-  const data = {
-    "@context": "https://schema.org",
+  const businessId = `${site.url}/#business`;
+  const business = {
     "@type": "LocalBusiness",
+    "@id": businessId,
     name: site.name,
+    slogan: site.tagline,
     description: site.description,
     url: site.url,
     telephone,
     email: site.email,
+    priceRange: "$$",
+    currenciesAccepted: "CAD",
     address: { "@type": "PostalAddress", streetAddress: site.address.street || undefined, addressLocality: site.address.city, addressRegion: site.address.region, postalCode: site.address.postal || undefined, addressCountry: site.address.country },
+    ...(site.geo ? { geo: { "@type": "GeoCoordinates", latitude: site.geo.latitude, longitude: site.geo.longitude } } : {}),
     areaServed: [{ "@type": "AdministrativeArea", name: "Ontario, Canada" }, ...serviceAreas.map((a) => ({ "@type": "City", name: a.name, url: `${site.url}/service-area/${a.slug}` }))],
     ...(site.mapEmbedUrl ? { hasMap: site.mapEmbedUrl } : {}),
     brand: { "@type": "Brand", name: "RIPPA" },
-    image: `${site.url}/brand/logo-light.png`,
+    image: `${site.url}/brand/og-default.png`,
     logo: `${site.url}/brand/logo-light.png`,
     ...(hours.length ? { openingHoursSpecification: hours } : {}),
+    contactPoint: [
+      { "@type": "ContactPoint", telephone, contactType: "sales", areaServed: "CA", availableLanguage: "English" },
+      { "@type": "ContactPoint", telephone, contactType: "customer service", areaServed: "CA", availableLanguage: "English" },
+    ],
     sameAs: Object.values(site.social).filter((u): u is string => typeof u === "string" && /^https?:/.test(u)),
     knowsAbout: ["RIPPA mini excavators", "RIPPA skid steers", "compact equipment service", "RIPPA warranty repairs", "excavator attachments"],
   };
+  // WebSite + SearchAction lets Google offer a sitelinks search box pointing at /search.
+  const website = {
+    "@type": "WebSite",
+    "@id": `${site.url}/#website`,
+    url: site.url,
+    name: site.name,
+    inLanguage: "en-CA",
+    publisher: { "@id": businessId },
+    potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${site.url}/search?q={search_term_string}` }, "query-input": "required name=search_term_string" },
+  };
+  const data = { "@context": "https://schema.org", "@graph": [business, website] };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;
 }

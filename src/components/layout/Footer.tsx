@@ -11,7 +11,9 @@ const quick = [
   [{ href: "/service", label: "RIPPA Service Centre" }, { href: "/parts", label: "RIPPA Parts Catalogue" }, { href: "/lubricants", label: "Oil & Lubricants" }, { href: "/blog", label: "Blog" }, { href: "/about", label: "About" }, { href: "/contact", label: "Contact" }],
 ];
 
-export function Footer({ site }: { site: SiteContent["site"] }) {
+export interface FooterModel { href: string; label: string }
+
+export function Footer({ site, models = [] }: { site: SiteContent["site"]; models?: FooterModel[] }) {
   const year = new Date().getFullYear();
   return (
     <footer className="mt-auto">
@@ -68,6 +70,15 @@ export function Footer({ site }: { site: SiteContent["site"] }) {
           </div>
         </Container>
       </div>
+      {models.length > 0 && (
+        <div className="border-t border-line bg-light/60">
+          <Container className="flex flex-wrap items-center gap-x-4 gap-y-1 py-3 text-[12px] text-grey">
+            <span className="font-bold uppercase tracking-[0.15em] text-charcoal">Popular models</span>
+            {models.map((m) => <Link key={m.href} href={m.href} className="hover:text-navy">{m.label}</Link>)}
+            <Link href="/compare" className="font-semibold text-navy hover:text-electric">Compare models</Link>
+          </Container>
+        </div>
+      )}
       <div className="bg-navy text-white">
         <Container className="flex flex-col items-center justify-between gap-2 py-4 text-[12px] sm:flex-row">
           <p>© {year} {site.legalName}. All rights reserved. <span className="whitespace-nowrap"><Link href="/privacy" className="underline-offset-2 hover:underline">Privacy</Link> · <Link href="/terms" className="underline-offset-2 hover:underline">Terms</Link> · <Link href="/accessibility" className="underline-offset-2 hover:underline">Accessibility</Link></span></p>

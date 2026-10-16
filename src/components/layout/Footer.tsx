@@ -72,10 +72,10 @@ export function Footer({ site, models = [] }: { site: SiteContent["site"]; model
       </div>
       {models.length > 0 && (
         <div className="border-t border-line bg-light/60">
-          <Container className="flex flex-wrap items-center gap-x-4 gap-y-1 py-3 text-[12px] text-grey">
-            <span className="font-bold uppercase tracking-[0.15em] text-charcoal">Popular models</span>
-            {models.map((m) => <Link key={m.href} href={m.href} className="hover:text-navy">{m.label}</Link>)}
-            <Link href="/compare" className="font-semibold text-navy hover:text-electric">Compare models</Link>
+          <Container className="flex flex-wrap items-center gap-x-2 gap-y-1 py-2 text-[12px] text-grey">
+            <span className="py-2 pr-2 font-bold uppercase tracking-[0.15em] text-charcoal">Popular models</span>
+            {models.map((m) => <Link key={m.href} href={m.href} className="inline-flex min-h-8 items-center px-2 hover:text-navy">{m.label}</Link>)}
+            <Link href="/compare" className="inline-flex min-h-8 items-center px-2 font-semibold text-navy hover:text-electric">Compare models</Link>
           </Container>
         </div>
       )}

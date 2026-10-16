@@ -4,7 +4,8 @@ const CANONICAL_HOST = "niagaraequipment.com";
 const FIRST_USER_PATHS = new Set(["/admin/create-first-user", "/api/users/first-register"]);
 
 /**
- * Two edge jobs:
+ * Three edge jobs:
+ *  0. Serve the IndexNow key file from the root (see src/lib/indexnow.ts).
  *  1. Canonical host. Railway's generated *.up.railway.app address still serves the whole site, which search engines
  *     see as a duplicate; everyone except Railway's own health check is sent to the real domain with a 301.
  *  2. Guard for Payload's "create first user" flow: while the users collection is empty Payload serves that screen to
@@ -12,6 +13,11 @@ const FIRST_USER_PATHS = new Set(["/admin/create-first-user", "/api/users/first-
  */
 export function proxy(req: NextRequest) {
   const host = req.headers.get("host") ?? "";
+  // IndexNow ownership file: /<key>.txt at the site root (a key in a subfolder would only verify that folder's URLs).
+  const indexNowKey = process.env.INDEXNOW_KEY?.trim();
+  if (indexNowKey && req.nextUrl.pathname === `/${indexNowKey}.txt`) {
+    return new NextResponse(indexNowKey, { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=3600" } });
+  }
   if (/\.up\.railway\.app$/i.test(host) && !/RailwayHealthCheck/i.test(req.headers.get("user-agent") ?? "")) {
     return NextResponse.redirect(new URL(req.nextUrl.pathname + req.nextUrl.search, `https://${CANONICAL_HOST}`), 301);
   }

@@ -3,7 +3,8 @@ import { site } from "@/data/site";
 /**
  * IndexNow: tells Bing, Yandex, Seznam and Naver (and through Bing, DuckDuckGo and ChatGPT search) about new or changed
  * URLs within seconds instead of waiting for a crawl. Google ignores it; nothing is lost by sending.
- * Needs INDEXNOW_KEY; the key is served back at /indexnow/<key>.txt, which is how the engines verify ownership.
+ * Needs INDEXNOW_KEY; the key is served back at /<key>.txt (src/proxy.ts), which is how the engines verify ownership.
+ * The file must sit at the site root: a key under a subfolder can only verify URLs inside that folder.
  */
 const ENDPOINT = "https://api.indexnow.org/indexnow";
 const key = () => process.env.INDEXNOW_KEY?.trim();
@@ -11,7 +12,7 @@ const key = () => process.env.INDEXNOW_KEY?.trim();
 /** Only submit for the real production host, never for localhost or preview builds. */
 export const indexNowConfigured = (): boolean => !!key() && /^https:\/\//.test(site.url) && !/localhost|127\.0\.0\.1/.test(site.url);
 
-export const indexNowKeyLocation = () => `${site.url}/indexnow/${key()}.txt`;
+export const indexNowKeyLocation = () => `${site.url}/${key()}.txt`;
 
 /** Submit site-relative or absolute URLs (deduplicated, max 10,000 per call). Returns the HTTP status, or null when not configured. */
 export async function submitIndexNow(urls: string[]): Promise<number | null> {

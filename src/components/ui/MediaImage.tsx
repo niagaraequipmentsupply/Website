@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { preload } from "react-dom";
 import type { ImageAsset } from "@/lib/types";
 
 interface Props {
@@ -32,11 +33,14 @@ export function MediaImage({ image, alt, sizes = "100vw", priority, className = 
   if (!sources.length && pool.length) sources = [pool[0]];
   if (!sources.length) return <Image src={image.src} alt={label} fill priority={priority} sizes={sizes} className={className} />;
   const largest = sources[sources.length - 1];
+  const srcSet = sources.map((s) => `${s.src} ${s.width}w`).join(", ");
+  // The product's lead photo is the LCP element: a preload in <head> starts it before the body is parsed.
+  if (priority) preload(largest.src, { as: "image", imageSrcSet: srcSet, imageSizes: sizes, fetchPriority: "high" });
   return (
     // eslint-disable-next-line @next/next/no-img-element -- deliberate: descriptive media URLs + Payload's own size variants
     <img
       src={largest.src}
-      srcSet={sources.map((s) => `${s.src} ${s.width}w`).join(", ")}
+      srcSet={srcSet}
       sizes={sizes}
       alt={label}
       loading={priority ? "eager" : "lazy"}

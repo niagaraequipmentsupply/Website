@@ -248,12 +248,13 @@ function MapHours({ contact, directions }: { contact: HeaderContact; directions:
       {open && (
         <div className="absolute right-0 top-full z-50 w-80 pt-3">
           <div className="rounded-card border border-line bg-white p-4 shadow-lift">
-            <p className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em] text-grey"><Clock className="size-4 text-navy" aria-hidden />Store hours</p>
+            <p className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em] text-grey"><Clock className="size-4 text-navy" aria-hidden />Showroom hours</p>
             <ul className="mt-2 divide-y divide-line text-sm">
               {contact.hours.map((h) => (
                 <li key={h.day} className="flex justify-between py-1.5"><span className="font-semibold text-charcoal">{h.day}</span><span className="text-grey">{h.time}</span></li>
               ))}
             </ul>
+            <p className="mt-2 text-[12px] text-grey">After hours by appointment. Call or text any time; the team monitors the phone.</p>
             {contact.address && <p className="mt-3 flex items-start gap-2 text-sm text-grey"><MapPin className="mt-0.5 size-4 shrink-0 text-navy" aria-hidden />{contact.address}</p>}
             <div className="mt-3 grid grid-cols-2 gap-2">
               <Button href={directions} size="sm" target="_blank" rel="noopener">Get Directions</Button>
